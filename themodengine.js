@@ -126,8 +126,7 @@ TheModEngine.prototype.__animFrame = function()
 	if(!renderInfo) renderInfo = this.lastRenderInfo;
 	this.lastRenderInfo = renderInfo;
 
-
-	this.sceneRenderer.Render(frame, ctx, width, height);
+	this.sceneRenderer.Render(frame, ctx, width, height, c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 

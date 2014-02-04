@@ -9,10 +9,15 @@ var SunLayer = function()
 	this.littlePointRadius = 125;
 	this.littlePointRadiusVariation = 20;
 
-	this.innerPointRadius = 70;
+	this.innerPointRadius = 65;
 
-	this.circleRadius = 55;
+	this.circleRadius = 45;
 	this.circleStrokeWidth = 19;
+
+	this.backCircleRadius = 95;
+
+	//this.foreDarkCircleRadius = 60;
+	//this.foreDarkCircleStrokeWidth = 19;
 
 	this.rotationEnv = new RandEnvelope(1246);
 	this.bigRadiusEnv = new RandEnvelope(2622);
@@ -37,11 +42,17 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
 
 	// make a star with alternating points.
 	ctx.save();
-	ctx.beginPath();
 	ctx.translate(x,y);
 	ctx.rotate(mainRotation);
 
+  // draw back circle
+  ctx.beginPath();
+	ctx.arc(0,0,this.backCircleRadius, 0, 2*Math.PI);
+  ctx.fillStyle = darkYellow;
+  ctx.fill();
+
 	// start at the inner radius
+	ctx.beginPath();
 	ctx.moveTo(0, -innerR);
 
 	// for each iteration we draw 2 star points, which consist of 2 draw points each. so we have to draw 4 points each iteration, each at different angle along the circle.
@@ -59,14 +70,14 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
 	}
 	ctx.closePath();
 
-	ctx.lineWidth = 2;
-	ctx.strokeStyle='#fff';
+	//ctx.lineWidth = 2;
+	//ctx.strokeStyle='#fff';
 	//ctx.stroke();
 
   // create radial gradient
   var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, bigR);
   grd.addColorStop(0, '#ffc');
-  grd.addColorStop(0.25, '#fed58c');
+  grd.addColorStop(0.15, '#fed58c');
   grd.addColorStop(1, '#e19c26');
 
   ctx.fillStyle = grd;
@@ -76,27 +87,18 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
   ctx.beginPath();
 	ctx.arc(0,0,this.circleRadius, 0, 2*Math.PI);
 
-	//ctx.fillStyle = grd;
-  //ctx.fill();
-
   ctx.lineWidth = this.circleStrokeWidth;
   ctx.strokeStyle = '#fed58c';
   ctx.stroke();
 
+  // draw fore dark circle
+  /*ctx.beginPath();
+	ctx.arc(0,0,this.foreDarkCircleRadius, 0, 2*Math.PI);
+  ctx.strokeStyle = darkYellow;
+  ctx.lineWidth = this.foreDarkCircleStrokeWidth;
+  ctx.stroke();*/
 
 	ctx.restore();
-
-/*
-	layer.add(new Kinetic.Circle({
-		x:x,
-		y:y,
-		radius: this.circleRadius,
-		fillRadialGradientStartRadius:0,
-		fillRadialGradientEndRadius:this.littlePointRadius,
-		fillRadialGradientColorStops:[0,'#fed58c',1,'#e19c26'],
-		strokeWidth:this.circleStrokeWidth,
-		stroke:'#fed58c'
-	}));*/
 
 };
 
