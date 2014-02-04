@@ -4,6 +4,8 @@ var TheModRenderer = function()
 	this.backgroundLayer = new BackgroundLayer();
 	this.logoLayer = new LogoLayer();
 	this.topBackCurtain = new TopBackCurtainLayer();
+	this.sunLayer = new SunLayer();
+
 	this.fadeInTween = new Tween(0.8, null, Easing.Quadratic.InOut);
 }
 
@@ -17,8 +19,8 @@ TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
 TheModRenderer.prototype.Render = function(frame, ctx, width, height)
 {
 	this.backgroundLayer.Render(frame, ctx, width, height);
-	// sun render
   this.topBackCurtain.Render(frame, ctx, width, height);
+	this.sunLayer.Render(frame, ctx, width, height);
   this.logoLayer.Render(frame, ctx, width, height);
 }
 

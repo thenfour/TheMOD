@@ -13,17 +13,17 @@ var CurtainCircle = function(_x, _y, _radius, _xLeeway, _yLeeway, _radiusLeeway,
 	this.xEnv = new RandEnvelope(_parentSeed + 2);
 	this.yEnv = new RandEnvelope(_parentSeed + 3);
 };
-CurtainCircle.prototype.x = function(timeMS)
+CurtainCircle.prototype.x = function(frame)
 {
-	return this.xEnv.vary(timeMS, 0.04, this._x, this._xLeeway);
+	return this.xEnv.vary(frame, 0.04, this._x, this._xLeeway);
 };
-CurtainCircle.prototype.y = function(timeMS)
+CurtainCircle.prototype.y = function(frame)
 {
-	return this.yEnv.vary(timeMS, 0.05, this._y, this._yLeeway);
+	return this.yEnv.vary(frame, 0.05, this._y, this._yLeeway);
 };
-CurtainCircle.prototype.radius = function(timeMS)
+CurtainCircle.prototype.radius = function(frame)
 {
-	return this.radiusEnv.vary(timeMS, 0.03, this._radius, this._radiusLeeway);
+	return this.radiusEnv.vary(frame, 0.03, this._radius, this._radiusLeeway);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,16 +46,16 @@ var TopBackCurtainLayer = function()
 
 TopBackCurtainLayer.prototype.__render = function(frame, ctx, strokeWidth, fillColor, strokeColor, radiusAdjust, circleCount)
 {
-	var t = frame.time;
+//	var t = frame.time;
 	var circles = this.circles;
 
 	ctx.beginPath();
 
 	// move to the first location - let's just pick the left side of the first circle.
-	ctx.moveTo(circles[0].x(frame.time) - (circles[0].radius(frame.time) - radiusAdjust), -strokeWidth);
+	ctx.moveTo(circles[0].x(frame) - (circles[0].radius(frame) - radiusAdjust), -strokeWidth);
 	ctx.lineTo(
-				circles[0].x(frame.time) - (circles[0].radius(frame.time) - radiusAdjust),
-				circles[0].y(frame.time)
+				circles[0].x(frame) - (circles[0].radius(frame) - radiusAdjust),
+				circles[0].y(frame)
 				);
 
 			var circle0;
@@ -69,19 +69,19 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx, strokeWidth, fillC
 				circle2 = circles[i + 1];
 
 				p1 = CircleCircleIntersectionLower(
-					{x:circle0.x(t), y:circle0.y(t)}, circle0.radius(t) + radiusAdjust,
-					{x:circle1.x(t), y:circle1.y(t)}, circle1.radius(t) + radiusAdjust
+					{x:circle0.x(frame), y:circle0.y(frame)}, circle0.radius(frame) + radiusAdjust,
+					{x:circle1.x(frame), y:circle1.y(frame)}, circle1.radius(frame) + radiusAdjust
 					);
 
 				p2 = CircleCircleIntersectionLower(
-					{x:circle1.x(t), y:circle1.y(t)}, circle1.radius(t) + radiusAdjust,
-					{x:circle2.x(t), y:circle2.y(t)}, circle2.radius(t) + radiusAdjust
+					{x:circle1.x(frame), y:circle1.y(frame)}, circle1.radius(frame) + radiusAdjust,
+					{x:circle2.x(frame), y:circle2.y(frame)}, circle2.radius(frame) + radiusAdjust
 					);
 
 				// center, start angle, end angle
-				var o = { x: circle1.x(t), y:circle1.y(t) };
+				var o = { x: circle1.x(frame), y:circle1.y(frame) };
 
-				ctx.arc(circle1.x(t), circle1.y(t), circle1.radius(t) + radiusAdjust,
+				ctx.arc(circle1.x(frame), circle1.y(frame), circle1.radius(frame) + radiusAdjust,
 					angleOnCircle(o, p1),
 					angleOnCircle(o, p2),
 					true
