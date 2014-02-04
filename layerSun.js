@@ -25,14 +25,14 @@ var SunLayer = function()
 
 	this.wiggleRand = new MersenneTwister(246246);
 
-	this.OpeningTween = new Tween(3.8, null, Easing.Bounce.Out);
+	this.OpeningTween = new Tween(4.8, null, Easing.Bounce.Out);
 };
 
 
 SunLayer.prototype.Render = function(frame, ctx, width, height)
 {
 	var x = width * 0.8;
-	var y = 270 + this.OpeningTween.tween(frame, -300, 0);
+	var y = 320 + this.OpeningTween.tween(frame, -300, 0);
 	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame, 0.011);
 
 	var pointCount = this.pointCount;

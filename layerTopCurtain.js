@@ -30,19 +30,20 @@ CurtainCircle.prototype.radius = function(frame)
 var TopBackCurtainLayer = function()
 {
 	this.radius = 100;
-	this.spread = 160;
+	this.spread = 140;
 	this.radiusVariance = 6;
 	this.yVariance = 20;
 	this.xVariance = 6;
-	this.y = 120;
+	this.y = 140;
 	this.circles = [];
 
-	this.entranceTween = new Tween(3, null, Easing.Elastic.Out);
-	this.entranceTweenAlt = new Tween(3.4, null, Easing.Elastic.Out);
+	this.entranceTween1 = new Tween(3, null, Easing.Elastic.Out);
+	this.entranceTween2 = new Tween(3.4, null, Easing.Elastic.Out);
+	//this.entranceTween3 = new Tween(3.8, null, Easing.Elastic.Out);
 };
 
 TopBackCurtainLayer.prototype.__render = function(frame, ctx,
-	strokeWidth, strokeColor, fillColor, radiusAdjust, circleCount, offsetY, canvasWidth, canvasHeight, flipped)
+	strokeWidth, strokeColor, fillColor, radiusAdjust, circleCount, offsetX, offsetY, canvasWidth, canvasHeight, flipped)
 {
 	var ysafety = 25;
 
@@ -53,7 +54,7 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 	  ctx.scale(-1, 1);
 	  ctx.translate(-(canvasWidth / 2), 0);
 	}
-  ctx.translate(0, offsetY);
+  ctx.translate(offsetX, offsetY);
 
 	var circles = this.circles;
 
@@ -101,43 +102,57 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 	ctx.lineTo(lastX, -strokeWidth - ysafety);
 	ctx.closePath();
 
-	ctx.fillStyle = fillColor;
-	ctx.fill();
+	if(fillColor)
+	{
+		ctx.fillStyle = fillColor;
+		ctx.fill();
+	}
 
-	ctx.strokeStyle = strokeColor;
-	ctx.lineWidth = strokeWidth;
-	ctx.stroke();
+	if(strokeColor)
+	{
+		ctx.strokeStyle = strokeColor;
+		ctx.lineWidth = strokeWidth;
+		ctx.stroke();
+	}
 
 	ctx.restore();
 }
 
 
-TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, alt)
+TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, variation)
 {
-	var params = !alt ?
+	var params;
+	switch(variation)
 	{
-		flipped: false,
-		offsetY: 0 + (this.entranceTween.tween(frame, -250, 0)),
-		stroke1Width: 12,
-		stroke1Color: darkYellow,
-		stroke2Width: 10,
-		stroke2Color: darkPurple,
-		stroke3Width: 4,
-		stroke3Color: '#000',
-		stroke4Color: darkYellow
+		case 0:
+			var params = {
+				flipped: false,
+				offsetX: 0,
+				offsetY: 0 + (this.entranceTween1.tween(frame, -250, 0)),
+				stroke1Width: 12,
+				stroke1Color: darkGray,
+				stroke2Width: 10,
+				stroke2Color: darkPurple,
+				stroke3Width: 4,
+				stroke3Color: '#000',
+				stroke4Color: darkGray
+			};
+			break;
+		case 1:
+			var params = {
+				flipped: true,
+				offsetX: 20,//-this.radius/2,
+				offsetY: -40 + (this.entranceTween2.tween(frame, -250, 0)),
+				stroke1Width: 14,
+				stroke1Color: darkPurple,
+				stroke2Width: 10,
+				stroke2Color: lightPurple,
+				stroke3Width: 8,
+				stroke3Color: darkPurple,
+				stroke4Color: lightPurple
+			};
+			break;
 	}
-	: 
-	{
-		flipped: true,
-		offsetY: -60 + (this.entranceTweenAlt.tween(frame, -250, 0)),
-		stroke1Width: 8,
-		stroke1Color: darkPurple,
-		stroke2Width: 4,
-		stroke2Color: '#000',
-		stroke3Width: 2,
-		stroke3Color: lightYellow,
-		stroke4Color: lightPurple
-	};
 
 	// take worst case scenario
 	// and add some for some dummies on the edges of the array, and to ensure we have a few running always for bounds
@@ -152,13 +167,15 @@ TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, alt)
 		params.stroke1Width,
 		params.stroke1Color,
 		params.stroke2Color,
-		0, circleCount, params.offsetY, width, height, params.flipped);
+		0,
+		circleCount, params.offsetX, params.offsetY, width, height, params.flipped);
 
 	this.__render(frame, ctx,
 		params.stroke3Width,
 		params.stroke3Color,
 		params.stroke4Color,
-		-(params.stroke3Width + params.stroke2Width), circleCount, params.offsetY, width, height, params.flipped);
+		-(params.stroke3Width + params.stroke2Width),
+		circleCount, params.offsetX, params.offsetY, width, height, params.flipped);
 
 };
 

@@ -6,7 +6,7 @@ var TheModRenderer = function()
 	this.topBackCurtain = new TopBackCurtainLayer();
 	this.sunLayer = new SunLayer();
 
-	this.fadeInTween = new Tween(0.8, null, Easing.Quadratic.InOut);
+	this.fadeInTween = new Tween(1.2, null, Easing.Quadratic.InOut);
 }
 
 TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
@@ -19,9 +19,9 @@ TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
 TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height)
 {
 	this.backgroundLayer.Render(frame, ctx, width, height);
-  this.topBackCurtain.Render(frame, ctx, width, height, false);
+  this.topBackCurtain.Render(frame, ctx, width, height, 0);
 	this.sunLayer.Render(frame, ctx, width, height);
-  this.topBackCurtain.Render(frame, ctx, width, height, true);
+  this.topBackCurtain.Render(frame, ctx, width, height, 1);
 }
 
 
