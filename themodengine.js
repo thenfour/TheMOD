@@ -15,9 +15,6 @@ var TheModEngine = function(divContainerID, sceneRenderer, targetFps, pixelSizeX
 	this.showDebug = false;
 
 	$(this.onscreenCanvasElement)
-		//.css('width', "100%")
-		//.css('height', "100%")
-
     .css('image-rendering', 'optimizeSpeed')
     .css('image-rendering', '-moz-crisp-edges')
     .css('image-rendering', '-webkit-optimize-contrast')
@@ -33,10 +30,7 @@ var TheModEngine = function(divContainerID, sceneRenderer, targetFps, pixelSizeX
     .css('image-rendering', 'crisp-edges')
     .css('-ms-interpolation-mode', 'nearest-neighbor');
 
-	// defaults
 	this.lastRenderInfo =	{
-		//pixelSizeX: 2,
-		//pixelSizeY: 2,
 		mainOpacity: 1.0
 	};
 
@@ -98,11 +92,6 @@ TheModEngine.prototype.__updateCanvasSizes = function()
 
 TheModEngine.prototype.__animFrame = function()
 {
-	// make sure canvases are the right size
-	var renderInfo = this.sceneRenderer.GetFrameInfo;
-	if(!renderInfo) renderInfo = this.lastRenderInfo;
-	this.lastRenderInfo = renderInfo;
-
 	var c = this.offscreenCanvasElement;
 
 	var frame =
@@ -133,6 +122,11 @@ TheModEngine.prototype.__animFrame = function()
 	var width = this.onscreenCanvasElement.width;
 	var height = this.onscreenCanvasElement.height;
 
+	var renderInfo = this.sceneRenderer.GetFrameInfo(frame, ctx);
+	if(!renderInfo) renderInfo = this.lastRenderInfo;
+	this.lastRenderInfo = renderInfo;
+
+
 	this.sceneRenderer.Render(frame, ctx, width, height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,6 +138,10 @@ TheModEngine.prototype.__animFrame = function()
 	ctx1 = this.onscreenCanvasElement.getContext("2d");
 	ctx1.save();
 	
+	ctx1.fillStyle = '#000';
+	ctx1.fillRect(0,0,this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
+	ctx1.globalAlpha = renderInfo.mainOpacity;
+
 	ctx1.mozImageSmoothingEnabled = false;
 	ctx1.webkitImageSmoothingEnabled = false;
 	ctx1.imageSmoothingEnabled = false;

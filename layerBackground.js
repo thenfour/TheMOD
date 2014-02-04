@@ -1,29 +1,22 @@
 
 
-var LayerBackground = function()
+var BackgroundLayer = function()
 {
-	this.paperImg = new Image();
-	this.paperImg.src = 'paper.jpg';
+	this.paperImg = new TheModImage('paper.jpg');
 }
 
-LayerBackground.prototype.render = function(stage, frame, layer)
+BackgroundLayer.prototype.Render = function(frame, ctx, width, height)
 {
-
-	layer.add(new Kinetic.Rect({
-		x:0,
-		y:0,
-		width:stage.width(),
-		height:stage.height(),
-		fill:backgroundColor
-	}));
-
-	/*backgroundLayer.add(new Kinetic.Rect({
-		x:0,
-		y:0,
-		width:stage.width(),
-		height:stage.height(),
-		fillPatternImage: this.paperImg
-	}));*/
-
+	ctx.rect(0,0,width, height);
+	if(this.paperImg.loaded)
+	{
+		var paperPattern = ctx.createPattern(this.paperImg.img, "repeat");
+		ctx.fillStyle = paperPattern;
+	}
+	else
+	{
+		ctx.fillStyle = '#080';
+	}
+	ctx.fill();
 };
 
