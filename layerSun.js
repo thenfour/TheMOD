@@ -25,7 +25,7 @@ var SunLayer = function()
 
 	this.wiggleRand = new MersenneTwister(246246);
 
-	this.OpeningTween = new Tween(2.8, null, Easing.Bounce.Out);
+	this.OpeningTween = new Tween(3.8, null, Easing.Bounce.Out);
 };
 
 

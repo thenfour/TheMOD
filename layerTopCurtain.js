@@ -36,20 +36,16 @@ var TopBackCurtainLayer = function()
 	this.xVariance = 6;
 	this.y = 120;
 	this.circles = [];
-	this.strokeWidth1 = 9;
-	this.strokeWidth2 = 9;
-	this.strokeWidth3 = 3;
 
-	this.cloudColor = lightPurple;
-	this.highlightColor = black;
-
-	this.altCloudColor = lightYellow;
-	this.altHighlightColor = lightYellow;
+	this.entranceTween = new Tween(3, null, Easing.Elastic.Out);
+	this.entranceTweenAlt = new Tween(3.4, null, Easing.Elastic.Out);
 };
 
 TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 	strokeWidth, strokeColor, fillColor, radiusAdjust, circleCount, offsetY, canvasWidth, canvasHeight, flipped)
 {
+	var ysafety = 25;
+
 	ctx.save();
 	if(flipped)
 	{
@@ -64,7 +60,7 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 	ctx.beginPath();
 
 	// move to the first location - let's just pick the left side of the first circle.
-	ctx.moveTo(circles[0].x(frame) - (circles[0].radius(frame) - radiusAdjust), -strokeWidth);
+	ctx.moveTo(circles[0].x(frame) - (circles[0].radius(frame) - radiusAdjust), -strokeWidth - ysafety);
 	ctx.lineTo(
 		circles[0].x(frame) - (circles[0].radius(frame) - radiusAdjust),
 		circles[0].y(frame)
@@ -102,7 +98,7 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 		lastX = p2.x;
 	}
 
-	ctx.lineTo(lastX, -strokeWidth);
+	ctx.lineTo(lastX, -strokeWidth - ysafety);
 	ctx.closePath();
 
 	ctx.fillStyle = fillColor;
@@ -121,19 +117,19 @@ TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, alt)
 	var params = !alt ?
 	{
 		flipped: false,
-		offsetY: 0,
-		stroke1Width: 14,
-		stroke1Color: lightPurple,
+		offsetY: 0 + (this.entranceTween.tween(frame, -250, 0)),
+		stroke1Width: 12,
+		stroke1Color: darkYellow,
 		stroke2Width: 10,
 		stroke2Color: darkPurple,
 		stroke3Width: 4,
 		stroke3Color: '#000',
-		stroke4Color: lightPurple
+		stroke4Color: darkYellow
 	}
 	: 
 	{
 		flipped: true,
-		offsetY: -60,
+		offsetY: -60 + (this.entranceTweenAlt.tween(frame, -250, 0)),
 		stroke1Width: 8,
 		stroke1Color: darkPurple,
 		stroke2Width: 4,

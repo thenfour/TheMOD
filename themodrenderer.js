@@ -16,12 +16,17 @@ TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
 	};
 }
 
-TheModRenderer.prototype.Render = function(frame, ctx, width, height, canvas)
+TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height)
 {
 	this.backgroundLayer.Render(frame, ctx, width, height);
   this.topBackCurtain.Render(frame, ctx, width, height, false);
 	this.sunLayer.Render(frame, ctx, width, height);
   this.topBackCurtain.Render(frame, ctx, width, height, true);
+}
+
+
+TheModRenderer.prototype.RenderFullRes = function(frame, ctx, width, height)
+{
   this.logoLayer.Render(frame, ctx, width, height);
 }
 

@@ -126,7 +126,7 @@ TheModEngine.prototype.__animFrame = function()
 	if(!renderInfo) renderInfo = this.lastRenderInfo;
 	this.lastRenderInfo = renderInfo;
 
-	this.sceneRenderer.Render(frame, ctx, width, height, c);
+	this.sceneRenderer.RenderPixelated(frame, ctx, width, height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -150,6 +150,9 @@ TheModEngine.prototype.__animFrame = function()
 		0, 0, this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+	this.sceneRenderer.RenderFullRes(frame, ctx1, width, height);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	if(this.showDebug)
 	{
 		var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
@@ -170,6 +173,8 @@ TheModEngine.prototype.__animFrame = function()
 	  ctx1.fillText(dbgString2, 20, 40);
 	  ctx1.fillText(dbgString3, 20, 60);
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ctx1.restore();
 
