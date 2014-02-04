@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<!--
+
+kineticjs seems to only get in the way.
+honestly what does it do that we can't otherwise? big layer management i guess
+but i would just do it my OO way anyway. i have to for this.
+it also gives event handling but i don't care much about that; i can also implement that.
+what i'm missing is pixel buffer access, access to the canvas itself, more clear
+control over caching and stuff.
+
+TODO:
+
+- create a content area.
+- tween/easing
+- text scroller
+- audio samples
+- moon, day cycles
+- something on the bottom.x
+- better curtain / textures
+
+
+greetz to the sdcompo team:
+sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde.
+and more amazing tunes by norfair, carlos, j'écoute, coda, virt...
+and the band: angelo, damiano, iënad, wilfried
+
+-->
+
+<head>
+	<meta charset="utf-8" />
+	<title>the mod</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="themodengine.js"></script>
+	<script src="themodImage.js"></script>
+	<script src="themodrenderer.js"></script>
+
+	<script src="mersenne-twister.js"></script>
+	<script src="themodutil.js"></script>
+	<script src="layerBackground.js"></script>
+	<script src="layerTopCurtain.js"></script>
+	<script src="layerLogo.js"></script>
+	<script src="layerSun.js"></script>
+	<script src="layerClouds.js"></script>
+	<script src="layerNotes.js"></script>
+
+	<style type="text/css">
+	* { margin: 0; padding: 0;}
+	body, html { height:100%;background-color: #000; }
+  #contactInfoHeader{
+    color:#d3d3d3;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top:35px;
+    padding-right:55px;
+    text-align: right;
+    font-family:Tahoma, Geneva, sans-serif;
+    font-size: 24px;
+  }
+	#container {
+    border: 15px solid #000;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  a:visited,
+  a:link
+  {
+    color:#d3d3d3;
+    text-decoration: none;
+  }
+	</style>
+</head>
+
+<body>
+	<div id="container"></div>
+	<div id="contactInfoHeader">
+		+32 (0)499 315 763<br />
+		+1 (206)905-9883<br />
+		<a href="mailto:contact@themod.be">contact@themod.be</a>
+	</div>
+
+<script type="text/javascript">
+
+var lightBlue = "#600";
+var darkBlue = "#440000";
+var lightYellow = "#f2d700";
+var darkYellow = "#633c00";
+var darkGray = "#6a5f5e";
+var lightPurple = "#5e506f";
+var darkPurple = "#221d28";
+var lightGray = "#d3d3d3";
+var black = "#000";
+var backgroundColor = darkPurple;
+
+var engine;
+
+$(document).ready(function()
+{
+	engine = new TheModEngine('container', new TheModRenderer(), 15, 2, 4);
+});
+
+</script>
+
+</body>
+</html>
