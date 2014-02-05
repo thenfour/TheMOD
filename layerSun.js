@@ -4,10 +4,10 @@ var SunLayer = function()
 {
 	this.pointCount = 14;	
 	this.bigPointRadius = 150;
-	this.bigPointRadiusVariation = 40;
+	this.bigPointRadiusVariation = 45;
 
-	this.littlePointRadius = 125;
-	this.littlePointRadiusVariation = 20;
+	this.littlePointRadius = 120;
+	this.littlePointRadiusVariation = 15;
 
 	this.innerPointRadius = 65;
 
@@ -15,13 +15,11 @@ var SunLayer = function()
 	this.circleStrokeWidth = 19;
 
 	this.backCircleRadius = 95;
+	this.baseY = 200;//320;
 
-	//this.foreDarkCircleRadius = 60;
-	//this.foreDarkCircleStrokeWidth = 19;
-
-	this.rotationEnv = new RandEnvelope(1246);
-	this.bigRadiusEnv = new RandEnvelope(2622);
-	this.littleRadiusEnv = new RandEnvelope(898);
+	this.rotationEnv = new RandEnvelope(1247);
+	this.bigRadiusEnv = new RandEnvelope(2624);
+	this.littleRadiusEnv = new RandEnvelope(899);
 
 	this.wiggleRand = new MersenneTwister(246246);
 
@@ -32,7 +30,7 @@ var SunLayer = function()
 SunLayer.prototype.Render = function(frame, ctx, width, height)
 {
 	var x = width * 0.8;
-	var y = 320 + this.OpeningTween.tween(frame, -300, 0);
+	var y = this.baseY + this.OpeningTween.tween(frame, -300, 0);
 	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame, 0.011);
 
 	var pointCount = this.pointCount;

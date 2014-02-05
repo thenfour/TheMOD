@@ -2,21 +2,14 @@
 <html>
 <!--
 
-kineticjs seems to only get in the way.
-honestly what does it do that we can't otherwise? big layer management i guess
-but i would just do it my OO way anyway. i have to for this.
-it also gives event handling but i don't care much about that; i can also implement that.
-what i'm missing is pixel buffer access, access to the canvas itself, more clear
-control over caching and stuff.
-
 TODO:
-
-- create a content area.
+- create a content area
+	- content area
+	- nav system
+	- way to sorta manage content
 - text scroller
-- audio samples
-- moon, day cycles
-- something on the bottom.x
-- better curtain / textures
+- audio
+	- oscilloscope: http://stuartmemo.com/wavy-jones/
 
 
 greetz to the sdcompo team:
@@ -49,6 +42,11 @@ and the band: angelo, damiano, iënad, wilfried
 		height:100%;
 		background-color: #000;
 	}
+	@font-face
+	{
+	font-family: aansa;
+	src: url(aansa.ttf);
+	}
   #contactInfoHeader{
     color:#d3d3d3;
     overflow: hidden;
@@ -60,12 +58,13 @@ and the band: angelo, damiano, iënad, wilfried
     padding-top:35px;
     padding-right:55px;
     text-align: right;
-    font-family:Tahoma, Geneva, sans-serif;
+    font-family: aansa, sans-serif;
     font-size: 24px;
   }
 	#content {
     color:#666;
-    border: 1px solid red;
+    border: 0px solid red;
+    visibility:hidden;
     overflow: hidden;
     position: fixed;
     left:50px;
