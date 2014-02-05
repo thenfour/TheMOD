@@ -141,7 +141,7 @@ TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, varia
 		case 1:
 			var params = {
 				flipped: true,
-				offsetX: 20,//-this.radius/2,
+				offsetX: -(this.radius*.4),
 				offsetY: -40 + (this.entranceTween2.tween(frame, -250, 0)),
 				stroke1Width: 14,
 				stroke1Color: darkPurple,

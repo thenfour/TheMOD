@@ -41,25 +41,55 @@ and the band: angelo, damiano, iënad, wilfried
 	<script src="layerTopCurtain.js"></script>
 	<script src="layerLogo.js"></script>
 	<script src="layerSun.js"></script>
+	<script src="layerScroller.js"></script>
 
 	<style type="text/css">
 	* { margin: 0; padding: 0;}
-	body, html { height:100%;background-color: #000; }
+	body, html {
+		height:100%;
+		background-color: #000;
+	}
   #contactInfoHeader{
     color:#d3d3d3;
-    bottom: 0;
-    left: 0;
     overflow: hidden;
     position: absolute;
     right: 0;
     top: 0;
+    bottom: 0;
+    left: 0;
     padding-top:35px;
     padding-right:55px;
     text-align: right;
     font-family:Tahoma, Geneva, sans-serif;
     font-size: 24px;
   }
+	#content {
+    color:#666;
+    border: 1px solid red;
+    overflow: hidden;
+    position: fixed;
+    left:50px;
+    top:280px;
+    width:450px;
+    min-height: 200px;
+    text-align: left;
+    font-family:Tahoma, Geneva, sans-serif;
+    font-size: 14px;
+  }
+  #copyright{
+    color:#666;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-bottom:25px;
+    text-align: center;
+    font-family:Tahoma, Geneva, sans-serif;
+    font-size: 12px;
+  }
 	#container {
+		min-width: 600px;
     border: 15px solid #000;
     bottom: 0;
     left: 0;
@@ -67,6 +97,13 @@ and the band: angelo, damiano, iënad, wilfried
     position: absolute;
     right: 0;
     top: 0;
+  }
+	#canvasHere {
+		width:100%;
+		height:100%;
+		margin:0;
+		padding:0;
+		border:0;
   }
   a:visited,
   a:link
@@ -78,12 +115,25 @@ and the band: angelo, damiano, iënad, wilfried
 </head>
 
 <body>
-	<div id="container"></div>
+	<div id="container">
+		<div id="canvasHere"></div>
+
 	<div id="contactInfoHeader">
 		+32 (0)499 315 763<br />
 		+1 (206)905-9883<br />
 		<a href="mailto:contact@themod.be">contact@themod.be</a>
 	</div>
+
+	<div id="copyright">
+	all website content &copy;2014 theMod // all rights reserved // <a href="mailto:contact@themod.be">contact@themod.be</a>
+	</div>
+
+	<div id="content">
+	so yea this is some content
+	</div>
+	</div>
+
+
 
 <script type="text/javascript">
 
@@ -102,7 +152,7 @@ var engine;
 
 $(document).ready(function()
 {
-	engine = new TheModEngine('container', new TheModRenderer(), 24, 1, 1);
+	engine = new TheModEngine('canvasHere', new TheModRenderer(), 24, 2, 2);
 });
 
 </script>
