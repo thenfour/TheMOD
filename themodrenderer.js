@@ -23,12 +23,12 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height)
   this.topBackCurtain.Render(frame, ctx, width, height, 0);
 	this.sunLayer.Render(frame, ctx, width, height);
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
-  this.scroller.Render(frame, ctx, width, height);
 }
 
 
 TheModRenderer.prototype.RenderFullRes = function(frame, ctx, width, height)
 {
   this.logoLayer.Render(frame, ctx, width, height);
+  this.scroller.Render(frame, ctx, width, height);
 }
 
