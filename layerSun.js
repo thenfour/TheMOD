@@ -43,6 +43,11 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
 	ctx.translate(x,y);
 	ctx.rotate(mainRotation);
 
+  ctx.shadowOffsetX = 4;
+	ctx.shadowOffsetY = 5;
+	ctx.shadowColor = 'rgba(0,0,0,0.2)';
+
+
   // draw back circle
   ctx.beginPath();
 	ctx.arc(0,0,this.backCircleRadius, 0, 2*Math.PI);
@@ -82,11 +87,15 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
   ctx.fill();
 
   // start over and create a cool circle in the middle.
+
+  ctx.shadowOffsetX = 0;
+	ctx.shadowOffsetY = 0;
+
   ctx.beginPath();
 	ctx.arc(0,0,this.circleRadius, 0, 2*Math.PI);
 
   ctx.lineWidth = this.circleStrokeWidth;
-  ctx.strokeStyle = '#fed58c';
+  ctx.strokeStyle = '#ffe08c';
   ctx.stroke();
 
   // draw fore dark circle
