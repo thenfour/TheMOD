@@ -16,7 +16,11 @@ TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvas
 	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
 		xflip: true,
 		evenFillColor: null,
+		evenStrokeColor: null,
+		evenStrokeWidth: 0,
 		oddFillColor: '#ccc',
+		oddStrokeColor: null,
+		oddStrokeWidth: 0,
 		left: 0,
 		top: 0,
 		height: 270,
