@@ -1,4 +1,4 @@
-
+// actualyl the pixelate effect is no longer used; it actually hurt performance instead of helped it.
 
 var TheModEngine = function(divContainerID, sceneRenderer)
 {
@@ -8,6 +8,8 @@ var TheModEngine = function(divContainerID, sceneRenderer)
 	this.pixelSizeY = globalInfo.pixelSizeY;
 	this.sceneRenderer = sceneRenderer;
 	this.targetFps = globalInfo.targetFrameRate;
+
+	this.frameDurations = [];
 
 	this.offscreenCanvasElement = document.createElement('canvas');
 	this.onscreenCanvasElement = document.createElement('canvas');
@@ -94,6 +96,7 @@ TheModEngine.prototype.__updateCanvasSizes = function()
 TheModEngine.prototype.__animFrame = function()
 {
 	var c = this.offscreenCanvasElement;
+	c = this.onscreenCanvasElement;
 
 	var frame =
 	{
@@ -137,7 +140,7 @@ TheModEngine.prototype.__animFrame = function()
 	// pixelate scale.
 	ctx1 = this.onscreenCanvasElement.getContext("2d");
 	ctx1.save();
-	
+	/*
 	ctx1.fillStyle = '#000';
 	ctx1.fillRect(0,0,this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
 	ctx1.globalAlpha = renderInfo.mainOpacity;
@@ -149,17 +152,34 @@ TheModEngine.prototype.__animFrame = function()
 	ctx1.drawImage(this.offscreenCanvasElement, 0, 0,
 		this.offscreenCanvasElement.width, this.offscreenCanvasElement.height,
 		0, 0, this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
-
+*/
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	this.sceneRenderer.RenderFullRes(frame, ctx1, width, height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+	var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
+	var frameDurationAvg = 30;
+
+	this.frameDurations.push(frameElapse);
+
+	if(this.frameDurations.length > frameDurationAvg)
+		this.frameDurations.shift();
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	if(this.showDebug)
 	{
-		var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
+		var avgFrameRate = 0;
+		for(var i = 0; i < this.frameDurations.length; ++ i)
+		{
+			avgFrameRate += this.frameDurations[i];
+		}
+		avgFrameRate /= frameDurationAvg;
+
 		var dbgString1 = Math.round(frame.frameRate) + " fps; time=" + frame.time + " (" + width + "," + height + ") " + ((frame.frameNumber % 2 == 0) ? "#" : " ");
 		var dbgString2 = "frame overhead: " + frameElapse + "; frame# " + frame.frameNumber;
-		var dbgString3 = "offscreen:(" + this.offscreenCanvasElement.width + "," + this.offscreenCanvasElement.height +
+		var dbgString3 = "frame overhead AVG: " + Math.round(avgFrameRate) + " over " + frameDurationAvg + " frames";
+		var dbgString4 = "offscreen:(" + this.offscreenCanvasElement.width + "," + this.offscreenCanvasElement.height +
 			") onscreen:(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +
 			") window:("+ $(window).width() + "," + $(window).height() + ")";
 
@@ -170,9 +190,11 @@ TheModEngine.prototype.__animFrame = function()
 	  ctx1.strokeText(dbgString1, 20, 20);
 	  ctx1.strokeText(dbgString2, 20, 40);
 	  ctx1.strokeText(dbgString3, 20, 60);
+	  ctx1.strokeText(dbgString4, 20, 80);
 	  ctx1.fillText(dbgString1, 20, 20);
 	  ctx1.fillText(dbgString2, 20, 40);
 	  ctx1.fillText(dbgString3, 20, 60);
+	  ctx1.fillText(dbgString4, 20, 80);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

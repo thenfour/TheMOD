@@ -23,8 +23,8 @@ TheModRenderer.prototype.GetGlobalInfo = function()
 {
 	return {
 		targetFrameRate: 24,
-		pixelSizeX: 2,
-		pixelSizeY: 2
+		pixelSizeX: 1,
+		pixelSizeY: 1
 	};
 }
 

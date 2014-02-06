@@ -83,13 +83,13 @@ ScrollerLayer.prototype.__ensureTextSegmentsInitialized = function(ctx, frame, c
 	this.textSegments = newTextSegments;
 	return this.totalScrollWidth;
 }
-
+ 
 
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
 	//var scrollerAreaHeight = 82;
 	//var filledAreaPaddingBottom = 43;
-	var scrollerPaddingBottom = 43;
+	var scrollerPaddingBottom = 52;
 
 	//var strokeWidth = 8;
 	//var strokeColor = null;
@@ -98,7 +98,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	//var pointCount = 3 + canvasWidth / pointSpacing;
 	//var pointYVariation = 6;
 	//var pointXVariation = 5;
-	var speed = this.scrollerSpeedEnv.vary(frame, 1, 40, 0);// pixels per second
+	var speed = this.scrollerSpeedEnv.vary(frame, 1, 60, 0);// pixels per second
 
 	var yVarHeight = 5;
 	var yVarSpeed = 0.7;
@@ -127,9 +127,12 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	ctx.scale(this.fontstretchX, 1);
 	canvasWidth /= this.fontstretchX;
 
-  ctx.font = "18px aansa";
+  ctx.font = "12px '8bitoperator'";
   ctx.textBaseline="bottom"; 
-
+  ctx.shadowOffsetX = 2;
+	ctx.shadowOffsetY = 2;
+	ctx.shadowColor = '#000';
+	
 	var totalScrollWidth = this.__ensureTextSegmentsInitialized(ctx, frame, charsPerSegment);
 	if(this.textSegments.length > 0)
 	{

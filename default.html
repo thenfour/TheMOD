@@ -44,11 +44,21 @@ TODO:
 		height:100%;
 		background-color: #000;
 	}
-	@font-face
-	{
-	font-family: aansa;
-	src: url(aansa.ttf);
-	}
+
+
+
+@font-face {
+    font-family: '8bitoperator';
+    src: url('8bitoperator-webfont.eot');
+    src: url('8bitoperator-webfont.eot?#iefix') format('embedded-opentype'),
+         url('8bitoperator-webfont.woff') format('woff'),
+         url('8bitoperator-webfont.ttf') format('truetype'),
+         url('8bitoperator-webfont.svg#8bitoperatorregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
   #contactInfoHeader{
     color:#d3d3d3;
     overflow: hidden;
@@ -60,26 +70,26 @@ TODO:
     padding-top:35px;
     padding-right:55px;
     text-align: right;
-    font-family: aansa, sans-serif;
-    font-size: 24px;
+    font-family: '8bitoperator', sans-serif;
+    font-size: 16px;
   }
 	#content {
     color:#d3d3d3;
     border: 0;
-    margin-left:215px;
+    margin-left:235px;
     margin-right:auto;
     overflow: hidden;
     width:450px;
     min-height: 200px;
     text-align: left;
-    font-family: aansa, sans-serif;
+    font-family: '8bitoperator', sans-serif;
     font-size: 22px;
   }
 	#contentContainer {
     border: 0;
     position: fixed;
     left:0;
-    top:280px;
+    top:290px;
     width:80%;
     text-align: center;
   }
@@ -92,8 +102,8 @@ TODO:
     left: 0;
     padding-bottom:4px;
     text-align: center;
-    font-family: aansa, sans-serif;
-    font-size: 15px;
+    font-family: '8bitoperator', sans-serif;
+    font-size: 9px;
     line-height:15px;
   }
 	#container {
@@ -132,8 +142,8 @@ TODO:
     width:450px;
     left:40px;
     top:300px;
-    font-family: aansa, sans-serif;
-    font-size: 27px;
+    font-family: '8bitoperator', sans-serif;
+    font-size: 17px;
     line-height: 35px;
   }
 
@@ -178,9 +188,12 @@ var darkBlue = "#440000";
 var lightYellow = "#f2d700";
 var darkYellow = "#633c00";
 var darkGray = "#6a5f5e";
+
 var lightPurple = "#5e506f";
 var medPurple = '#40364b';
 var darkPurple = "#221d28";
+var darkDarkPurple = '#0c0c15';
+
 var lightGray = "#d3d3d3";
 var black = "#000";
 var backgroundColor = darkPurple;
