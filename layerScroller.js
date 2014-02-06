@@ -26,27 +26,40 @@ ScrollerPoint.prototype.y = function(frame)
 //////////////////////////////////////////////////////////////////////////
 var ScrollerLayer = function()
 {
+	this.fontstretchX = 1.5;
+
+
 	this.points = [];
-	this.textSegments = null;
-	this.scrollerVirtualX = -200;
+	this.textSegments = [];
+	this.scrollerVirtualX = -$(window).width() / 1.5;
 
 	this.scrollerSpeedEnv = new RandEnvelope(30333);
 	this.scrollerPathEnv = new RandEnvelope(30334);
 
-	this.scrollText = "greetz to the sdcompo team:  " +
+	this.scrollText = "// greetz to sdcompo:  " +
 		"sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, " +
-		"and more funky tunes by norfair, carlos, j'ecoute, coda, virt..." + 
-		"and the band: angelo, damiano, ienad, wilfried.        ";
+		"and more funky tunes by norfair, carlos, j'ecoute, coda, virt...  " + 
+		"and of course the band: angelo, damiano, ienad, wilfried. " +
+		"#musicdsp peepz: mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork;  " +
+		"#winprog peepz: forgey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)." +
+		"................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker2, "
+		+ "and newschool cheers to the ultimate tracker ever: Renoise. Renoise. Renoise!!!!"
+		+ "                                                                                 "
+		+ " thank you for using a browser that supports html5 canvas. "
+		+ "                                                                                 "
+		;
 };
 
-ScrollerLayer.prototype.__ensureTextSegmentsInitialized = function(ctx, charsPerSegment)
+ScrollerLayer.prototype.__ensureTextSegmentsInitialized = function(ctx, frame, charsPerSegment)
 {
+	if(frame.frameNumber < 10)// for some reason, calling measureText too early in the page's rendering will cause oddball behavior in chorme explained below.
+		return 0;
 	var newTextSegments = [];
 	var newTotalScrollWidth = 0;
 	for(var i = 0; i < this.scrollText.length; i += charsPerSegment)
 	{
 		var text = this.scrollText.substr(i, charsPerSegment);
-		var width = Math.round(ctx.measureText(text).width);
+		var width = Math.round(ctx.measureText(text).width);// this call causes the page to seem like it's constantly loading. I don't know what's going on.
 		newTextSegments.push({
 			text: text,
 			width: width,
@@ -74,22 +87,25 @@ ScrollerLayer.prototype.__ensureTextSegmentsInitialized = function(ctx, charsPer
 
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
+	var scrollerAreaHeight = 82;
+	var filledAreaPaddingBottom = 43;
+	var scrollerPaddingBottom = 4 + filledAreaPaddingBottom;
+
 	var strokeWidth = 2;
 	var strokeColor = null;
 	var fillColor = darkPurple;
-	var pointSpacing = 80;
+	var pointSpacing = 30;
 	var pointCount = 3 + canvasWidth / pointSpacing;
-	var scrollerAreaHeight = 63;
-	var y = canvasHeight - scrollerAreaHeight;
-	var pointYVariation = 8;
+	var pointYVariation = 6;
 	var pointXVariation = 5;
 	var speed = this.scrollerSpeedEnv.vary(frame, 1, 30, 0);// pixels per second
-	var scrollerPaddingBottom = 2;
-	var fontstretchX = 1.5;
-	var yVarHeight = 8;
+
+	var yVarHeight = 6;
 	var yVarSpeed = 0.7;
-	var yVarTimeFactor = 2;
+	var yVarTimeFactor = 1.1;
 	var charsPerSegment = 5;
+
+	var y = canvasHeight - scrollerAreaHeight;
 
 	for(var i = this.points.length - 1; i < pointCount; ++ i)
 	{
@@ -101,8 +117,8 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 
 	// let it be filled by sweeping out the bottom rect
 	ctx.moveTo(canvasWidth + strokeWidth, y);
-	ctx.lineTo(canvasWidth + strokeWidth, canvasHeight + strokeWidth);
-	ctx.lineTo(-strokeWidth, canvasHeight + strokeWidth);
+	ctx.lineTo(canvasWidth + strokeWidth, canvasHeight + strokeWidth - filledAreaPaddingBottom);
+	ctx.lineTo(-strokeWidth, canvasHeight + strokeWidth - filledAreaPaddingBottom);
 	ctx.lineTo(-strokeWidth, y);
 
 	for(var i = 0; i < pointCount - 1; ++ i)
@@ -131,61 +147,70 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 		ctx.fill();
 	}
 
+	// ------------------------------------------
+	ctx.fillStyle = "#000";
+	ctx.fillRect(0, canvasHeight - filledAreaPaddingBottom, canvasWidth, canvasHeight);
+
+
 	// draw some scrolled text ------------------------------------------
 	ctx.save();
-	ctx.scale(fontstretchX, 1);
-	canvasWidth /= fontstretchX;
+
+	ctx.scale(this.fontstretchX, 1);
+	canvasWidth /= this.fontstretchX;
 
   ctx.font = "18px aansa";
   ctx.textBaseline="bottom"; 
 
-	var totalScrollWidth = this.__ensureTextSegmentsInitialized(ctx, charsPerSegment);
-
-	this.scrollerVirtualX += (frame.timeDiff / 1000 * speed) % totalScrollWidth;
-
-	// find the first item to draw, by traversing segments until we find one that will be rendered.
-	var segmentIndex = 0;
-	for(; segmentIndex < this.textSegments.length; ++ segmentIndex)
+	var totalScrollWidth = this.__ensureTextSegmentsInitialized(ctx, frame, charsPerSegment);
+	if(this.textSegments.length > 0)
 	{
-		if(this.textSegments[segmentIndex].virtualRight > this.scrollerVirtualX)
-			break;
+		this.scrollerVirtualX += (frame.timeDiff / 1000 * speed) % totalScrollWidth;
+
+		// find the first item to draw, by traversing segments until we find one that will be rendered.
+
+		var segmentIndex = 0;
+		for(; segmentIndex < this.textSegments.length; ++ segmentIndex)
+		{
+			if(this.textSegments[segmentIndex].virtualRight > this.scrollerVirtualX)
+				break;
+		}
+
+		firstSegmentIndex = segmentIndex % this.textSegments.length;
+		var xoffset = this.scrollerVirtualX - this.textSegments[firstSegmentIndex].virtualLeft;
+		var segmentIndex;
+
+
+		segmentIndex = firstSegmentIndex;
+		for(var x = -xoffset; x < canvasWidth;)
+		{
+			var segmentInfo = this.textSegments[segmentIndex];
+			yVariation = this.scrollerPathEnv.vary({
+				time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
+			}, yVarSpeed, 0, yVarHeight);
+
+			ctx.strokeStyle = '#000';
+			ctx.lineWidth = 2;
+			ctx.strokeText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
+
+			x += segmentInfo.width;
+			segmentIndex = (segmentIndex + 1) % this.textSegments.length;
+		}
+
+		segmentIndex = firstSegmentIndex;
+		for(var x = -xoffset; x < canvasWidth;)
+		{
+			var segmentInfo = this.textSegments[segmentIndex];
+			yVariation = this.scrollerPathEnv.vary({
+				time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
+			}, yVarSpeed, 0, yVarHeight);
+
+		  ctx.fillStyle = lightPurple;
+			ctx.fillText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
+
+			x += segmentInfo.width;
+			segmentIndex = (segmentIndex + 1) % this.textSegments.length;
+		}
 	}
-
-	firstSegmentIndex = segmentIndex % this.textSegments.length;
-	var xoffset = this.scrollerVirtualX - this.textSegments[firstSegmentIndex].virtualLeft;
-	var segmentIndex;
-
-	segmentIndex = firstSegmentIndex;
-	for(var x = -xoffset; x < canvasWidth;)
-	{
-		var segmentInfo = this.textSegments[segmentIndex];
-		yVariation = this.scrollerPathEnv.vary({
-			time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
-		}, yVarSpeed, 0, yVarHeight);
-
-		ctx.strokeStyle = '#000';
-		ctx.lineWidth = 2;
-		ctx.strokeText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
-
-		x += segmentInfo.width;
-		segmentIndex = (segmentIndex + 1) % this.textSegments.length;
-	}
-
-	segmentIndex = firstSegmentIndex;
-	for(var x = -xoffset; x < canvasWidth;)
-	{
-		var segmentInfo = this.textSegments[segmentIndex];
-		yVariation = this.scrollerPathEnv.vary({
-			time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
-		}, yVarSpeed, 0, yVarHeight);
-
-	  ctx.fillStyle = lightPurple;
-		ctx.fillText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
-
-		x += segmentInfo.width;
-		segmentIndex = (segmentIndex + 1) % this.textSegments.length;
-	}
-
 	ctx.restore();
 	//  ------------------------------------------ ------------------------------------------
 

@@ -1,12 +1,13 @@
 
 
-var TheModEngine = function(divContainerID, sceneRenderer, targetFps, pixelSizeX, pixelSizeY)
+var TheModEngine = function(divContainerID, sceneRenderer)
 {
 	this.divContainer = document.getElementById(divContainerID);
-	this.pixelSizeX = pixelSizeX;
-	this.pixelSizeY = pixelSizeY;
+	var globalInfo = sceneRenderer.GetGlobalInfo();
+	this.pixelSizeX = globalInfo.pixelSizeX;
+	this.pixelSizeY = globalInfo.pixelSizeY;
 	this.sceneRenderer = sceneRenderer;
-	this.targetFps = targetFps;
+	this.targetFps = globalInfo.targetFrameRate;
 
 	this.offscreenCanvasElement = document.createElement('canvas');
 	this.onscreenCanvasElement = document.createElement('canvas');
