@@ -16,11 +16,11 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var scaleMin = 0.5;
 	var scaleMax = 1.7;
 	var rotationMaximum = 0.5;// 0 - 1=90 deg.
-	var rotationSpeedX = 0.12;
-	var rotationSpeedY = 0.06;
+	var rotationSpeedX = 0.15;
+	var rotationSpeedY = 0.09;
 
-	var opacitySpeedX = 0.1;
-	var opacitySpeedY = 0.1;
+	var opacitySpeedX = 0.15;
+	var opacitySpeedY = 0.15;
 	var opacityMin = 0.3;
 	var opacityMax = 0.65;
 
