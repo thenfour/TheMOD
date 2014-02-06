@@ -7,6 +7,7 @@ var TheModRenderer = function()
 	this.sunLayer = new SunLayer();
 	this.scroller = new ScrollerLayer();
 	this.navBackground = new NavBackgroundLayer();
+	this.topRightSquares = new TopRightSquaresLayer();
 
 	this.fadeInTween = new Tween(1.2, null, Easing.Quadratic.InOut);
 }
@@ -34,6 +35,7 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height)
   this.topBackCurtain.Render(frame, ctx, width, height, 0);
 	this.sunLayer.Render(frame, ctx, width, height);
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
+  this.topRightSquares.Render(frame, ctx, width, height, 1);
 }
 
 

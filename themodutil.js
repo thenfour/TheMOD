@@ -21,6 +21,7 @@ RandEnvelope.prototype.varianceFactor = function(frame, cyclesPerSecond)
 	return (Math.sin(this.x / 0.9) + Math.sin(this.x * 0.9) + Math.sin(this.x * 0.86) + Math.sin(this.x / 0.86)) / 4;
 };
 
+// returns -1 to 1
 RandEnvelope.prototype.height = function(frame, cyclesPerSecond)
 {
 	return this.varianceFactor(frame, cyclesPerSecond);

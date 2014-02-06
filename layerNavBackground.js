@@ -1,35 +1,36 @@
 
 
-var NavBackgroundLayer = function()
-{
-	this.rotationEnvX = new RandEnvelope(147);
-	this.rotationEnvY = new RandEnvelope(148);
 
-	this.opacityXEnv =	new RandEnvelope(145);
-	this.opacityYEnv = new RandEnvelope(146);
-};
-
-NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
+function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
-	var top = 200;
-	var width = 160;
-	var bottom = canvasHeight - 60;
-	var blockSizeX = 18;// multiple of 2, for the rotation
-	var blockSizeY = 18;// multiple of 2, for the rotation
-	var blockSizeAnimScaleX = 3.5;// how much is the block scaled by alpha?
-	var blockSizeAnimScaleY = 3.5;// how much is the block scaled by alpha?
-	var rotationMaximum = .5;// 0 - 1=90 deg.
+	var rotationEnvX = new RandEnvelope(147);
+	var rotationEnvY = new RandEnvelope(148);
+	var opacityXEnv =	new RandEnvelope(145);
+	var opacityYEnv = new RandEnvelope(146);
+	var left = config.left;
+	var top = config.top;
+	var bottom = top + config.height;
+
+	var blockSizeX = config.blockSizeX;// multiple of 2, for the rotation
+	var blockSizeY = blockSizeX;// multiple of 2, for the rotation
+	var scaleMin = 0.5;
+	var scaleMax = 1.7;
+	var rotationMaximum = 0.5;// 0 - 1=90 deg.
 	var rotationSpeedX = 0.12;
 	var rotationSpeedY = 0.06;
 
 	var opacitySpeedX = 0.1;
 	var opacitySpeedY = 0.1;
-	var opacityMin = 0.2;
-	var opacityMax = 0.5;
+	var opacityMin = 0.3;
+	var opacityMax = 0.65;
 
-
-	//var halfBlockSizeX = blockSizeX / 2;
-	//var halfBlockSizeY = blockSizeY / 2;
+	ctx.save();
+	if(config.xflip)
+	{
+		ctx.translate(canvasWidth / 2, 0);
+		ctx.scale(-1, 1);
+		ctx.translate(-(canvasWidth / 2), 0);
+	}
 
 	// when modulating envelopes, how much does x/y dimension affect the
 	// envelope progression?
@@ -39,40 +40,93 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 	for(var y = top; y < bottom; y += blockSizeY)
 	{
 		var iy = (y - top) / blockSizeY;
-		for(var x = 0; x < width; x += blockSizeX)
+
+		var rowWidth = config.RowWidthFunction(y, top, bottom);
+		var right = left + rowWidth;
+
+		for(var x = left; x < rowWidth; x += blockSizeX)
 		{
-			var ix = (x / blockSizeX);
-			// do we skip this one?
-			if((ix % 2) == (iy % 2))
-				ctx.fillStyle = darkPurple;
-			else
-				ctx.fillStyle = lightPurple;
+			var ix = (x - left) / blockSizeX;
+
+			var fillColor = config.oddFillColor;
+			if((ix & 1) == (iy & 1))// checkerboard
+				fillColor = config.evenFillColor;
+			if(!fillColor)
+				continue;
+			ctx.fillStyle = fillColor;
 
 			ctx.save();
 
-			var alpha = (this.opacityXEnv.height({ time: (x * dimensionMult) + frame.time }, opacitySpeedX)
-					+ this.opacityYEnv.height({ time: (y * dimensionMult) + frame.time}, opacitySpeedY)) / 2;
-			if(alpha < 0) alpha = 0;
-			if(alpha > 1) alpha = 1;
+			var xalphaVary = (opacityXEnv.height({ time: (x * dimensionMult) + frame.time }, opacitySpeedX) + 1) / 2;
+			var yalphaVary = (opacityYEnv.height({ time: (y * dimensionMult) + frame.time}, opacitySpeedY) + 1) / 2;
+
+			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right);
+
+			var alpha = xalphaVary * yalphaVary;
 
 			// now scale alpha to opacityMin / Max
-			alpha = opacityMin + (alpha * (opacityMax - opacityMin));
+			var opacity = opacityMin + (alpha * (opacityMax - opacityMin));
 
-			var thisBlockSizeX = blockSizeX * alpha * blockSizeAnimScaleX;
-			var thisBlockSizeY = blockSizeY * alpha * blockSizeAnimScaleY;
+			var aa = 1.0;// anti-alias damping
+			if(((x - left) + blockSizeX) > rowWidth)
+			{
+				// "big" anti-alias this block.
+				aa = (rowWidth - (x - left)) / blockSizeX;
+				// aa should have a bit less effect
+				aa = 1-((1-aa)*0.5);
+			}
 
-			ctx.translate(x + (thisBlockSizeX / 2), y + (thisBlockSizeY / 2));
+			var thisBlockSizeX = blockSizeX * (scaleMin + ((scaleMax - scaleMin) * alpha * aa));
+			var thisBlockSizeY = blockSizeY * (scaleMin + ((scaleMax - scaleMin) * alpha * aa));
+
+			ctx.translate(x + (thisBlockSizeX / 2), y + (thisBlockSizeY / 2));// this is actually incorrect; for a true grid use blockSizeX / Y, but this gives a cool effect that things are sorta wavy / bulgy
+			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 			
 			ctx.rotate((Math.PI) *
-				((this.rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
-				+ this.rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
+				((rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
+				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
 				* rotationMaximum);
 
-			ctx.globalAlpha = alpha;
+			ctx.globalAlpha = opacity * aa * userAlpha;
 
 			ctx.fillRect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
 			ctx.restore();
 		}
 	}
+
+	ctx.restore();
+}
+
+
+var NavBackgroundLayer = function()
+{
+};
+
+NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
+{
+	var footerStartsAtY = canvasHeight - 90;
+	var navWidth = 160;
+	var top = 200;
+
+	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
+		xflip: false,
+		evenFillColor: lightPurple,
+		oddFillColor: medPurple,
+		left: 0,
+		top: top,
+		height: canvasHeight - top - 43,
+		blockSizeX: 18,
+		RowWidthFunction: function(y, top, bottom){
+			if(y >= footerStartsAtY)
+				return canvasWidth;
+			// use exponential function. scale y to 0-1
+			var yprog = (y - top) / (bottom - top);
+			yprog = Math.pow(yprog, 20);
+			return navWidth + ((canvasWidth - navWidth) * yprog);
+		},
+		OpacityFunction: function(x, y){
+			return 1.0;
+		}
+	});
 };
 

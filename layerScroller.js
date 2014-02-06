@@ -36,12 +36,12 @@ var ScrollerLayer = function()
 	this.scrollerSpeedEnv = new RandEnvelope(30333);
 	this.scrollerPathEnv = new RandEnvelope(30334);
 
-	this.scrollText = "// greetz to sdcompo:  " +
+	this.scrollText = "// greetz fly out 2 sdcompo:  " +
 		"sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, " +
 		"and more funky tunes by norfair, carlos, j'ecoute, coda, virt...  " + 
 		"and of course the band: angelo, damiano, ienad, wilfried. " +
-		"#musicdsp peepz: mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork;  " +
-		"#winprog peepz: forgey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)." +
+		"#musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-         " +
+		"#winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)." +
 		"................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker2, "
 		+ "and newschool cheers to the ultimate tracker ever: Renoise. Renoise. Renoise!!!!"
 		+ "                                                                                 "
@@ -87,74 +87,43 @@ ScrollerLayer.prototype.__ensureTextSegmentsInitialized = function(ctx, frame, c
 
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
-	var scrollerAreaHeight = 82;
-	var filledAreaPaddingBottom = 43;
-	var scrollerPaddingBottom = 4 + filledAreaPaddingBottom;
+	//var scrollerAreaHeight = 82;
+	//var filledAreaPaddingBottom = 43;
+	var scrollerPaddingBottom = 43;
 
-	var strokeWidth = 2;
-	var strokeColor = null;
-	var fillColor = darkPurple;
-	var pointSpacing = 30;
-	var pointCount = 3 + canvasWidth / pointSpacing;
-	var pointYVariation = 6;
-	var pointXVariation = 5;
-	var speed = this.scrollerSpeedEnv.vary(frame, 1, 30, 0);// pixels per second
+	//var strokeWidth = 8;
+	//var strokeColor = null;
+	//var fillColor = null;//darkPurple;
+	//var pointSpacing = 30;
+	//var pointCount = 3 + canvasWidth / pointSpacing;
+	//var pointYVariation = 6;
+	//var pointXVariation = 5;
+	var speed = this.scrollerSpeedEnv.vary(frame, 1, 40, 0);// pixels per second
 
-	var yVarHeight = 6;
+	var yVarHeight = 5;
 	var yVarSpeed = 0.7;
 	var yVarTimeFactor = 1.1;
 	var charsPerSegment = 5;
 
-	var y = canvasHeight - scrollerAreaHeight;
-
+	//var y = canvasHeight - scrollerAreaHeight;
+/*
 	for(var i = this.points.length - 1; i < pointCount; ++ i)
 	{
 		this.points.push(new ScrollerPoint(i*pointSpacing, pointXVariation, 0, pointYVariation, i + 143535));
 	}
-
-	ctx.save();
-	ctx.beginPath();
-
-	// let it be filled by sweeping out the bottom rect
-	ctx.moveTo(canvasWidth + strokeWidth, y);
-	ctx.lineTo(canvasWidth + strokeWidth, canvasHeight + strokeWidth - filledAreaPaddingBottom);
-	ctx.lineTo(-strokeWidth, canvasHeight + strokeWidth - filledAreaPaddingBottom);
-	ctx.lineTo(-strokeWidth, y);
-
-	for(var i = 0; i < pointCount - 1; ++ i)
-	{
-		p1x = this.points[i].x(frame);
-		p1y = y + this.points[i].y(frame);
-		p2x = this.points[i+1].x(frame);
-		p2y = y + this.points[i+1].y(frame);
-		var xc = (p1x + p2x) / 2;
-		var yc = (p1y + p2y) / 2;
-		ctx.quadraticCurveTo(p1x, p1y, xc, yc);
-	}
-
-	ctx.closePath();
-
-	if(strokeColor)
-	{
-		ctx.strokeStyle = strokeColor;
-		ctx.lineWidth = strokeWidth;
-		ctx.stroke();
-	}
-
-	if(fillColor)
+*/
+	/*if(fillColor)
 	{
 		ctx.fillStyle = fillColor;
-		ctx.fill();
-	}
-
-	// ------------------------------------------
-	ctx.fillStyle = "#000";
-	ctx.fillRect(0, canvasHeight - filledAreaPaddingBottom, canvasWidth, canvasHeight);
+		var fillTop = canvasHeight - scrollerAreaHeight;
+		var fillBottom = canvasHeight - filledAreaPaddingBottom;
+		ctx.fillRect(0, canvasHeight - scrollerAreaHeight, canvasWidth, fillBottom - fillTop);
+	}*/
 
 
 	// draw some scrolled text ------------------------------------------
 	ctx.save();
-
+	ctx.globalAlpha = 1.0;
 	ctx.scale(this.fontstretchX, 1);
 	canvasWidth /= this.fontstretchX;
 
@@ -179,7 +148,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 		var xoffset = this.scrollerVirtualX - this.textSegments[firstSegmentIndex].virtualLeft;
 		var segmentIndex;
 
-
+/*
 		segmentIndex = firstSegmentIndex;
 		for(var x = -xoffset; x < canvasWidth;)
 		{
@@ -189,12 +158,13 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 			}, yVarSpeed, 0, yVarHeight);
 
 			ctx.strokeStyle = '#000';
-			ctx.lineWidth = 2;
+			ctx.lineWidth = 4;
 			ctx.strokeText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
 
 			x += segmentInfo.width;
 			segmentIndex = (segmentIndex + 1) % this.textSegments.length;
 		}
+*/
 
 		segmentIndex = firstSegmentIndex;
 		for(var x = -xoffset; x < canvasWidth;)
@@ -204,7 +174,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 				time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
 			}, yVarSpeed, 0, yVarHeight);
 
-		  ctx.fillStyle = lightPurple;
+		  ctx.fillStyle = '#666';//lightPurple;
 			ctx.fillText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
 
 			x += segmentInfo.width;
@@ -214,7 +184,6 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	ctx.restore();
 	//  ------------------------------------------ ------------------------------------------
 
-	ctx.restore();
 }
 
 
