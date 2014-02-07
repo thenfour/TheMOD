@@ -89,7 +89,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
 	//var scrollerAreaHeight = 82;
 	//var filledAreaPaddingBottom = 43;
-	var scrollerPaddingBottom = 52;
+	var scrollerPaddingBottom = 48;
 
 	//var strokeWidth = 8;
 	//var strokeColor = null;

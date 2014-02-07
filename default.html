@@ -203,7 +203,7 @@ var contentEngine;
 
 $(document).ready(function()
 {
-	demoEngine = new TheModEngine('canvasHere', new TheModRenderer());
+	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container');
 	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav');
 });
 

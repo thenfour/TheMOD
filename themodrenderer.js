@@ -9,7 +9,7 @@ var TheModRenderer = function()
 	this.navBackground = new NavBackgroundLayer();
 	this.topRightSquares = new TopRightSquaresLayer();
 
-	this.fadeInTween = new Tween(1.2, null, Easing.Quadratic.InOut);
+	this.fadeInTween = new Tween(1.6, null, Easing.Quadratic.InOut);
 }
 
 TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)

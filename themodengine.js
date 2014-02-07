@@ -1,8 +1,9 @@
 // actualyl the pixelate effect is no longer used; it actually hurt performance instead of helped it.
 
-var TheModEngine = function(divContainerID, sceneRenderer)
+var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID)
 {
 	this.divContainer = document.getElementById(divContainerID);
+	this.fadeContainer = document.getElementById(fadeContainerID);
 	var globalInfo = sceneRenderer.GetGlobalInfo();
 	this.pixelSizeX = globalInfo.pixelSizeX;
 	this.pixelSizeY = globalInfo.pixelSizeY;
@@ -129,6 +130,11 @@ TheModEngine.prototype.__animFrame = function()
 	var renderInfo = this.sceneRenderer.GetFrameInfo(frame, ctx);
 	if(!renderInfo) renderInfo = this.lastRenderInfo;
 	this.lastRenderInfo = renderInfo;
+
+	$(this.fadeContainer)
+		.css('opacity', renderInfo.mainOpacity)
+		.css('filter', 'alpha(opacity=' + Math.floor(renderInfo.mainOpacity * 10) + ');')
+
 
 	this.sceneRenderer.RenderPixelated(frame, ctx, width, height);
 
