@@ -1,13 +1,17 @@
-//$.getScript("mersenne-twister.js");
-
 
 // generates a deterministic, "random" envelope bound to time
 var RandEnvelope = function(seed)
 {
-	this.m = new MersenneTwister(seed);
+	var m = new MersenneTwister(seed);
 	// we keep our internal position so you can adjust speed per frame.
 	// 2PI = a cycle, sorta. but our cycles are not uniform so here we pick any position within 1000 frames to start from:
-	this.x = this.m.random() * 1000 * (Math.PI * 2);
+	this.x = m.random() * 100000 * (Math.PI * 2);
+
+	this.a = 1 - (m.random() * 0.11);
+	this.b = 1 - (m.random() * 0.12);
+	this.c = 1 - (m.random() * 0.13);
+	this.d = 1 - (m.random() * 0.14);
+
 	this.lastTimeMS = 0;
 };
 
@@ -18,7 +22,7 @@ RandEnvelope.prototype.varianceFactor = function(frame, cyclesPerSecond)
 	var timeElapsedMS = frame.time - this.lastTimeMS;
 	this.lastTimeMS = frame.time;
 	this.x += (2 * Math.PI) * cyclesPerSecond * (timeElapsedMS / 1000);// where in the virtrual "cycle" are we? 2PI = 1 cycle. frame.time is milliseconds
-	return (Math.sin(this.x / 0.9) + Math.sin(this.x * 0.9) + Math.sin(this.x * 0.86) + Math.sin(this.x / 0.86)) / 4;
+	return (Math.sin(this.x / this.a) + Math.sin(this.x * this.b) + Math.sin(this.x * this.c) + Math.sin(this.x / this.d)) / 4;
 };
 
 // returns -1 to 1
@@ -27,10 +31,36 @@ RandEnvelope.prototype.height = function(frame, cyclesPerSecond)
 	return this.varianceFactor(frame, cyclesPerSecond);
 }
 
+// return 0 to 1
+RandEnvelope.prototype.factor = function(frame, cyclesPerSecond)
+{
+	return (this.varianceFactor(frame, cyclesPerSecond) + 1) / 2;
+}
+
 RandEnvelope.prototype.vary = function(frame, cyclesPerSecond, originalValue, variationAmt)
 {
 	return originalValue + (variationAmt * this.varianceFactor(frame, cyclesPerSecond));
 };
+
+
+
+var __cachedRandEnvelopes = [];
+var __cachedRandEnvelopeCount = 0;
+
+function CachedRandEnvelope(x, y)
+{
+	if(!__cachedRandEnvelopes[x])
+	{
+		__cachedRandEnvelopes[x] = [];
+	}
+	if(!__cachedRandEnvelopes[x][y])
+	{
+		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount);
+		__cachedRandEnvelopeCount ++;
+	}
+	return __cachedRandEnvelopes[x][y];
+}
+
 
 
 // Find the points where the two circles intersect.

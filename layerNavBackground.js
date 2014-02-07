@@ -8,13 +8,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var opacityXEnv =	new RandEnvelope(145);
 	var opacityYEnv = new RandEnvelope(146);
 
-	var showHighlights = true;
-	var highlightEnvX = new RandEnvelope(155);
-	var highlightEnvY = new RandEnvelope(165);
-	var highlightSpeedX = .3;
-	var highlightSpeedY = .3;
-	var highlightBlockSizeFactorX = 2.0;
-	var highlightBlockSizeFactorY = 2.0;
+	var showTwinkle = config.showTwinkle;
 
 	var left = config.left;
 	var top = config.top;
@@ -123,23 +117,46 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				ctx.strokeStyle = strokeColor;
 				ctx.stroke();
 			}
-
-			if(showHighlights)
+	
+			ctx.globalAlpha = 1.0;
+	
+			if(showTwinkle)
 			{
-				var highlightX = (highlightEnvX.height({ time: (x * dimensionMult) + frame.time }, highlightSpeedX) + 1) / 2;
-				var highlightY = (highlightEnvY.height({ time: (y * dimensionMult) + frame.time }, highlightSpeedY) + 1) / 2;
-				//var highlightZ = (highlightEnvY.height({ time: (y*x * dimensionMult * 2) + frame.time }, highlightSpeedY) + 1) / 2;
-				// mix X and Y highlights
-				var highlightBrightness = (highlightX + highlightY) / 2;
-				// fit it to a curve like photoshop
-				highlightBrightness = Math.sin(highlightBrightness * Math.PI / 2);
-				//highlightBrightness = Math.pow(highlightBrightness, 2);
-				if(highlightBrightness > 0.95)
+				var twinkleSpeed = 0.23;
+				var twinkleThreshold = 0.82;
+				var maxTwilightStrokeWidth = 6;
+				var maxTwinkleOpacity = 0.5;
+
+				var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
+				if(twinkleFactor > twinkleThreshold)
 				{
-					var highlightBlockSizeX = thisBlockSizeX * highlightBlockSizeFactorX;
-					var highlightBlockSizeY = thisBlockSizeY * highlightBlockSizeFactorY;
-					ctx.fillStyle = 'rgba(255,255,255,' + highlightBrightness + ')';
-					ctx.fillRect(-(highlightBlockSizeX / 2), -(highlightBlockSizeY / 2), highlightBlockSizeX, highlightBlockSizeY);
+					// scale it to 0-1
+					twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
+
+					var twinkleOpacity = Math.pow(twinkleFactor, 2) * maxTwinkleOpacity;
+					var halfTwilightStrokeWidth = twinkleOpacity * (maxTwilightStrokeWidth / 2);//1;
+
+/*
+					ctx.strokeStyle = 'rgba(255,255,170,' + twinkleOpacity + ')';
+					ctx.lineWidth = halfTwilightStrokeWidth * 2;
+					ctx.beginPath();
+					// this puts the stroke INSIDE the underlying.
+					ctx.rect(
+						-(thisBlockSizeX / 2) + halfTwilightStrokeWidth,
+						-(thisBlockSizeY / 2) + halfTwilightStrokeWidth,
+						thisBlockSizeX - (halfTwilightStrokeWidth * 2),
+						thisBlockSizeY- (2 * halfTwilightStrokeWidth));
+					ctx.stroke();
+					*/
+
+					// this puts the stroke INSIDE the underlying.
+					ctx.fillStyle = 'rgba(255,255,255,' + twinkleOpacity + ')';
+					ctx.fillRect(
+						-(thisBlockSizeX / 2),
+						-(thisBlockSizeY / 2),
+						thisBlockSizeX,
+						thisBlockSizeY);
+					ctx.stroke();
 				}
 			}
 
@@ -173,6 +190,7 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 		top: top,
 		height: canvasHeight - top - 43,
 		blockSizeX: 18,
+		showTwinkle: true,
 
 		RowWidthFunction: function(y, top, bottom){
 			if(y >= footerStartsAtY)

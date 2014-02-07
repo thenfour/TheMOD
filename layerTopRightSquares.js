@@ -25,6 +25,8 @@ TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvas
 		top: 0,
 		height: 270,
 		blockSizeX: 30,
+		showTwinkle: false,
+		
 		RowWidthFunction: function(y, top, bottom){
 			return width;
 		},

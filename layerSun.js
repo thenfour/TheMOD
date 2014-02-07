@@ -21,8 +21,6 @@ var SunLayer = function()
 	this.bigRadiusEnv = new RandEnvelope(2624);
 	this.littleRadiusEnv = new RandEnvelope(899);
 
-	this.wiggleRand = new MersenneTwister(246246);
-
 	this.OpeningTween = new Tween(4.8, null, Easing.Bounce.Out);
 };
 
