@@ -38,14 +38,13 @@ var ScrollerLayer = function()
 
 	this.scrollText = "// greetz fly out 2 sdcompo:  " +
 		"sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, " +
-		"and more funky tunes by norfair, carlos, j'ecoute, coda, virt...  " + 
-		"and of course the band: angelo, damiano, ienad, wilfried. " +
+		"and more funky tunes by norfair, carlos, j'écoute, coda, virt...  " + 
+		"and of course the band: angelo, damiano, iënad, wilfried. " +
 		"#musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-         " +
 		"#winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)." +
 		"................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker2, "
-		+ "and newschool cheers to the ultimate tracker ever: Renoise. Renoise. Renoise!!!!"
+		+ "and newschool cheers to the ultimate tracker ever: Renoise. Renoise.           RENOISE!!!!"
 		+ "                                                                                 "
-		+ " thank you for using a browser that supports html5 canvas. "
 		+ "                                                                                 "
 		;
 };

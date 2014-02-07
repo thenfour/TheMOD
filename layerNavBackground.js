@@ -3,10 +3,10 @@
 
 function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
-	var rotationEnvX = new RandEnvelope(147);
-	var rotationEnvY = new RandEnvelope(148);
-	var opacityXEnv =	new RandEnvelope(145);
-	var opacityYEnv = new RandEnvelope(146);
+	var rotationEnvX = CachedRandEnvelope(147, 0);
+	var rotationEnvY = CachedRandEnvelope(148, 0);
+	var opacityXEnv =	CachedRandEnvelope(145, 0);
+	var opacityYEnv = CachedRandEnvelope(146, 0);
 
 	var showTwinkle = config.showTwinkle;
 
@@ -38,7 +38,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	// when modulating envelopes, how much does x/y dimension affect the
 	// envelope progression?
 	// values 0-20 will be plasma-like; higher can start to look more sharp / twinkly
-	var dimensionMult = 22;
+	var dimensionMult = 20;
 	var previousRowWidth = null;
 	var rowWidth = null;
 
@@ -75,7 +75,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var xalphaVary = (opacityXEnv.height({ time: (x * dimensionMult) + frame.time }, opacitySpeedX) + 1) / 2;
 			var yalphaVary = (opacityYEnv.height({ time: (y * dimensionMult) + frame.time}, opacitySpeedY) + 1) / 2;
 
-			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth);
+			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth, ix, iy);
 
 			var aa = 1.0;// anti-alias damping
 			if(((x - left) + blockSizeX) > rowWidth)
@@ -100,7 +100,6 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
 				* rotationMaximum);
 
-			//ctx.fillRect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
 			ctx.beginPath();
 			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
 
@@ -111,15 +110,17 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			}
 			if(showTwinkle)
 			{
-				var twinkleSpeed = 0.18;
+				var twinkleSpeed = 0.15;
 				var twinkleThreshold = 0.86;
-				var maxTwilightStrokeWidth = 6;
-				var maxTwinkleOpacity = 0.3;
+				// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
+				var maxTwinkleOpacity = 0.5;
+				var twinkleBrightness = 0.5;
 
 				var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
 				if(twinkleFactor < twinkleThreshold)
 				{
-					ctx.fillStyle = ColorToRGBA(fillColor, opacity * userAlpha);
+					var finalOpacity = opacity * userAlpha;
+					ctx.fillStyle = ColorToRGBA(fillColor, finalOpacity);
 					ctx.fill();
 				}
 				else
@@ -128,12 +129,10 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 					twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
 
 					var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
-					var halfTwilightStrokeWidth = twinkleOpacity * (maxTwilightStrokeWidth / 2);//1;
 
-					// this puts the stroke INSIDE the underlying.
 					var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
 					finalOpacity += (opacity * userAlpha);
-					ctx.fillStyle = MixColorsAndAddAlpha(fillColor, "#fff", twinkleFactor, finalOpacity);
+					ctx.fillStyle = MixColorsAndAddAlpha(fillColor, '#fff', twinkleFactor * twinkleBrightness, finalOpacity);
 					ctx.fill();
 				}
 			}
@@ -178,7 +177,7 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 			return navWidth + ((canvasWidth - navWidth) * yprog);
 		},
 
-		OpacityFunction: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth){
+		OpacityFunction: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){
 			if(y >= footerStartsAtY)
 				return 1.0;
 
