@@ -130,3 +130,56 @@ function angleOnCircle(o, p)
 {
 	return Math.atan2(p.y - o.y, p.x - o.x);
 }
+
+
+function ParseHTMLColor(htmlColor)
+{
+	if(htmlColor.length == 4)
+	{
+		// parse #fff
+		var r = parseInt(htmlColor.substr(1,1), 16);
+		var g = parseInt(htmlColor.substr(2,1), 16);
+		var b = parseInt(htmlColor.substr(3,1), 16);
+		return {
+			r: ((r<<4)|r),
+			g: ((g<<4)|g),
+			b: ((b<<4)|b)
+		};
+	}
+	if(htmlColor.length == 7)
+	{
+		return {
+			r: parseInt(htmlColor.substr(1,2), 16),
+			g: parseInt(htmlColor.substr(3,2), 16),
+			b: parseInt(htmlColor.substr(5,2), 16)
+		};
+	}
+	return "rgba(255,0,255,1)";
+}
+
+
+// accepts a string html color like #fff or #010340,
+// returns "rgba(r,g,b,a)"
+function ColorToRGBA(htmlColor, A)
+{
+	var c = ParseHTMLColor(htmlColor);
+	return "rgba(" + c.r + "," + c.g + "," + c.b + "," + (Math.round(A*100)/100) + ")";
+}
+
+// pretty specific funciton here that will mix between 2 HTML colors.
+// pos is 0-1
+// and add A, returning "rgba(r,g,b,a)"
+function MixColorsAndAddAlpha(htmlColorA, htmlColorB, pos, A)
+{
+	var c1 = ParseHTMLColor(htmlColorA);
+	var c2 = ParseHTMLColor(htmlColorB);
+	return "rgba("
+		+ Math.round(((c2.r - c1.r) * pos) + c1.r) + ","
+		+ Math.round(((c2.g - c1.g) * pos) + c1.g) + ","
+		+ Math.round(((c2.b - c1.b) * pos) + c1.b) + ","
+		+ (Math.round(A*100)/100) + ")";
+}
+
+
+
+

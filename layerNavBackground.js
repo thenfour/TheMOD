@@ -100,42 +100,37 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
 				* rotationMaximum);
 
-			ctx.globalAlpha = opacity * userAlpha;
-
 			//ctx.fillRect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
 			ctx.beginPath();
 			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
 
-			if(fillColor)
+			if(fillColor && !showTwinkle)
 			{
-				ctx.fillStyle = fillColor;
+				ctx.fillStyle = ColorToRGBA(fillColor, opacity * userAlpha);
 				ctx.fill();
 			}
-			if(strokeColor)
-			{
-				ctx.lineWidth = strokeWidth;
-				ctx.strokeStyle = strokeColor;
-				ctx.stroke();
-			}
-	
-			ctx.globalAlpha = 1.0;
-	
 			if(showTwinkle)
 			{
-				var twinkleSpeed = 0.23;
-				var twinkleThreshold = 0.82;
+				var twinkleSpeed = 0.18;
+				var twinkleThreshold = 0.86;
 				var maxTwilightStrokeWidth = 6;
-				var maxTwinkleOpacity = 0.5;
+				var maxTwinkleOpacity = 0.3;
 
 				var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
-				if(twinkleFactor > twinkleThreshold)
+				if(twinkleFactor < twinkleThreshold)
+				{
+					ctx.fillStyle = ColorToRGBA(fillColor, opacity * userAlpha);
+					ctx.fill();
+				}
+				else
 				{
 					// scale it to 0-1
 					twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
 
-					var twinkleOpacity = Math.pow(twinkleFactor, 2) * maxTwinkleOpacity;
+					var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
 					var halfTwilightStrokeWidth = twinkleOpacity * (maxTwilightStrokeWidth / 2);//1;
 
+					//ctx.globalAlpha = 1.0;
 /*
 					ctx.strokeStyle = 'rgba(255,255,170,' + twinkleOpacity + ')';
 					ctx.lineWidth = halfTwilightStrokeWidth * 2;
@@ -150,15 +145,26 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 					*/
 
 					// this puts the stroke INSIDE the underlying.
-					ctx.fillStyle = 'rgba(255,255,255,' + twinkleOpacity + ')';
-					ctx.fillRect(
+					var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
+					finalOpacity += (opacity * userAlpha);
+					ctx.fillStyle = MixColorsAndAddAlpha(fillColor, "#fff", twinkleFactor, finalOpacity);
+					//ctx.fillStyle = 'rgba(255,255,200,' + twinkleOpacity + ')';
+					ctx.fill();
+/*					ctx.fillRect(
 						-(thisBlockSizeX / 2),
 						-(thisBlockSizeY / 2),
 						thisBlockSizeX,
-						thisBlockSizeY);
-					ctx.stroke();
+						thisBlockSizeY);*/
 				}
 			}
+
+			/*if(strokeColor)
+			{
+				ctx.lineWidth = strokeWidth;
+				ctx.strokeStyle = strokeColor;
+				ctx.stroke();
+			}*/
+	
 
 			ctx.restore();
 		}
