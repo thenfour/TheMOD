@@ -33,7 +33,7 @@ TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvas
 		OpacityFunction: function(x, y, top, bottom, left, right){
 			var yprog = 1 - ((y - top) / (bottom - top));
 			var xprog = 1 - ((x - left) / (right - left));
-			return (Math.pow(yprog, 3) * Math.pow(xprog, 2.5));
+			return 0.9 * (Math.pow(yprog, 2) * Math.pow(xprog, 2));
 		}
 	});
 };

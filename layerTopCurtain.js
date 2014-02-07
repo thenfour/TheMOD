@@ -53,6 +53,11 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 	  ctx.translate(canvasWidth / 2, 0);
 	  ctx.scale(-1, 1);
 	  ctx.translate(-(canvasWidth / 2), 0);
+
+		// in order to make the curtains line up properly when X-flipped i need to consider the width of the canvas.
+		offsetX += (canvasWidth % this.spread);
+		// and offset it so they are staggered instead of lining up
+		offsetX -= (this.radius / 2);
 	}
   ctx.translate(offsetX, offsetY);
 
@@ -122,6 +127,7 @@ TopBackCurtainLayer.prototype.__render = function(frame, ctx,
 TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, variation)
 {
 	var params;
+
 	switch(variation)
 	{
 		case 0:
@@ -141,7 +147,7 @@ TopBackCurtainLayer.prototype.Render = function(frame, ctx, width, height, varia
 		case 1:
 			var params = {
 				flipped: true,
-				offsetX: -(this.radius*.4),
+				offsetX: 0/*-(this.radius*.4)*/,
 				offsetY: -40 + (this.entranceTween2.tween(frame, -250, 0)),
 				stroke1Width: 14,
 				stroke1Color: darkPurple,

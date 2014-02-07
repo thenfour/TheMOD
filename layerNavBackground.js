@@ -130,41 +130,13 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 					var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
 					var halfTwilightStrokeWidth = twinkleOpacity * (maxTwilightStrokeWidth / 2);//1;
 
-					//ctx.globalAlpha = 1.0;
-/*
-					ctx.strokeStyle = 'rgba(255,255,170,' + twinkleOpacity + ')';
-					ctx.lineWidth = halfTwilightStrokeWidth * 2;
-					ctx.beginPath();
-					// this puts the stroke INSIDE the underlying.
-					ctx.rect(
-						-(thisBlockSizeX / 2) + halfTwilightStrokeWidth,
-						-(thisBlockSizeY / 2) + halfTwilightStrokeWidth,
-						thisBlockSizeX - (halfTwilightStrokeWidth * 2),
-						thisBlockSizeY- (2 * halfTwilightStrokeWidth));
-					ctx.stroke();
-					*/
-
 					// this puts the stroke INSIDE the underlying.
 					var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
 					finalOpacity += (opacity * userAlpha);
 					ctx.fillStyle = MixColorsAndAddAlpha(fillColor, "#fff", twinkleFactor, finalOpacity);
-					//ctx.fillStyle = 'rgba(255,255,200,' + twinkleOpacity + ')';
 					ctx.fill();
-/*					ctx.fillRect(
-						-(thisBlockSizeX / 2),
-						-(thisBlockSizeY / 2),
-						thisBlockSizeX,
-						thisBlockSizeY);*/
 				}
 			}
-
-			/*if(strokeColor)
-			{
-				ctx.lineWidth = strokeWidth;
-				ctx.strokeStyle = strokeColor;
-				ctx.stroke();
-			}*/
-	
 
 			ctx.restore();
 		}
