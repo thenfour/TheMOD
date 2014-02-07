@@ -7,6 +7,15 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var rotationEnvY = new RandEnvelope(148);
 	var opacityXEnv =	new RandEnvelope(145);
 	var opacityYEnv = new RandEnvelope(146);
+
+	var showHighlights = true;
+	var highlightEnvX = new RandEnvelope(155);
+	var highlightEnvY = new RandEnvelope(165);
+	var highlightSpeedX = .3;
+	var highlightSpeedY = .3;
+	var highlightBlockSizeFactorX = 2.0;
+	var highlightBlockSizeFactorY = 2.0;
+
 	var left = config.left;
 	var top = config.top;
 	var bottom = top + config.height;
@@ -113,6 +122,25 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				ctx.lineWidth = strokeWidth;
 				ctx.strokeStyle = strokeColor;
 				ctx.stroke();
+			}
+
+			if(showHighlights)
+			{
+				var highlightX = (highlightEnvX.height({ time: (x * dimensionMult) + frame.time }, highlightSpeedX) + 1) / 2;
+				var highlightY = (highlightEnvY.height({ time: (y * dimensionMult) + frame.time }, highlightSpeedY) + 1) / 2;
+				//var highlightZ = (highlightEnvY.height({ time: (y*x * dimensionMult * 2) + frame.time }, highlightSpeedY) + 1) / 2;
+				// mix X and Y highlights
+				var highlightBrightness = (highlightX + highlightY) / 2;
+				// fit it to a curve like photoshop
+				highlightBrightness = Math.sin(highlightBrightness * Math.PI / 2);
+				//highlightBrightness = Math.pow(highlightBrightness, 2);
+				if(highlightBrightness > 0.95)
+				{
+					var highlightBlockSizeX = thisBlockSizeX * highlightBlockSizeFactorX;
+					var highlightBlockSizeY = thisBlockSizeY * highlightBlockSizeFactorY;
+					ctx.fillStyle = 'rgba(255,255,255,' + highlightBrightness + ')';
+					ctx.fillRect(-(highlightBlockSizeX / 2), -(highlightBlockSizeY / 2), highlightBlockSizeX, highlightBlockSizeY);
+				}
 			}
 
 			ctx.restore();
