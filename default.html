@@ -3,12 +3,11 @@
 <!--
 
 TODO:
-- CONTENT management
-	- content engine
-	- markdown
-	- nav system
+x CONTENT management
+- content.
 - script loading dynamically
 - non-canvas variation of the page (prob just a static graphic)
+- make OGG files.
 
 - nice-to-have:
 	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
@@ -19,6 +18,7 @@ TODO:
 		- size / closure compiler
 	- logo animation?
 	- way to edit content & nav
+
 
 -->
 
@@ -161,6 +161,10 @@ TODO:
   }
   .navLink{
   	margin-left:15px;
+  	display:block;
+  }
+  .navLink:hover{
+  	color:#888;
   }
 	#mediaContainer{
   	text-align: center;
@@ -235,9 +239,9 @@ TODO:
 
 		<div id="navContainer">
 			<div id="navLinks">
-				<div class="navLink">About Us</div>
-				<div class="navLink">Links</div>
-				<div class="navLink">Contact Us</div>
+				<!-- <a class="navLink">About Us</a>
+				<a class="navLink">Links</a>
+				<a class="navLink">Contact Us</a> -->
 			</div>
 			<div id="mediaContainer">
 				<button id="previousSongButton" alt="Previous Song">&lt;&lt;</button>
@@ -276,7 +280,23 @@ var audioEngine;
 
 $(document).ready(function()
 {
-	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav');
+	contentEngine = new TheModCMS({
+		storageEngine: new TheModFakeStorage(),
+		navProc: function(cms, navItem){
+			// <div class="navLink">About Us</div>
+			var newLink = document.createElement('a');
+			$(newLink)
+				.text(navItem.title)
+				.addClass('navLink')
+				.attr('href', cms.GetHref(navItem))
+				;
+			document.getElementById('navLinks').appendChild(newLink);
+			return newLink;
+		},
+		contentProc: function(cms, pageInfo){
+			$('#content').html(pageInfo.html);
+		}
+	});
 
 	audioEngine = new TheModAudio(new TheModFakeStorage(), {
 		playElementID: 'playButton',

@@ -8,9 +8,10 @@ var TheModFakeStorage = function()
 		{
 			markdown: 'hi there',
 			html: 'hi there',
+			isDefault: true,
 			navItem:
 			{
-				title: 'The MOD homepage',
+				title: 'Home',
 				//url: '#default',
 				id: 'default'// used as an ID.
 			}
@@ -20,7 +21,7 @@ var TheModFakeStorage = function()
 			html: 'omg call me!',
 			navItem:
 			{
-				title: 'The MOD contact us',
+				title: 'About Us',
 				//url: '#contact',
 				id: 'contact'
 			}
@@ -73,11 +74,22 @@ TheModFakeStorage.prototype.GetPage = function(id)
 	for(var i = 0; i < this.pages.length; ++ i)
 	{
 		var page = this.pages[i];
-		if(page.id == id)
+		if(page.navItem.id == id)
 			return page;
 	}
 	return null;
 };
+
+TheModFakeStorage.prototype.GetDefaultPage = function()
+{	
+	for(var i = 0; i < this.pages.length; ++ i)
+	{
+		var page = this.pages[i];
+		if(page.isDefault)
+			return page;
+	}
+	return null;
+}
 
 TheModFakeStorage.prototype.__getSongIndex = function(song)
 {
