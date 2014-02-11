@@ -11,6 +11,7 @@
 // hrm it's going to be tough to precompute anything that saves much time. in the end it still needs to be drawn.
 
 //var tbutton = null;//TheModImage
+var specialWhite = { r:255,g:255,b:255 };
 
 function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
@@ -47,6 +48,12 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 
 	var evenFillColor = ParseHTMLColor(config.evenFillColor);
 	var oddFillColor = ParseHTMLColor(config.oddFillColor);
+
+	var twinkleSpeed = 0.15;
+	var twinkleThreshold = 0.86;
+	// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
+	var maxTwinkleOpacity = 0.5;
+	var twinkleBrightness = 0.5;
 
 	ctx.save();
 	if(config.xflip)
@@ -112,12 +119,6 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var xtrans = x + (thisBlockSizeX / 2);
 			var ytrans = y + (blockSizeY / 2);
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
-		
-			var twinkleSpeed = 0.15;
-			var twinkleThreshold = 0.86;
-			// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
-			var maxTwinkleOpacity = 0.5;
-			var twinkleBrightness = 0.5;
 
 			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame.time, twinkleSpeed);
 			var fillStyle;
@@ -130,12 +131,13 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			{
 				// scale it to 0-1
 				twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
+				//twinkleFactor = twinkleFactor * twinkleFactor;
 
 				var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
 
 				var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
 				finalOpacity += (opacity * userAlpha);
-				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, { r:255,g:255,b:255 }, twinkleFactor * twinkleBrightness, finalOpacity);
+				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, specialWhite, twinkleFactor * twinkleBrightness, finalOpacity);
 			}
 
 			var rotation = (Math.PI) * 2 * finalOpacity;
