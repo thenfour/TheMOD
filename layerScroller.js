@@ -15,12 +15,12 @@ var ScrollerPoint = function(_x, _xLeeway, _y, _yLeeway, _parentSeed)
 
 ScrollerPoint.prototype.x = function(frame)
 {
-	return this.xEnv.vary(frame, 0.1, this._x, this._xLeeway);
+	return this.xEnv.vary(frame.time, 0.1, this._x, this._xLeeway);
 };
 
 ScrollerPoint.prototype.y = function(frame)
 {
-	return this.yEnv.vary(frame, 0.2, this._y, this._yLeeway);
+	return this.yEnv.vary(frame.time, 0.2, this._y, this._yLeeway);
 };
 
 
@@ -36,20 +36,20 @@ var ScrollerLayer = function()
 
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
-	fontstretchX = 1.5;
+	var fontstretchX = 1.5;
 
-	scrollerSpeedEnv = new RandEnvelope(30333);
-	scrollerPathEnv = new RandEnvelope(30334);
+	//var //scrollerSpeedEnv = new RandEnvelope(30333);
+	var scrollerPathEnv = new RandEnvelope(30334);
 
-	scrollerPaddingBottom = 48;
+	var scrollerPaddingBottom = 48;
 
-	yVarHeight = 7;
-	yVarSpeed = 0.9;
-	yVarTimeFactor = 1.1;
-	charsPerSegment = 8;
-	scrollText = "// greetz fly out 2 sdcompo: sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, and more funky tunes by norfair, carlos, j'écoute, coda, virt...  and of course the band: tenfour, angelo, damiano, iënad, wilfried.  #musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-        #winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker.  and newschool cheers to the ultimate tracker ever: Renoise. Renoise.           RENOISE!                                                                                                                                                                ";
+	var yVarHeight = 7;
+	var yVarSpeed = 0.9;
+	var yVarTimeFactor = 1.1;
+	var charsPerSegment = 7;
+	var scrollText = "// greetz fly out 2 sdcompo: sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, and more funky tunes by norfair, carlos, j'écoute, coda, virt...  and of course the band: tenfour, angelo, damiano, iënad, wilfried.  #musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-        #winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker.  and newschool cheers to the ultimate tracker ever: Renoise. Renoise.           RENOISE!                                                                                                                                                                ";
 
-	speed = scrollerSpeedEnv.vary(frame, 1, 60, 0);// pixels per second
+	var speed = 60;// = scrollerSpeedEnv.vary(frame.time, 1, 60, 0);// pixels per second
 
 	ctx.save();
 	ctx.scale(fontstretchX, 1);
@@ -111,9 +111,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 		for(var x = -xoffset; x < canvasWidth;)
 		{
 			var segmentInfo = this.textSegments[segmentIndex];
-			yVariation = scrollerPathEnv.vary({
-				time: (this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor)
-			}, yVarSpeed, 0, yVarHeight);
+			yVariation = scrollerPathEnv.vary((this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor), yVarSpeed, 0, yVarHeight);
 
 			ctx.fillText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
 
