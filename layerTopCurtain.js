@@ -15,15 +15,15 @@ var CurtainCircle = function(_x, _y, _radius, _xLeeway, _yLeeway, _radiusLeeway,
 };
 CurtainCircle.prototype.x = function(frame)
 {
-	return this.xEnv.vary(frame, 0.04, this._x, this._xLeeway);
+	return this.xEnv.vary(frame.time, 0.04, this._x, this._xLeeway);
 };
 CurtainCircle.prototype.y = function(frame)
 {
-	return this.yEnv.vary(frame, 0.05, this._y, this._yLeeway);
+	return this.yEnv.vary(frame.time, 0.05, this._y, this._yLeeway);
 };
 CurtainCircle.prototype.radius = function(frame)
 {
-	return this.radiusEnv.vary(frame, 0.03, this._radius, this._radiusLeeway);
+	return this.radiusEnv.vary(frame.time, 0.03, this._radius, this._radiusLeeway);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,12 +29,12 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
 {
 	var x = width * 0.8;
 	var y = this.baseY + this.OpeningTween.tween(frame, -300, 0);
-	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame, 0.011);
+	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame.time, 0.011);
 
 	var pointCount = this.pointCount;
 	var innerR = this.innerPointRadius;
-	var smallR = this.littleRadiusEnv.vary(frame, 0.1, this.littlePointRadius, this.littlePointRadiusVariation);
-	var bigR = this.bigRadiusEnv.vary(frame, 0.1, this.bigPointRadius, this.bigPointRadiusVariation);
+	var smallR = this.littleRadiusEnv.vary(frame.time, 0.1, this.littlePointRadius, this.littlePointRadiusVariation);
+	var bigR = this.bigRadiusEnv.vary(frame.time, 0.1, this.bigPointRadius, this.bigPointRadiusVariation);
 
 	// make a star with alternating points.
 	ctx.save();

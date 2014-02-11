@@ -87,8 +87,8 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			if(!fillColor)
 				continue;
 
-			var xalphaVary = (opacityXEnv.height({ time: (x * dimensionMult) + frame.time }, opacitySpeedX) + 1) / 2;
-			var yalphaVary = (opacityYEnv.height({ time: (y * dimensionMult) + frame.time }, opacitySpeedY) + 1) / 2;
+			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + frame.time, opacitySpeedX) + 1) / 2;
+			var yalphaVary = (opacityYEnv.height((y * dimensionMult) + frame.time, opacitySpeedY) + 1) / 2;
 
 			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth, ix, iy);
 
@@ -119,7 +119,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var maxTwinkleOpacity = 0.5;
 			var twinkleBrightness = 0.5;
 
-			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
+			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame.time, twinkleSpeed);
 			var fillStyle;
 			if(twinkleFactor < twinkleThreshold)
 			{
@@ -139,12 +139,6 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			}
 
 			var rotation = (Math.PI) * 2 * finalOpacity;
-/*				((rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
-				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
-				* rotationMaximum;*/
-
-			// look up image:
-			// alpha
 
 			ctx.save();
 			// things get really cool if you transpose rotate & translate here

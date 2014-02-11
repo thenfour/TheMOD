@@ -17,29 +17,29 @@ var RandEnvelope = function(seed)
 
 // given the time in MS, return a value from -1 to 1
 // speed = 1 roughly means "1 cycle per second", but of course perturbed greatly via our functions
-RandEnvelope.prototype.varianceFactor = function(frame, cyclesPerSecond)
+RandEnvelope.prototype.varianceFactor = function(timeMS, cyclesPerSecond)
 {
-	var timeElapsedMS = frame.time - this.lastTimeMS;
-	this.lastTimeMS = frame.time;
+	var timeElapsedMS = timeMS - this.lastTimeMS;
+	this.lastTimeMS = timeMS;
 	this.x += (2 * Math.PI) * cyclesPerSecond * (timeElapsedMS / 1000);// where in the virtrual "cycle" are we? 2PI = 1 cycle. frame.time is milliseconds
 	return (Math.sin(this.x / this.a) + Math.sin(this.x * this.b) + Math.sin(this.x * this.c) + Math.sin(this.x / this.d)) / 4;
 };
 
 // returns -1 to 1
-RandEnvelope.prototype.height = function(frame, cyclesPerSecond)
+RandEnvelope.prototype.height = function(timeMS, cyclesPerSecond)
 {
-	return this.varianceFactor(frame, cyclesPerSecond);
+	return this.varianceFactor(timeMS, cyclesPerSecond);
 }
 
 // return 0 to 1
-RandEnvelope.prototype.factor = function(frame, cyclesPerSecond)
+RandEnvelope.prototype.factor = function(timeMS, cyclesPerSecond)
 {
-	return (this.varianceFactor(frame, cyclesPerSecond) + 1) / 2;
+	return (this.varianceFactor(timeMS, cyclesPerSecond) + 1) / 2;
 }
 
-RandEnvelope.prototype.vary = function(frame, cyclesPerSecond, originalValue, variationAmt)
+RandEnvelope.prototype.vary = function(timeMS, cyclesPerSecond, originalValue, variationAmt)
 {
-	return originalValue + (variationAmt * this.varianceFactor(frame, cyclesPerSecond));
+	return originalValue + (variationAmt * this.varianceFactor(timeMS, cyclesPerSecond));
 };
 
 
