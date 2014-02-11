@@ -9,21 +9,21 @@ var CurtainCircle = function(_x, _y, _radius, _xLeeway, _yLeeway, _radiusLeeway,
 	this._yLeeway = _yLeeway;
 	this._radiusLeeway = _radiusLeeway;
 
-	this.radiusEnv = new RandEnvelope(_parentSeed + 1);
-	this.xEnv = new RandEnvelope(_parentSeed + 2);
-	this.yEnv = new RandEnvelope(_parentSeed + 3);
+	this.radiusEnv = new RandEnvelope(_parentSeed + 1, 0.03);
+	this.xEnv = new RandEnvelope(_parentSeed + 2, 0.04);
+	this.yEnv = new RandEnvelope(_parentSeed + 3, 0.05);
 };
 CurtainCircle.prototype.x = function(frame)
 {
-	return this.xEnv.vary(frame.time, 0.04, this._x, this._xLeeway);
+	return this.xEnv.vary(frame.time, this._x, this._xLeeway);
 };
 CurtainCircle.prototype.y = function(frame)
 {
-	return this.yEnv.vary(frame.time, 0.05, this._y, this._yLeeway);
+	return this.yEnv.vary(frame.time, this._y, this._yLeeway);
 };
 CurtainCircle.prototype.radius = function(frame)
 {
-	return this.radiusEnv.vary(frame.time, 0.03, this._radius, this._radiusLeeway);
+	return this.radiusEnv.vary(frame.time, this._radius, this._radiusLeeway);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -13,8 +13,10 @@ TODO:
 - nice-to-have:
 	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
 	- optimization
-		- remove closures
-		- hard code some things?
+		- square field
+			- downsampling does not yield better performance; the resulting bitblt is too expensive.
+			- try caching square images? ugh.
+		- size / closure compiler
 	- logo animation?
 	- way to edit content & nav
 

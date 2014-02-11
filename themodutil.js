@@ -11,20 +11,15 @@ function periodFn(x)
 }
 
 // generates a deterministic, "random" envelope bound to time
-var RandEnvelope = function(seed)
+var RandEnvelope = function(seed, cyclesPerSecond)
 {
 	var m = new MersenneTwister(seed);
-	// we keep our internal position so you can adjust speed per frame.
-	// 2PI = a cycle, sorta. but our cycles are not uniform so here we pick any position within 1000 frames to start from:
-	//this.x = m.random() * 100000 * 6.283;
-	this.seed = m.random();
-
+	this.seed = m.random() * 0.004 * cyclesPerSecond;
 	this.a = 1 - (m.random() * 0.11);
 	this.b = 1 - (m.random() * 0.12);
 	this.c = 1 - (m.random() * 0.13);
-	this.d = 1 - (m.random() * 0.14);
-
-	this.lastTimeMS = 0;
+	//this.d = 1 - (m.random() * 0.14);
+	//this.lastTimeMS = 0;//
 };
 
 var maxEnv = false;
@@ -32,43 +27,37 @@ var minEnv = false;
 
 // given the time in MS, return a value from -1 to 1
 // speed = 1 roughly means "1 cycle per second", but of course perturbed greatly via our functions
-RandEnvelope.prototype.varianceFactor = function(timeMS, cyclesPerSecond)
+RandEnvelope.prototype.varianceFactor = function(timeMS)
 {
-	// sin method
-	// this.x += 0.006283 * cyclesPerSecond * timeElapsedMS;// where in the virtrual "cycle" are we? 2PI = 1 cycle. frame.time is milliseconds
-	// var x = this.x;
-	// return (Math.sin(x / this.a) + Math.sin(x * this.b) + Math.sin(x * this.c) + Math.sin(x / this.d)) / 4;
-
-	//this.x += 0.004 * cyclesPerSecond * timeElapsedMS;
-	var x = 1000 + (this.seed * cyclesPerSecond * timeMS  * 0.004);
-	var ret = periodFn(x / this.a) + periodFn(x * this.b) + periodFn(x * this.c) + periodFn(x / this.d);// currently has range 0-8
-	ret = (ret / 3.7) - 1;// it should normally be divided by the height at this point, 4, but dividing smaller means getting bigger numbers that will be clamped out.
+	var x = 1000 + (this.seed * timeMS);
+	var ret = periodFn(x / this.a) + periodFn(x * this.b) + periodFn(x * this.c)/* + periodFn(x / this.d)*/;// currently has range 0-8
+	ret = (ret / 2.9) - 1;// it should normally be divided by the height at this point, 3, but dividing smaller means getting bigger numbers that will be clamped out.
+	if(ret < -1) ret = -1;
+	if(ret > 1) ret = 1;
+	return ret;
 	/*
 	if(maxEnv === false || ret > maxEnv)
 		maxEnv = ret;
 	if(minEnv === false || ret < minEnv)
 		minEnv = ret;
 */
-	if(ret < -1) ret = -1;
-	if(ret > 1) ret = 1;
-	return ret;
 };
 
 // returns -1 to 1
-RandEnvelope.prototype.height = function(timeMS, cyclesPerSecond)
+RandEnvelope.prototype.height = function(timeMS)
 {
-	return this.varianceFactor(timeMS, cyclesPerSecond);
+	return this.varianceFactor(timeMS);
 }
 
 // return 0 to 1
-RandEnvelope.prototype.factor = function(timeMS, cyclesPerSecond)
+RandEnvelope.prototype.factor = function(timeMS)
 {
-	return (this.varianceFactor(timeMS, cyclesPerSecond) + 1) / 2;
+	return (this.varianceFactor(timeMS) + 1) / 2;
 }
 
-RandEnvelope.prototype.vary = function(timeMS, cyclesPerSecond, originalValue, variationAmt)
+RandEnvelope.prototype.vary = function(timeMS, originalValue, variationAmt)
 {
-	return originalValue + (variationAmt * this.varianceFactor(timeMS, cyclesPerSecond));
+	return originalValue + (variationAmt * this.varianceFactor(timeMS));
 };
 
 
@@ -76,7 +65,7 @@ RandEnvelope.prototype.vary = function(timeMS, cyclesPerSecond, originalValue, v
 var __cachedRandEnvelopes = [];
 var __cachedRandEnvelopeCount = 0;
 
-function CachedRandEnvelope(x, y)
+function CachedRandEnvelope(x, y, speed)
 {
 	if(!__cachedRandEnvelopes[x])
 	{
@@ -84,7 +73,7 @@ function CachedRandEnvelope(x, y)
 	}
 	if(!__cachedRandEnvelopes[x][y])
 	{
-		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount);
+		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
 		__cachedRandEnvelopeCount ++;
 	}
 	return __cachedRandEnvelopes[x][y];

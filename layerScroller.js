@@ -9,18 +9,18 @@ var ScrollerPoint = function(_x, _xLeeway, _y, _yLeeway, _parentSeed)
 	this._xLeeway = _xLeeway;
 	this._yLeeway = _yLeeway;
 
-	this.xEnv = new RandEnvelope(_parentSeed + 2);
-	this.yEnv = new RandEnvelope(_parentSeed + 3);
+	this.xEnv = new RandEnvelope(_parentSeed + 2, 0.1);
+	this.yEnv = new RandEnvelope(_parentSeed + 3, 0.2);
 };
 
 ScrollerPoint.prototype.x = function(frame)
 {
-	return this.xEnv.vary(frame.time, 0.1, this._x, this._xLeeway);
+	return this.xEnv.vary(frame.time, this._x, this._xLeeway);
 };
 
 ScrollerPoint.prototype.y = function(frame)
 {
-	return this.yEnv.vary(frame.time, 0.2, this._y, this._yLeeway);
+	return this.yEnv.vary(frame.time, this._y, this._yLeeway);
 };
 
 
@@ -32,6 +32,7 @@ var ScrollerLayer = function()
 	this.scrollerVirtualX = 1.4 * (-$(window).width() / this.fontstretchX);// start the scroller past the 
 	this.scrollerVirtualX = 0;
 	this.leftTextSegmentIndex = 0;
+	this.scrollerPathEnv = new RandEnvelope(30334, 0.9);
 };
 
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
@@ -39,12 +40,11 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	var fontstretchX = 1.5;
 
 	//var //scrollerSpeedEnv = new RandEnvelope(30333);
-	var scrollerPathEnv = new RandEnvelope(30334);
 
 	var scrollerPaddingBottom = 48;
 
 	var yVarHeight = 7;
-	var yVarSpeed = 0.9;
+//	var yVarSpeed = 0.9;
 	var yVarTimeFactor = 1.1;
 	var charsPerSegment = 7;
 	var scrollText = "// greetz fly out 2 sdcompo: sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, and more funky tunes by norfair, carlos, j'écoute, coda, virt...  and of course the band: tenfour, angelo, damiano, iënad, wilfried.  #musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-        #winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker.  and newschool cheers to the ultimate tracker ever: Renoise. Renoise.           RENOISE!                                                                                                                                                                ";
@@ -111,7 +111,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 		for(var x = -xoffset; x < canvasWidth;)
 		{
 			var segmentInfo = this.textSegments[segmentIndex];
-			yVariation = scrollerPathEnv.vary((this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor), yVarSpeed, 0, yVarHeight);
+			yVariation = this.scrollerPathEnv.vary((this.scrollerVirtualX + x) + (frame.time * yVarTimeFactor), 0, yVarHeight);
 
 			ctx.fillText(segmentInfo.text, x, yVariation + canvasHeight - scrollerPaddingBottom);
 

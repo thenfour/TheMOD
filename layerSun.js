@@ -15,11 +15,11 @@ var SunLayer = function()
 	this.circleStrokeWidth = 19;
 
 	this.backCircleRadius = 95;
-	this.baseY = 180;//320;
+	this.baseY = 180;
 
-	this.rotationEnv = new RandEnvelope(1247);
-	this.bigRadiusEnv = new RandEnvelope(2624);
-	this.littleRadiusEnv = new RandEnvelope(899);
+	this.rotationEnv = new RandEnvelope(1247, 0.011);
+	this.bigRadiusEnv = new RandEnvelope(2624, 0.1);
+	this.littleRadiusEnv = new RandEnvelope(899, 0.1);
 
 	this.OpeningTween = new Tween(4.8, null, Easing.Bounce.Out);
 };
@@ -29,12 +29,12 @@ SunLayer.prototype.Render = function(frame, ctx, width, height)
 {
 	var x = width * 0.8;
 	var y = this.baseY + this.OpeningTween.tween(frame, -300, 0);
-	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame.time, 0.011);
+	var mainRotation = (2*Math.PI) * this.rotationEnv.height(frame.time);
 
 	var pointCount = this.pointCount;
 	var innerR = this.innerPointRadius;
-	var smallR = this.littleRadiusEnv.vary(frame.time, 0.1, this.littlePointRadius, this.littlePointRadiusVariation);
-	var bigR = this.bigRadiusEnv.vary(frame.time, 0.1, this.bigPointRadius, this.bigPointRadiusVariation);
+	var smallR = this.littleRadiusEnv.vary(frame.time, this.littlePointRadius, this.littlePointRadiusVariation);
+	var bigR = this.bigRadiusEnv.vary(frame.time, this.bigPointRadius, this.bigPointRadiusVariation);
 
 	// make a star with alternating points.
 	ctx.save();

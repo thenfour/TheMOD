@@ -10,23 +10,14 @@
 // - fill color
 // hrm it's going to be tough to precompute anything that saves much time. in the end it still needs to be drawn.
 
-//var tbutton = null;//TheModImage
 var specialWhite = { r:255,g:255,b:255 };
+var opacitySpeedX = 0.15;
+var opacitySpeedY = 0.15;
+var opacityXEnv =	new RandEnvelope(145, opacitySpeedX);
+var opacityYEnv = new RandEnvelope(146, opacitySpeedY);
 
-function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
+function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, config)
 {
-	/*if(!tbutton)
-	{
-		tbutton = new TheModImage('play.png');
-		return;
-	}
-*/
-
-	//var rotationEnvX = CachedRandEnvelope(147, 0);
-	//var rotationEnvY = CachedRandEnvelope(148, 0);
-	var opacityXEnv =	CachedRandEnvelope(145, 0);
-	var opacityYEnv = CachedRandEnvelope(146, 0);
-
 	var showTwinkle = true;//config.showTwinkle;
 
 	var left = config.left;
@@ -41,8 +32,6 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var rotationSpeedX = 0.15;
 	var rotationSpeedY = 0.09;
 
-	var opacitySpeedX = 0.15;
-	var opacitySpeedY = 0.15;
 	var opacityMin = 0.3;
 	var opacityMax = 0.65;
 
@@ -96,8 +85,8 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			if(!fillColor)
 				continue;
 
-			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + time, opacitySpeedX) + 1) / 2;
-			var yalphaVary = (opacityYEnv.height((y * dimensionMult) + time, opacitySpeedY) + 1) / 2;
+			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + time) + 1) / 2;
+			var yalphaVary = (opacityYEnv.height((y * dimensionMult) + time) + 1) / 2;
 
 			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth, ix, iy);
 
@@ -122,7 +111,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var ytrans = y + (blockSizeY / 2);
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 
-			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(time, twinkleSpeed);
+			var twinkleFactor = CachedRandEnvelope(ix, iy, twinkleSpeed).factor(time);
 			var fillStyle;// = ColorToRGBASpecial(fillColor, 1.0);
 			var finalOpacity;
 			if(twinkleFactor < twinkleThreshold)
@@ -155,7 +144,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			ctx.fill();
 			//ctx.drawImage(tbutton.img, x, y);
 
-			ctx.restore();
+			ctx.restore();//*/
 		}
 	}
 
@@ -167,13 +156,13 @@ var NavBackgroundLayer = function()
 {
 };
 
-NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
+NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight, downsampleFactor)
 {
-	var footerStartsAtY = canvasHeight - 90;
+	var footerStartsAtY = (canvasHeight - 90);
 	var navWidth = 168;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
 	var top = 200;
 
-	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
+	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, {
 		xflip: false,
 		evenFillColor: lightPurple,
 		//evenStrokeColor: null,//'#666',
