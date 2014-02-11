@@ -39,7 +39,10 @@ TODO:
 	<script src="layerNavBackground.js"></script>
 	<script src="layerTopRightSquares.js"></script>
 
+	<script src="theModFakeStorage.js"></script>
 	<script src="theModCMS.js"></script>
+	<script src="theModAudio.js"></script>
+
 
 	<style type="text/css">
 	* { margin: 0; padding: 0;}
@@ -141,18 +144,21 @@ TODO:
     z-index: 10;
   }
 	#navContainer {
-  	text-align: center;
+  	/*text-align: center;*/
     color:#d3d3d3;
     border: 0;
     position: fixed;
     overflow: hidden;
     width:auto;
-    left:30px;
+    left:25px;
     top:255px;
     font-family: '8bitoperator';
     font-size: 17px;
     line-height: 35px;
     z-index: 10;
+  }
+  .navLink{
+  	margin-left:15px;
   }
 	#mediaContainer{
   	text-align: center;
@@ -236,8 +242,10 @@ TODO:
 				<button id="playButton" alt="Play">&nbsp;</button>
 				<button id="pauseButton" alt="Pause">||</button>
 				<button id="nextSongButton" alt="Next song">&gt;&gt;</button>
-				<div id="nowPlaying">Now playing:</div>
-				<div id="songName"></div>
+				<div style="padding-right:9px;">
+					<div id="nowPlaying">Now playing:</div>
+					<div id="songName"></div>
+				</div>
 			</div>
 		</div>
 
@@ -262,6 +270,7 @@ var backgroundColor = darkPurple;
 
 var demoEngine;
 var contentEngine;
+var audioEngine;
 
 $(document).ready(function()
 {
@@ -272,7 +281,14 @@ $(document).ready(function()
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
 	}, true, 2000);
-	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', contentEngine);
+	audioEngine = new TheModAudio(new TheModFakeStorage(), {
+		playElementID: 'playButton',
+		pauseElementID: 'pauseButton',
+		previousSongElementID: 'previousSongButton',
+		nextSongElementID: 'nextSongButton',
+		songNameElementID: 'songName'
+	}, true, 2000);
+	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
 });
 
 </script>
