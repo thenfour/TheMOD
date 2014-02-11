@@ -141,12 +141,13 @@ TODO:
     z-index: 10;
   }
 	#navContainer {
+  	text-align: center;
     color:#d3d3d3;
     border: 0;
     position: fixed;
     overflow: hidden;
     width:auto;
-    left:40px;
+    left:30px;
     top:255px;
     font-family: '8bitoperator';
     font-size: 17px;
@@ -154,14 +155,15 @@ TODO:
     z-index: 10;
   }
 	#mediaContainer{
+  	text-align: center;
     color:#d3d3d3;
     border: 0;
     /*position: fixed;*/
     overflow: hidden;
     width:auto;
-    left:400px;
-    top:40px;
-    margin-top:50px;
+    /*left:400px;*/
+    /*top:40px;*/
+    margin-top:40px;
     z-index: 10;
     padding-bottom:17px;
     height:90px;
@@ -186,7 +188,7 @@ TODO:
   #nowPlaying
   {
   	color:#888;
-  	font-size:12px;
+  	font-size:11px;
   	line-height:15px;
   	max-width:150px;
   	margin-bottom:10px;
@@ -269,7 +271,7 @@ $(document).ready(function()
 		previousSongElementID: 'previousSongButton',
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
-	}, true);
+	}, true, 2000);
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', contentEngine);
 });
 
