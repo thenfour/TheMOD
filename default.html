@@ -3,23 +3,20 @@
 <!--
 
 TODO:
-- photoshop mockup:
-	- audio controls
-	- content area with photo
 - CONTENT management
 	- content engine
 	- markdown
 	- nav system
 	- way to edit content & nav
-- audio
 - non-canvas variation of the page (prob just a static graphic)
 
-- audio automation
-- optimization
-	- remove closures
-	- prefetch values
-	- hard code some things?
-- logo animation?
+- nice-to-have:
+	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
+	- optimization
+		- remove closures
+		- prefetch values
+		- hard code some things?
+	- logo animation?
 
 -->
 
@@ -101,7 +98,7 @@ TODO:
     bottom: 0;
     left: 0;
     padding-top:20px;
-    padding-right:55px;
+    padding-right:50px;
     text-align: right;
     font-family: '8bitoperator';
     font-size: 16px;
@@ -150,7 +147,7 @@ TODO:
     overflow: hidden;
     width:auto;
     left:40px;
-    top:270px;
+    top:255px;
     font-family: '8bitoperator';
     font-size: 17px;
     line-height: 35px;
@@ -159,23 +156,47 @@ TODO:
 	#mediaContainer{
     color:#d3d3d3;
     border: 0;
-    position: fixed;
+    /*position: fixed;*/
     overflow: hidden;
     width:auto;
     left:400px;
     top:40px;
-    font-family: '8bitoperator';
-    font-size: 17px;
-    line-height: 35px;
+    margin-top:50px;
     z-index: 10;
+    padding-bottom:17px;
+    height:90px;
   }
-	button {
+	#mediaContainer button {
+		cursor:pointer;
     color:#d3d3d3;
     border: 0;padding:0;margin:0;
     background-color: transparent;
     font-family: '8bitoperator';
-    font-size: 17px;
-    line-height: 35px;
+    font-size: 24px;
+    width: 30px;
+    height:50px;
+    margin-right:10px;
+    outline: none;
+  }
+  #playButton
+  {
+  	background-image: url('play.png');
+  	background-position: -8px -0px;
+  }
+  #nowPlaying
+  {
+  	color:#888;
+  	font-size:12px;
+  	line-height:15px;
+  	max-width:150px;
+  	margin-bottom:10px;
+  }
+  #songName
+  {
+  	color:#d3d3d3;
+  	font-size:12px;
+  	line-height:15px;
+  	max-width:150px;
   }
 
 	</style>
@@ -203,17 +224,21 @@ TODO:
 		</div>
 
 		<div id="navContainer">
-			<div class="navLink">Contact Us</div>
-			<div class="navLink">About Us</div>
-			<div class="navLink">Calendar</div>
+			<div id="navLinks">
+				<div class="navLink">About Us</div>
+				<div class="navLink">Links</div>
+				<div class="navLink">Contact Us</div>
+			</div>
+			<div id="mediaContainer">
+				<button id="previousSongButton" alt="Previous Song">&lt;&lt;</button>
+				<button id="playButton" alt="Play">&nbsp;</button>
+				<button id="pauseButton" alt="Pause">||</button>
+				<button id="nextSongButton" alt="Next song">&gt;&gt;</button>
+				<div id="nowPlaying">Now playing:</div>
+				<div id="songName"></div>
+			</div>
 		</div>
 
-		<div id="mediaContainer">
-			<button>Play</button>
-			<button>Pause</button>
-			<button>Prev</button>
-			<button>Next</button>
-		</div>
 	</div>
 
 <script type="text/javascript">
@@ -238,8 +263,14 @@ var contentEngine;
 
 $(document).ready(function()
 {
-	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container');
-	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav');
+	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav', {
+		playElementID: 'playButton',
+		pauseElementID: 'pauseButton',
+		previousSongElementID: 'previousSongButton',
+		nextSongElementID: 'nextSongButton',
+		songNameElementID: 'songName'
+	}, true);
+	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', contentEngine);
 });
 
 </script>

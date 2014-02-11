@@ -8,9 +8,11 @@ function __globalAnimFrame()
 	globalEngine.__animFrame();
 }
 
-var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID)
+var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audioInterface)
 {
 	globalEngine = this;
+
+	this.audioInterface = audioInterface;
 
 	this.divContainer = document.getElementById(divContainerID);
 	this.fadeContainer = document.getElementById(fadeContainerID);
@@ -189,24 +191,28 @@ TheModEngine.prototype.__animFrame = function()
 			this.avgFrameDuration -= (old - this.avgFrameDuration) / (this.frameDurations.length);// adjust moving average without enumerating everything.
 		}
 
-		var dbgString1 = Math.round(frame.frameRate) + " fps; time=" + frame.time + " (" + width + "," + height + ") " + ((frame.frameNumber % 2 == 0) ? "#" : " ");
-		var dbgString2 = "frame overhead: " + frameElapse + "; frame# " + frame.frameNumber;
-		var dbgString3 = "frame overhead AVG: " + Math.round(this.avgFrameDuration * 10) / 10 + ", over " + this.frameDurations.length + " frames";
-		var dbgString4 = "(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +
-			")" ;
+		var dbgStrings = [
+			Math.round(frame.frameRate) + " fps; time=" + frame.time + " (" + width + "," + height + ") " + ((frame.frameNumber % 2 == 0) ? "#" : " "),
+			"frame overhead: " + frameElapse + "; frame# " + frame.frameNumber,
+			"frame overhead AVG: " + Math.round(this.avgFrameDuration * 10) / 10 + ", over " + this.frameDurations.length + " frames",
+			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")",
+			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title
+		];
 
 	  ctx.font = "18px calibri";
 		ctx.fillStyle="#fff";
 		ctx.lineWidth = 3;
 		ctx.strokeStyle = '#000';
-	  ctx.strokeText(dbgString1, 20, 20);
-	  ctx.strokeText(dbgString2, 20, 40);
-	  ctx.strokeText(dbgString3, 20, 60);
-	  ctx.strokeText(dbgString4, 20, 80);
-	  ctx.fillText(dbgString1, 20, 20);
-	  ctx.fillText(dbgString2, 20, 40);
-	  ctx.fillText(dbgString3, 20, 60);
-	  ctx.fillText(dbgString4, 20, 80);
+		var y = 20;
+		var lineHeight = 20;
+		for(var i = 0; i < dbgStrings.length; ++ i)
+		{
+		  ctx.strokeText(dbgStrings[i], 20, y + (i * lineHeight));
+		}
+		for(var i = 0; i < dbgStrings.length; ++ i)
+		{
+		  ctx.fillText(dbgStrings[i], 20, y + (i * lineHeight));
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

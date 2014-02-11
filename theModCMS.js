@@ -80,26 +80,26 @@ TheModFakeStorage.prototype.GetPage = function(id)
 	return null;
 };
 
-TheModFakeStorage.prototype.__getSongIndex = function(id)
+TheModFakeStorage.prototype.__getSongIndex = function(song)
 {
 	for(var i = 0; i < this.songs.length; ++ i)
 	{
-		var song = this.songs[i];
-		if(song.title == id)
+		var o = this.songs[i];
+		if(o.Title == song.Title)
 			return i;
 	}
 }
 
-TheModFakeStorage.prototype.GetNextSong = function(id)
+TheModFakeStorage.prototype.GetNextSong = function(song)
 {
-	var i = __getSongIndex(id);
+	var i = this.__getSongIndex(song);
 	i = (i + 1) % this.songs.length;
 	return this.songs[i];
 }
 
-TheModFakeStorage.prototype.GetPreviousSong = function(id)
+TheModFakeStorage.prototype.GetPreviousSong = function(song)
 {
-	var i = __getSongIndex(id);
+	var i = this.__getSongIndex(song);
 	i = i - 1;
 	if(i < 0)
 		i = this.songs.length - 1;
@@ -108,18 +108,25 @@ TheModFakeStorage.prototype.GetPreviousSong = function(id)
 
 TheModFakeStorage.prototype.GetOpeningSong = function()
 {
+	var ioffset = Math.floor(Math.random() * this.songs.length);
 	for(var i = 0; i < this.songs.length; ++ i)
 	{
-		var song = this.songs[i];
+		var realIndex = (ioffset + i) % this.songs.length;
+		var song = this.songs[realIndex];
 		if(song.CanBeOpeningSong)
 			return song;
 	}
 }
 
 
+
 //////////////////////////////////////////////////////////////////////////
-var TheModCMS = function(storageEngine, navEnumProc, contentProc, mediaControls)
+var __globalCMS = null;// assume only 1 running per page, for performance this avoids closures.
+
+var TheModCMS = function(storageEngine, navEnumProc, contentProc, mediaControls, autoPlay)
 {
+	__globalCMS = this;
+
 	this.storageEngine = storageEngine;
 
 	// http://drumcoder.co.uk/blog/2011/feb/20/controlling-html5-audio-javascript/
@@ -127,31 +134,26 @@ var TheModCMS = function(storageEngine, navEnumProc, contentProc, mediaControls)
 		mediaControls = {
 			playElementID: 'play',
 			pauseElementID: 'pause',
-			volume slider
-			mute button
-			position slider ?
 		};
 	*/
 	// initialize audio stuff.....
 	// play / pause events
 	// auto play
+	this.mediaControls = mediaControls;
+	$('#' + mediaControls.playElementID).click(function() { __globalCMS.Play(); });
+	$('#' + mediaControls.pauseElementID).click(function() { __globalCMS.Pause(); });
+	$('#' + mediaControls.previousSongElementID).click(function() { __globalCMS.PreviousSong(); });
+	$('#' + mediaControls.nextSongElementID).click(function() { __globalCMS.NextSong(); });
+
 	this.audioElement = document.createElement('audio');
-	var song = this.storageEngine.GetOpeningSong();
-	var source = document.createElement('source');
-	if (this.audioElement.canPlayType('audio/mpeg'))
-	{
-		source.type = 'audio/mpeg';
-		source.src = song.UrlMP3;
-	}
+
+	this.currentSong = this.storageEngine.GetOpeningSong();
+	this.CueAudio();
+
+	if(autoPlay)
+		this.Play();
 	else
-	{
-		source.type = 'audio/ogg';
-		source.src = song.UrlOGG;
-	}
-	this.audioElement.appendChild(source);
-	//this.audioElement.play();
-
-
+		this.Pause();
 
 	// fill nav
 
@@ -161,6 +163,76 @@ var TheModCMS = function(storageEngine, navEnumProc, contentProc, mediaControls)
 	
 	// fill content area
 };
+
+
+TheModCMS.prototype.CueAudio = function()
+{
+	if(!this.currentSong)
+		return;
+	if(!this.audioElement)
+		return;
+	
+	$("#" + this.mediaControls.songNameElementID).text(this.currentSong.Title);
+
+	this.audioElement.pause();
+	this.audioElement.innerHTML = '';
+	var source = document.createElement('source');
+	if (this.audioElement.canPlayType('audio/mpeg'))
+	{
+		source.type = 'audio/mpeg';
+		source.src = this.currentSong.UrlMP3;
+	}
+	else
+	{
+		source.type = 'audio/ogg';
+		source.src = this.currentSong.UrlOGG;
+	}
+	this.audioElement.appendChild(source);
+}
+
+TheModCMS.prototype.Play = function()
+{
+	if(!this.audioElement)
+		return;
+	this.audioElement.play();
+	$('#' + this.mediaControls.playElementID).css('display', 'none');
+	$('#' + this.mediaControls.pauseElementID).css('display', 'inline-block');
+}
+
+TheModCMS.prototype.Pause = function()
+{
+	if(!this.audioElement)
+		return;
+	this.audioElement.pause();
+	$('#' + this.mediaControls.playElementID).css('display', 'inline-block');
+	$('#' + this.mediaControls.pauseElementID).css('display', 'none');
+}
+
+TheModCMS.prototype.PreviousSong = function()
+{
+	if(!this.audioElement)
+		return;
+	this.currentSong = this.storageEngine.GetPreviousSong(this.currentSong);
+	this.CueAudio();
+	this.audioElement.play();
+}
+
+TheModCMS.prototype.NextSong = function()
+{
+	if(!this.audioElement)
+		return;
+	this.currentSong = this.storageEngine.GetNextSong(this.currentSong);
+	this.CueAudio();
+	this.audioElement.play();
+}
+
+
+TheModCMS.prototype.getCurrentSongPosition = function()
+{
+	if(!this.audioElement)
+		return 0;
+	return this.audioElement.currentTime;
+}
 
 TheModCMS.prototype.__onNav = function(element)
 {
