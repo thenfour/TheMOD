@@ -8,7 +8,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var opacityXEnv =	CachedRandEnvelope(145, 0);
 	var opacityYEnv = CachedRandEnvelope(146, 0);
 
-	var showTwinkle = config.showTwinkle;
+	var showTwinkle = true;//config.showTwinkle;
 
 	var left = config.left;
 	var top = config.top;

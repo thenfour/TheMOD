@@ -274,20 +274,16 @@ var audioEngine;
 
 $(document).ready(function()
 {
-	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav', {
-		playElementID: 'playButton',
-		pauseElementID: 'pauseButton',
-		previousSongElementID: 'previousSongButton',
-		nextSongElementID: 'nextSongButton',
-		songNameElementID: 'songName'
-	}, true, 2000);
+	contentEngine = new TheModCMS(new TheModFakeStorage(), 'content', 'nav');
+
 	audioEngine = new TheModAudio(new TheModFakeStorage(), {
 		playElementID: 'playButton',
 		pauseElementID: 'pauseButton',
 		previousSongElementID: 'previousSongButton',
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
-	}, true, 2000);
+	}, false, 2000);
+	
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
 });
 
