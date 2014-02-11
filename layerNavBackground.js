@@ -47,7 +47,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 		var iy = (y - top) / blockSizeY;
 
 		previousRowWidth = rowWidth;
-		rowWidth = config.RowWidthFunction(y, top, bottom);
+		rowWidth = config.RowWidthFunction(y, top, bottom, canvasWidth);
 		if(!previousRowWidth)
 			previousRowWidth = rowWidth;
 

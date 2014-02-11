@@ -1,7 +1,17 @@
-// actualyl the pixelate effect is no longer used; it actually hurt performance instead of helped it.
+// actually the pixelate effect is no longer used; it actually hurt performance instead of helped it.
+
+// for performance reasons just keep a global engine. we don't expect to have more than one running on a single page.
+var globalEngine = null;
+
+function __globalAnimFrame()
+{
+	globalEngine.__animFrame();
+}
 
 var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID)
 {
+	globalEngine = this;
+
 	this.divContainer = document.getElementById(divContainerID);
 	this.fadeContainer = document.getElementById(fadeContainerID);
 	var globalInfo = sceneRenderer.GetGlobalInfo();
@@ -9,22 +19,15 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID)
 	this.pixelSizeY = globalInfo.pixelSizeY;
 	this.sceneRenderer = sceneRenderer;
 	this.targetFps = globalInfo.targetFrameRate;
+	this.avgFrameDuration = 0;
 
 	this.frameDurations = [];
 
-	this.offscreenCanvasElement = document.createElement('canvas');
+	//this.offscreenCanvasElement = document.createElement('canvas');
 	this.onscreenCanvasElement = document.createElement('canvas');
 	this.divContainer.appendChild(this.onscreenCanvasElement);
 
 	this.showDebug = false;
-
-	$(this.onscreenCanvasElement)
-    .css('image-rendering', 'optimizeSpeed')
-    .css('image-rendering', '-moz-crisp-edges')
-    .css('image-rendering', '-webkit-optimize-contrast')
-    .css('image-rendering', '-o-crisp-edges')
-    .css('image-rendering', 'crisp-edges')
-    .css('-ms-interpolation-mode', 'nearest-neighbor');
 
 	$(this.onscreenCanvasElement)
     .css('image-rendering', 'optimizeSpeed')
@@ -80,8 +83,8 @@ TheModEngine.prototype.__updateCanvasSizes = function()
 	var containerHeight = $(this.divContainer).height();
 
 	// internal size:
-	this.offscreenCanvasElement.width = containerWidth / this.pixelSizeX;
-	this.offscreenCanvasElement.height = containerHeight / this.pixelSizeY;
+	//this.offscreenCanvasElement.width = containerWidth / this.pixelSizeX;
+	//this.offscreenCanvasElement.height = containerHeight / this.pixelSizeY;
 
 	// internal size:
 	this.onscreenCanvasElement.width = containerWidth;
@@ -96,8 +99,8 @@ TheModEngine.prototype.__updateCanvasSizes = function()
 
 TheModEngine.prototype.__animFrame = function()
 {
-	var c = this.offscreenCanvasElement;
-	c = this.onscreenCanvasElement;
+	//var c = this.offscreenCanvasElement;
+	var c = this.onscreenCanvasElement;
 
 	var frame =
 	{
@@ -121,31 +124,40 @@ TheModEngine.prototype.__animFrame = function()
 
 	var ctx=c.getContext("2d");
 	ctx.save();
-	ctx.scale(1/this.pixelSizeX, 1/this.pixelSizeY);
+	//ctx.scale(1/this.pixelSizeX, 1/this.pixelSizeY);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	var width = this.onscreenCanvasElement.width;
-	var height = this.onscreenCanvasElement.height;
+	//var width = this.onscreenCanvasElement.width;
+	//var height = this.onscreenCanvasElement.height;
 
 	var renderInfo = this.sceneRenderer.GetFrameInfo(frame, ctx);
 	if(!renderInfo) renderInfo = this.lastRenderInfo;
 	this.lastRenderInfo = renderInfo;
 
-	$(this.fadeContainer)
-		.css('opacity', renderInfo.mainOpacity)
-		.css('filter', 'alpha(opacity=' + Math.floor(renderInfo.mainOpacity * 10) + ');')
-
+	var mainOpacity = renderInfo.mainOpacity;
+	if(mainOpacity > 0.995)
+	{
+		$(this.fadeContainer)
+			.css('opacity', null)
+			.css('filter', null);
+	}
+	else
+	{
+		$(this.fadeContainer)
+			.css('opacity', mainOpacity)
+			.css('filter', 'alpha(opacity=' + Math.floor(mainOpacity * 10) + ');');
+	}
 
 	this.sceneRenderer.RenderPixelated(frame, ctx, width, height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ctx.restore();
+	//ctx.restore();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// pixelate scale.
-	ctx1 = this.onscreenCanvasElement.getContext("2d");
-	ctx1.save();
+//	ctx1 = this.onscreenCanvasElement.getContext("2d");
+//	ctx1.save();
 	/*
 	ctx1.fillStyle = '#000';
 	ctx1.fillRect(0,0,this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
@@ -160,59 +172,51 @@ TheModEngine.prototype.__animFrame = function()
 		0, 0, this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
 */
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	this.sceneRenderer.RenderFullRes(frame, ctx1, width, height);
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
-	var frameDurationAvg = 30;
-
-	this.frameDurations.push(frameElapse);
-
-	if(this.frameDurations.length > frameDurationAvg)
-		this.frameDurations.shift();
-
+	this.sceneRenderer.RenderFullRes(frame, ctx, width, height);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	if(this.showDebug)
 	{
-		var avgFrameRate = 0;
-		for(var i = 0; i < this.frameDurations.length; ++ i)
+		var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
+		var frameDurationAvgCount = 100;
+
+		this.frameDurations.push(frameElapse);
+		this.avgFrameDuration += (frameElapse - this.avgFrameDuration) / (this.frameDurations.length);// adjust moving average without enumerating everything.
+
+		if(this.frameDurations.length > frameDurationAvgCount)
 		{
-			avgFrameRate += this.frameDurations[i];
+			var old = this.frameDurations.shift();
+			this.avgFrameDuration -= (old - this.avgFrameDuration) / (this.frameDurations.length);// adjust moving average without enumerating everything.
 		}
-		avgFrameRate /= frameDurationAvg;
 
 		var dbgString1 = Math.round(frame.frameRate) + " fps; time=" + frame.time + " (" + width + "," + height + ") " + ((frame.frameNumber % 2 == 0) ? "#" : " ");
 		var dbgString2 = "frame overhead: " + frameElapse + "; frame# " + frame.frameNumber;
-		var dbgString3 = "frame overhead AVG: " + Math.round(avgFrameRate) + " over " + frameDurationAvg + " frames";
-		var dbgString4 = "offscreen:(" + this.offscreenCanvasElement.width + "," + this.offscreenCanvasElement.height +
-			") onscreen:(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +
-			") window:("+ $(window).width() + "," + $(window).height() + ")";
+		var dbgString3 = "frame overhead AVG: " + Math.round(this.avgFrameDuration * 10) / 10 + ", over " + this.frameDurations.length + " frames";
+		var dbgString4 = "(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +
+			")" ;
 
-	  ctx1.font = "18px calibri";
-		ctx1.fillStyle="#fff";
-		ctx1.lineWidth = 3;
-		ctx1.strokeStyle = '#000';
-	  ctx1.strokeText(dbgString1, 20, 20);
-	  ctx1.strokeText(dbgString2, 20, 40);
-	  ctx1.strokeText(dbgString3, 20, 60);
-	  ctx1.strokeText(dbgString4, 20, 80);
-	  ctx1.fillText(dbgString1, 20, 20);
-	  ctx1.fillText(dbgString2, 20, 40);
-	  ctx1.fillText(dbgString3, 20, 60);
-	  ctx1.fillText(dbgString4, 20, 80);
+	  ctx.font = "18px calibri";
+		ctx.fillStyle="#fff";
+		ctx.lineWidth = 3;
+		ctx.strokeStyle = '#000';
+	  ctx.strokeText(dbgString1, 20, 20);
+	  ctx.strokeText(dbgString2, 20, 40);
+	  ctx.strokeText(dbgString3, 20, 60);
+	  ctx.strokeText(dbgString4, 20, 80);
+	  ctx.fillText(dbgString1, 20, 20);
+	  ctx.fillText(dbgString2, 20, 40);
+	  ctx.fillText(dbgString3, 20, 60);
+	  ctx.fillText(dbgString4, 20, 80);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ctx1.restore();
+	ctx.restore();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	var thisEngine = this;
-
 	setTimeout(function()
 	{
-	  window.requestAnimFrame(function(){thisEngine.__animFrame();});
+	  window.requestAnimFrame(__globalAnimFrame);
 	}, (1000 / this.targetFps));
 }
 

@@ -7,6 +7,6 @@ var LogoLayer = function()
 
 LogoLayer.prototype.Render = function(frame, ctx, width, height)
 {
-	ctx.drawImage(this.LogoImg.img, 0, -20);
+	ctx.drawImage(this.LogoImg.img, 0, -30);
 };
 

@@ -34,7 +34,7 @@ var TopBackCurtainLayer = function()
 	this.radiusVariance = 6;
 	this.yVariance = 20;
 	this.xVariance = 6;
-	this.y = 140;
+	this.y = 120;
 	this.circles = [];
 
 	this.entranceTween1 = new Tween(3, null, Easing.Elastic.Out);

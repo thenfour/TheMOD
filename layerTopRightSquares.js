@@ -7,23 +7,8 @@ var TopRightSquaresLayer = function()
 
 	this.opacityXEnv =	new RandEnvelope(145);
 	this.opacityYEnv = new RandEnvelope(146);
-};
 
-TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
-{
-	var width = canvasWidth;// / 2;
-
-/*	var opacityExceptions =
-	[
-		[20,0],
-		[21,0],
-		[22,0],
-		[21,1],
-		[21,2],
-		[21,3],
-	];
-*/
-	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
+	this.config = {
 		xflip: true,
 		evenFillColor: null,
 		evenStrokeColor: null,
@@ -37,23 +22,27 @@ TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvas
 		blockSizeX: 30,
 		showTwinkle: true,
 		
-		RowWidthFunction: function(y, top, bottom){
-			return width;
+		RowWidthFunction: function(y, top, bottom, canvasWidth){
+			return canvasWidth;
 		},
 		OpacityFunction: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){
 			var yprog = 1 - ((y - top) / (bottom - top));
 			var xprog = 1 - ((x - left) / (right - left));
-
 			return 0.9 * (Math.pow(yprog, 2) * Math.pow(xprog, 2));
-		},
-		OpacityExceptions: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){
+		}
+		/*,OpacityExceptions: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){
 			for(var i = 0; i < opacityExceptions.length; ++ i)
 			{
 				if(opacityExceptions[i][0] == ix && opacityExceptions[i][1] == iy)
 					return 1.0;
 			}
 			return null;
-		}
-	});
+		}*/
+	};
+};
+
+TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
+{
+	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, this.config);
 };
 

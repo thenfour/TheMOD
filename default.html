@@ -14,6 +14,13 @@ TODO:
 - audio
 - non-canvas variation of the page (prob just a static graphic)
 
+- audio automation
+- optimization
+	- remove closures
+	- prefetch values
+	- hard code some things?
+- logo animation?
+
 -->
 
 <head>
@@ -57,54 +64,6 @@ TODO:
     font-style: normal;
 }
 
-
-  #contactInfoHeader{
-    color:#d3d3d3;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    padding-top:35px;
-    padding-right:55px;
-    text-align: right;
-    font-family: '8bitoperator', sans-serif;
-    font-size: 16px;
-  }
-	#content {
-    color:#d3d3d3;
-    border: 0;
-    margin-left:235px;
-    margin-right:auto;
-    overflow: hidden;
-    width:450px;
-    min-height: 200px;
-    text-align: left;
-    font-family: '8bitoperator', sans-serif;
-    font-size: 22px;
-  }
-	#contentContainer {
-    border: 0;
-    position: fixed;
-    left:0;
-    top:290px;
-    width:80%;
-    text-align: center;
-  }
-  #copyright{
-    color:#666;
-    overflow: hidden;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding-bottom:4px;
-    text-align: center;
-    font-family: '8bitoperator', sans-serif;
-    font-size: 10px;
-    line-height:15px;
-  }
 	#container {
 		min-width: 600px;
 		min-height:400px;
@@ -123,6 +82,7 @@ TODO:
 		margin:0;
 		padding:0;
 		border:0;
+		z-index: 1;
   }
   a:visited,
   a:link
@@ -132,22 +92,91 @@ TODO:
   }
 
 
-
+  #contactInfoHeader{
+    color:#d3d3d3;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding-top:20px;
+    padding-right:55px;
+    text-align: right;
+    font-family: '8bitoperator';
+    font-size: 16px;
+    z-index: 10;
+  }
+	#contentContainer {
+    border: 0;
+    position: absolute;
+    left:0;
+    top:270px;
+    width:80%;
+    text-align: center;
+    z-index: 10;
+  }
+	#content {
+    color:#d3d3d3;
+    border: 0;
+    margin-left:235px;
+    margin-right:auto;
+    overflow: hidden;
+    width:450px;
+    min-height: 200px;
+    text-align: left;
+    font-family: '8bitoperator';
+    font-size: 22px;
+    z-index: 10;
+  }
+  #copyright{
+    color:#666;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-bottom:4px;
+    text-align: center;
+    font-family: '8bitoperator';
+    font-size: 10px;
+    line-height:15px;
+    z-index: 10;
+  }
 	#navContainer {
     color:#d3d3d3;
     border: 0;
     position: fixed;
     overflow: hidden;
-    width:450px;
+    width:auto;
     left:40px;
-    top:300px;
-    font-family: '8bitoperator', sans-serif;
+    top:270px;
+    font-family: '8bitoperator';
+    font-size: 17px;
+    line-height: 35px;
+    z-index: 10;
+  }
+	#mediaContainer{
+    color:#d3d3d3;
+    border: 0;
+    position: fixed;
+    overflow: hidden;
+    width:auto;
+    left:400px;
+    top:40px;
+    font-family: '8bitoperator';
+    font-size: 17px;
+    line-height: 35px;
+    z-index: 10;
+  }
+	button {
+    color:#d3d3d3;
+    border: 0;padding:0;margin:0;
+    background-color: transparent;
+    font-family: '8bitoperator';
     font-size: 17px;
     line-height: 35px;
   }
-
-
-
 
 	</style>
 </head>
@@ -177,6 +206,13 @@ TODO:
 			<div class="navLink">Contact Us</div>
 			<div class="navLink">About Us</div>
 			<div class="navLink">Calendar</div>
+		</div>
+
+		<div id="mediaContainer">
+			<button>Play</button>
+			<button>Pause</button>
+			<button>Prev</button>
+			<button>Next</button>
 		</div>
 	</div>
 

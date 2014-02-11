@@ -15,7 +15,7 @@ var SunLayer = function()
 	this.circleStrokeWidth = 19;
 
 	this.backCircleRadius = 95;
-	this.baseY = 200;//320;
+	this.baseY = 180;//320;
 
 	this.rotationEnv = new RandEnvelope(1247);
 	this.bigRadiusEnv = new RandEnvelope(2624);
