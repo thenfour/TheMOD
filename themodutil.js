@@ -1,11 +1,23 @@
 
+
+// i thought this would be faster than sin(). it's not; javascript is slow maaan. maybe there's a way to combine all 4 factors into a big formula or something.
+// this returns from 0 to PI.
+function periodFn(x)
+{
+	return Math.abs((x % 4) - 2);
+	// take saw wave from 0-4 (period 4 instead of 2pi)
+	// shift down (now it's a saw from -2 to 2)
+	// abs it, so it's a triangle from 0-2
+}
+
 // generates a deterministic, "random" envelope bound to time
 var RandEnvelope = function(seed)
 {
 	var m = new MersenneTwister(seed);
 	// we keep our internal position so you can adjust speed per frame.
 	// 2PI = a cycle, sorta. but our cycles are not uniform so here we pick any position within 1000 frames to start from:
-	this.x = m.random() * 100000 * (Math.PI * 2);
+	//this.x = m.random() * 100000 * 6.283;
+	this.seed = m.random();
 
 	this.a = 1 - (m.random() * 0.11);
 	this.b = 1 - (m.random() * 0.12);
@@ -15,14 +27,31 @@ var RandEnvelope = function(seed)
 	this.lastTimeMS = 0;
 };
 
+var maxEnv = false;
+var minEnv = false;
+
 // given the time in MS, return a value from -1 to 1
 // speed = 1 roughly means "1 cycle per second", but of course perturbed greatly via our functions
 RandEnvelope.prototype.varianceFactor = function(timeMS, cyclesPerSecond)
 {
-	var timeElapsedMS = timeMS - this.lastTimeMS;
-	this.lastTimeMS = timeMS;
-	this.x += (2 * Math.PI) * cyclesPerSecond * (timeElapsedMS / 1000);// where in the virtrual "cycle" are we? 2PI = 1 cycle. frame.time is milliseconds
-	return (Math.sin(this.x / this.a) + Math.sin(this.x * this.b) + Math.sin(this.x * this.c) + Math.sin(this.x / this.d)) / 4;
+	// sin method
+	// this.x += 0.006283 * cyclesPerSecond * timeElapsedMS;// where in the virtrual "cycle" are we? 2PI = 1 cycle. frame.time is milliseconds
+	// var x = this.x;
+	// return (Math.sin(x / this.a) + Math.sin(x * this.b) + Math.sin(x * this.c) + Math.sin(x / this.d)) / 4;
+
+	//this.x += 0.004 * cyclesPerSecond * timeElapsedMS;
+	var x = 1000 + (this.seed * cyclesPerSecond * timeMS  * 0.004);
+	var ret = periodFn(x / this.a) + periodFn(x * this.b) + periodFn(x * this.c) + periodFn(x / this.d);// currently has range 0-8
+	ret = (ret / 3.7) - 1;// it should normally be divided by the height at this point, 4, but dividing smaller means getting bigger numbers that will be clamped out.
+	/*
+	if(maxEnv === false || ret > maxEnv)
+		maxEnv = ret;
+	if(minEnv === false || ret < minEnv)
+		minEnv = ret;
+*/
+	if(ret < -1) ret = -1;
+	if(ret > 1) ret = 1;
+	return ret;
 };
 
 // returns -1 to 1

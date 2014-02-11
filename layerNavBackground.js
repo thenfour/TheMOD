@@ -70,6 +70,8 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var previousRowWidth = null;
 	var rowWidth = null;
 
+	var time = frame.time;
+
 	for(var y = top; y < bottom; y += blockSizeY)
 	{
 		var iy = (y - top) / blockSizeY;
@@ -94,8 +96,8 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			if(!fillColor)
 				continue;
 
-			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + frame.time, opacitySpeedX) + 1) / 2;
-			var yalphaVary = (opacityYEnv.height((y * dimensionMult) + frame.time, opacitySpeedY) + 1) / 2;
+			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + time, opacitySpeedX) + 1) / 2;
+			var yalphaVary = (opacityYEnv.height((y * dimensionMult) + time, opacitySpeedY) + 1) / 2;
 
 			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth, ix, iy);
 
@@ -120,11 +122,12 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var ytrans = y + (blockSizeY / 2);
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 
-			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame.time, twinkleSpeed);
-			var fillStyle;
+			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(time, twinkleSpeed);
+			var fillStyle;// = ColorToRGBASpecial(fillColor, 1.0);
+			var finalOpacity;
 			if(twinkleFactor < twinkleThreshold)
 			{
-				var finalOpacity = opacity * userAlpha;
+				finalOpacity = opacity * userAlpha;
 				fillStyle = ColorToRGBASpecial(fillColor, finalOpacity);
 			}
 			else
@@ -140,7 +143,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, specialWhite, twinkleFactor * twinkleBrightness, finalOpacity);
 			}
 
-			var rotation = (Math.PI) * 2 * finalOpacity;
+			var rotation = 6.283 * finalOpacity;// 2pi
 
 			ctx.save();
 			// things get really cool if you transpose rotate & translate here

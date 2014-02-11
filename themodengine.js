@@ -196,7 +196,8 @@ TheModEngine.prototype.__animFrame = function()
 			"frame overhead: " + frameElapse + "; frame# " + frame.frameNumber,
 			"frame overhead AVG: " + Math.round(this.avgFrameDuration * 10) / 10 + ", over " + this.frameDurations.length + " frames",
 			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")",
-			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title
+			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title,
+			//"env returning (" + Math.round(minEnv*100)/100 + " ... " + Math.round(maxEnv*100)/100 + ")"
 		];
 
 	  ctx.font = "18px calibri";
