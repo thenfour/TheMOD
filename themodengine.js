@@ -140,8 +140,8 @@ TheModEngine.prototype.__animFrame = function()
 	if(mainOpacity > 0.995)
 	{
 		$(this.fadeContainer)
-			.css('opacity', null)
-			.css('filter', null);
+			.css('opacity', '')
+			.css('filter', '');
 	}
 	else
 	{

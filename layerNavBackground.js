@@ -1,5 +1,6 @@
-
-
+// optimization:
+// of the 8 ms to render, about 6 of it is in translate/rotate/rect/fill.
+// maybe go 2x2?
 
 function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
@@ -26,6 +27,9 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 	var opacitySpeedY = 0.15;
 	var opacityMin = 0.3;
 	var opacityMax = 0.65;
+
+	var evenFillColor = ParseHTMLColor(config.evenFillColor);
+	var oddFillColor = ParseHTMLColor(config.oddFillColor);
 
 	ctx.save();
 	if(config.xflip)
@@ -57,23 +61,17 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 		{
 			var ix = (x - left) / blockSizeX;
 
-			var fillColor = config.oddFillColor;
-			var strokeColor = config.oddStrokeColor;
-			var strokeWidth = config.oddStrokeWidth;
+			var fillColor = oddFillColor;
 			if((ix & 1) == (iy & 1))// checkerboard
 			{
-				fillColor = config.evenFillColor;
-				strokeColor = config.evenStrokeColor;
-				strokeWidth = config.evenStrokeWidth;
+				fillColor = evenFillColor;
 			}
 
-			if(!fillColor && !strokeColor)
+			if(!fillColor)
 				continue;
 
-			ctx.save();
-
 			var xalphaVary = (opacityXEnv.height({ time: (x * dimensionMult) + frame.time }, opacitySpeedX) + 1) / 2;
-			var yalphaVary = (opacityYEnv.height({ time: (y * dimensionMult) + frame.time}, opacitySpeedY) + 1) / 2;
+			var yalphaVary = (opacityYEnv.height({ time: (y * dimensionMult) + frame.time }, opacitySpeedY) + 1) / 2;
 
 			var userAlpha = config.OpacityFunction(x, y, top, bottom, left, right, previousRowWidth, rowWidth, ix, iy);
 
@@ -92,50 +90,50 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var thisBlockSizeX = blockSizeX * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
 			var thisBlockSizeY = blockSizeY * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
 
-			ctx.translate(x + (thisBlockSizeX / 2), y + (blockSizeY / 2));// this is actually incorrect; for a true grid use blockSizeX / Y, but this gives a cool effect that things are sorta wavy / bulgy
+			// this is actually incorrect; for a true grid use blockSizeX / Y, but this gives a cool effect that things are sorta wavy / bulgy
+			var xtrans = x + (thisBlockSizeX / 2);
+			var ytrans = y + (blockSizeY / 2);
+
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
-			
-			ctx.rotate((Math.PI) *
+		
+			var twinkleSpeed = 0.15;
+			var twinkleThreshold = 0.86;
+			// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
+			var maxTwinkleOpacity = 0.5;
+			var twinkleBrightness = 0.5;
+
+			var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
+			var fillStyle;
+			if(twinkleFactor < twinkleThreshold)
+			{
+				var finalOpacity = opacity * userAlpha;
+				fillStyle = ColorToRGBASpecial(fillColor, finalOpacity);
+			}
+			else
+			{
+				// scale it to 0-1
+				twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
+
+				var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
+
+				var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
+				finalOpacity += (opacity * userAlpha);
+				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, { r:255,g:255,b:255 }, twinkleFactor * twinkleBrightness, finalOpacity);
+			}
+
+			var rotation = (Math.PI) *
 				((rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
 				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
-				* rotationMaximum);
+				* rotationMaximum;
 
+			ctx.save();
+			// things get really cool if you transpose rotate & translate here
+			ctx.translate(xtrans, ytrans);
+			ctx.rotate(rotation);
 			ctx.beginPath();
 			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
-
-			if(fillColor && !showTwinkle)
-			{
-				ctx.fillStyle = ColorToRGBA(fillColor, opacity * userAlpha);
-				ctx.fill();
-			}
-			if(showTwinkle)
-			{
-				var twinkleSpeed = 0.15;
-				var twinkleThreshold = 0.86;
-				// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
-				var maxTwinkleOpacity = 0.5;
-				var twinkleBrightness = 0.5;
-
-				var twinkleFactor = CachedRandEnvelope(ix, iy).factor(frame, twinkleSpeed);
-				if(twinkleFactor < twinkleThreshold)
-				{
-					var finalOpacity = opacity * userAlpha;
-					ctx.fillStyle = ColorToRGBA(fillColor, finalOpacity);
-					ctx.fill();
-				}
-				else
-				{
-					// scale it to 0-1
-					twinkleFactor = (twinkleFactor - twinkleThreshold) / (1 - twinkleThreshold);
-
-					var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
-
-					var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
-					finalOpacity += (opacity * userAlpha);
-					ctx.fillStyle = MixColorsAndAddAlpha(fillColor, '#fff', twinkleFactor * twinkleBrightness, finalOpacity);
-					ctx.fill();
-				}
-			}
+			ctx.fillStyle = fillStyle;
+			ctx.fill();
 
 			ctx.restore();
 		}
@@ -158,11 +156,11 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
 		xflip: false,
 		evenFillColor: lightPurple,
-		evenStrokeColor: null,//'#666',
-		evenStrokeWidth: 1,
+		//evenStrokeColor: null,//'#666',
+		//evenStrokeWidth: 1,
 		oddFillColor: medPurple,
-		oddStrokeColor: null,
-		oddStrokeWidth: 0,
+		//oddStrokeColor: null,
+		//oddStrokeWidth: 0,
 		left: 0,
 		top: top,
 		height: canvasHeight - top - 43,

@@ -4,18 +4,17 @@ var TopRightSquaresLayer = function()
 {
 	this.rotationEnvX = new RandEnvelope(147);
 	this.rotationEnvY = new RandEnvelope(148);
-
 	this.opacityXEnv =	new RandEnvelope(145);
 	this.opacityYEnv = new RandEnvelope(146);
 
 	this.config = {
 		xflip: true,
 		evenFillColor: null,
-		evenStrokeColor: null,
-		evenStrokeWidth: 0,
+		//evenStrokeColor: null,
+		//evenStrokeWidth: 0,
 		oddFillColor: '#ccc',
-		oddStrokeColor: null,
-		oddStrokeWidth: 2,
+		//oddStrokeColor: null,
+		//oddStrokeWidth: 2,
 		left: 0,
 		top: 0,
 		height: 200,
