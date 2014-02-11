@@ -2,10 +2,27 @@
 // of the 8 ms to render, about 6 of it is in translate/rotate/rect/fill.
 // maybe go 2x2?
 
+// i might be able to pre-compute the squares onto their own canvas.
+// the input dimensions are:
+// - alpha (16 steps)
+// - block size (size + translation) = 16 steps
+// - rotation (16 steps)
+// - fill color
+// hrm it's going to be tough to precompute anything that saves much time. in the end it still needs to be drawn.
+
+//var tbutton = null;//TheModImage
+
 function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
-	var rotationEnvX = CachedRandEnvelope(147, 0);
-	var rotationEnvY = CachedRandEnvelope(148, 0);
+	/*if(!tbutton)
+	{
+		tbutton = new TheModImage('play.png');
+		return;
+	}
+*/
+
+	//var rotationEnvX = CachedRandEnvelope(147, 0);
+	//var rotationEnvY = CachedRandEnvelope(148, 0);
 	var opacityXEnv =	CachedRandEnvelope(145, 0);
 	var opacityYEnv = CachedRandEnvelope(146, 0);
 
@@ -87,13 +104,13 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			// now scale alpha to opacityMin / Max
 			var opacity = opacityMin + (alpha * (opacityMax - opacityMin));
 
-			var thisBlockSizeX = blockSizeX * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
-			var thisBlockSizeY = blockSizeY * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
+			var blockScale = (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
+			var thisBlockSizeX = blockSizeX * blockScale;
+			//var thisBlockSizeY = blockSizeY * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
 
 			// this is actually incorrect; for a true grid use blockSizeX / Y, but this gives a cool effect that things are sorta wavy / bulgy
 			var xtrans = x + (thisBlockSizeX / 2);
 			var ytrans = y + (blockSizeY / 2);
-
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 		
 			var twinkleSpeed = 0.15;
@@ -121,19 +138,23 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, { r:255,g:255,b:255 }, twinkleFactor * twinkleBrightness, finalOpacity);
 			}
 
-			var rotation = (Math.PI) *
-				((rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
+			var rotation = (Math.PI) * 2 * finalOpacity;
+/*				((rotationEnvX.height({ time: (x * dimensionMult) + frame.time}, rotationSpeedX)
 				+ rotationEnvY.height({ time: (y * dimensionMult) + frame.time}, rotationSpeedY)) / 2)
-				* rotationMaximum;
+				* rotationMaximum;*/
+
+			// look up image:
+			// alpha
 
 			ctx.save();
 			// things get really cool if you transpose rotate & translate here
 			ctx.translate(xtrans, ytrans);
 			ctx.rotate(rotation);
 			ctx.beginPath();
-			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeY / 2), thisBlockSizeX, thisBlockSizeY);
+			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeX / 2), thisBlockSizeX, thisBlockSizeX);
 			ctx.fillStyle = fillStyle;
 			ctx.fill();
+			//ctx.drawImage(tbutton.img, x, y);
 
 			ctx.restore();
 		}

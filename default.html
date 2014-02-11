@@ -183,7 +183,7 @@ TODO:
     font-size: 24px;
     width: 30px;
     height:50px;
-    margin-right:10px;
+    margin-right:8px;/* spacing between media buttons */
     outline: none;
   }
   #playButton
@@ -242,7 +242,7 @@ TODO:
 				<button id="playButton" alt="Play">&nbsp;</button>
 				<button id="pauseButton" alt="Pause">||</button>
 				<button id="nextSongButton" alt="Next song">&gt;&gt;</button>
-				<div style="padding-right:9px;">
+				<div style="padding-right:5px;">
 					<div id="nowPlaying">Now playing:</div>
 					<div id="songName"></div>
 				</div>
@@ -283,7 +283,7 @@ $(document).ready(function()
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
 	}, false, 2000);
-	
+
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
 });
 
