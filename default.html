@@ -4,10 +4,16 @@
 
 TODO:
 x CONTENT management
-- content.
-- script loading dynamically
-- non-canvas variation of the page (prob just a static graphic)
-- make OGG files.
+x page titles
+x nav is fixed and causes problems when scrolling vertically. same for footer. they should be relative to the container i think.
+# script loading dynamically (and thus a server ...) - forget it. use a compiler for this.
+- content
+	- photo display
+	- band members with scrolling.
+- non-html5/canvas variation of the page. wait till this is done.
+- script combination / compilation
+- hide fps info (maybe have a series of clicks?)
+- OGG files.
 
 - nice-to-have:
 	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
@@ -15,7 +21,6 @@ x CONTENT management
 		- square field
 			- downsampling does not yield better performance; the resulting bitblt is too expensive.
 			- try caching square images? ugh.
-		- size / closure compiler
 	- logo animation?
 	- way to edit content & nav
 
@@ -68,7 +73,7 @@ x CONTENT management
 
 	#container {
 		min-width: 600px;
-		min-height:400px;
+		min-height:570px;
     border: 15px solid #000;
     border-bottom:0;
     bottom: 0;
@@ -113,7 +118,7 @@ x CONTENT management
     border: 0;
     position: absolute;
     left:0;
-    top:270px;
+    top:240px;
     width:80%;
     text-align: center;
     z-index: 10;
@@ -128,13 +133,13 @@ x CONTENT management
     min-height: 200px;
     text-align: left;
     font-family: '8bitoperator';
-    font-size: 22px;
+    font-size: 14px;
     z-index: 10;
   }
   #copyright{
     color:#666;
     overflow: hidden;
-    position: fixed;
+    position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
@@ -149,19 +154,20 @@ x CONTENT management
   	/*text-align: center;*/
     color:#d3d3d3;
     border: 0;
-    position: fixed;
+    position: absolute;
     overflow: hidden;
     width:auto;
-    left:25px;
+    left:14px;
     top:255px;
     font-family: '8bitoperator';
-    font-size: 17px;
-    line-height: 35px;
     z-index: 10;
   }
   .navLink{
-  	margin-left:15px;
+  	margin-left:12px;
+  	letter-spacing: -1px;
   	display:block;
+    font-size: 16px;
+    line-height: 35px;
   }
   .navLink:hover{
   	color:#888;
@@ -295,6 +301,7 @@ $(document).ready(function()
 		},
 		contentProc: function(cms, pageInfo){
 			$('#content').html(pageInfo.html);
+			window.document.title = pageInfo.pageTitle;
 		}
 	});
 

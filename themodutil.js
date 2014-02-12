@@ -14,7 +14,7 @@ function periodFn(x)
 var RandEnvelope = function(seed, cyclesPerSecond)
 {
 	var m = new MersenneTwister(seed);
-	this.seed = m.random() * 0.004 * cyclesPerSecond;
+	this.seed = m.random() * 0.0063 * cyclesPerSecond;// the 0.005 is multiple things: to convert cycles per second to ms, and to scale to the period of our periodic function. actually its period is 4, but 5 will make the envelope run "faster"
 	this.a = 1 - (m.random() * 0.11);
 	this.b = 1 - (m.random() * 0.12);
 	this.c = 1 - (m.random() * 0.13);

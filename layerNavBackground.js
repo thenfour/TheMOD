@@ -24,6 +24,13 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 	var top = config.top;
 	var bottom = top + config.height;
 
+	var returnRect = {
+		left: left,
+		right: left,// needs to be computed later.
+		top: top,
+		bottom: bottom
+	};
+
 	var blockSizeX = config.blockSizeX;// multiple of 2, for the rotation
 	var blockSizeY = blockSizeX;// multiple of 2, for the rotation
 	var scaleMin = 0.5;
@@ -55,7 +62,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 	// when modulating envelopes, how much does x/y dimension affect the
 	// envelope progression?
 	// values 0-20 will be plasma-like; higher can start to look more sharp / twinkly
-	var dimensionMult = 20;
+	var dimensionMult = 20 * downsampleFactor;
 	var previousRowWidth = null;
 	var rowWidth = null;
 
@@ -71,6 +78,9 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 			previousRowWidth = rowWidth;
 
 		var right = left + rowWidth;
+
+		if(returnRect.right < right)
+			returnRect.right = right;
 
 		for(var x = left; x < rowWidth; x += blockSizeX)
 		{
@@ -133,6 +143,9 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 			}
 
 			var rotation = 6.283 * finalOpacity;// 2pi
+			// we could maybe have some squares that rotate a different direction.
+			//if(ix % 2 == 0)
+			//	rotation = 6.283 - rotation;
 
 			ctx.save();
 			// things get really cool if you transpose rotate & translate here
@@ -149,31 +162,32 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 	}
 
 	ctx.restore();
+
+	returnRect.width = returnRect.right - returnRect.left;
+	returnRect.height = returnRect.bottom - returnRect.top;
+
+	return returnRect;
 }
 
 
-var NavBackgroundLayer = function()
+var NavBackgroundLayer = function(downsampleFactor)
 {
 };
 
 NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight, downsampleFactor)
 {
-	var footerStartsAtY = (canvasHeight - 90);
-	var navWidth = 168;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
-	var top = 200;
+	var footerStartsAtY = canvasHeight - (90 / downsampleFactor);// virtual coords, not downsampled
+	var navWidth = 184 / downsampleFactor;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
+	var top = 200 / downsampleFactor;
 
-	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, {
+	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, {
 		xflip: false,
 		evenFillColor: lightPurple,
-		//evenStrokeColor: null,//'#666',
-		//evenStrokeWidth: 1,
 		oddFillColor: medPurple,
-		//oddStrokeColor: null,
-		//oddStrokeWidth: 0,
 		left: 0,
 		top: top,
-		height: canvasHeight - top - 43,
-		blockSizeX: 18,
+		height: (canvasHeight - top - (43 / downsampleFactor)),
+		blockSizeX: 18 / downsampleFactor,
 		showTwinkle: true,
 
 		RowWidthFunction: function(y, top, bottom){

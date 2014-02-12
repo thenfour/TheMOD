@@ -1,6 +1,6 @@
 
 
-var TopRightSquaresLayer = function()
+var TopRightSquaresLayer = function(downsampleFactor)
 {
 	this.config = {
 		xflip: true,
@@ -8,8 +8,8 @@ var TopRightSquaresLayer = function()
 		oddFillColor: '#ccc',
 		left: 0,
 		top: 0,
-		height: 200,
-		blockSizeX: 30,
+		height: 200 / downsampleFactor,
+		blockSizeX: 30 / downsampleFactor,
 		showTwinkle: true,
 		
 		RowWidthFunction: function(y, top, bottom, canvasWidth){
@@ -25,6 +25,6 @@ var TopRightSquaresLayer = function()
 
 TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight, downsampleFactor)
 {
-	RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, this.config);
+	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, this.config);
 };
 

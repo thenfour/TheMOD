@@ -1,4 +1,14 @@
+/*
 
+scene jazz music
+
+
+musicians:
+carl corcoran
+angelo
+
+
+*/
 
 //////////////////////////////////////////////////////////////////////////
 var TheModFakeStorage = function()
@@ -6,23 +16,30 @@ var TheModFakeStorage = function()
 	this.pages =
 	[
 		{
-			markdown: 'hi there',
-			html: 'hi there',
+			html: 'scene jazz with a twist, art and music, collaboration of scene artists',
 			isDefault: true,
+			pageTitle: 'The MOD: About',
 			navItem:
 			{
-				title: 'Home',
-				//url: '#default',
+				title: 'About The MOD',
 				id: 'default'// used as an ID.
 			}
 		},
 		{
-			markdown: 'omg call me!',
-			html: 'omg call me!',
+			html: 'carl, angelo, damiano, ienad, wilfried',
+			pageTitle: 'The MOD: Musicians',
+			navItem:
+			{
+				title: 'Musicians',
+				id: 'musicians'
+			}
+		},
+		{
+			html: 'Go ahead and contact us. ...',
+			pageTitle: 'The MOD: Contact',
 			navItem:
 			{
 				title: 'About Us',
-				//url: '#contact',
 				id: 'contact'
 			}
 		}

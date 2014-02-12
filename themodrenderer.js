@@ -1,15 +1,15 @@
 
 var TheModRenderer = function()
 {
+	this.downsampleFactor = 2.0;
+
 	this.backgroundLayer = new BackgroundLayer();
 	this.logoLayer = new LogoLayer();
 	this.topBackCurtain = new TopBackCurtainLayer();
 	this.sunLayer = new SunLayer();
 	this.scroller = new ScrollerLayer();
-	this.navBackground = new NavBackgroundLayer();
-	this.topRightSquares = new TopRightSquaresLayer();
-
-	//this.downsampleFactor = 3.0;
+	this.navBackground = new NavBackgroundLayer(this.downsampleFactor);
+	this.topRightSquares = new TopRightSquaresLayer(this.downsampleFactor);
 
 	this.fadeInTween = new Tween(1.6, null, Easing.Quadratic.InOut);
 }
@@ -29,12 +29,20 @@ TheModRenderer.prototype.GetGlobalInfo = function()
 		pixelSizeY: 1
 	};
 }
-/*
+
 TheModRenderer.prototype.EnsureDownsampledCanvas = function(frame, ctx, width, height)
 {
 	if(!this.downsampledCanvasA)
 	{
 		this.downsampledCanvasA = document.createElement('canvas');
+
+		$(this.downsampledCanvasA)
+	    .css('image-rendering', 'optimizeSpeed')
+	    .css('image-rendering', '-moz-crisp-edges')
+	    .css('image-rendering', '-webkit-optimize-contrast')
+	    .css('image-rendering', '-o-crisp-edges')
+	    .css('image-rendering', 'crisp-edges')
+	    .css('-ms-interpolation-mode', 'nearest-neighbor');
 	}
 	var desiredWidth = width / this.downsampleFactor;
 	var desiredHeight = height / this.downsampleFactor;
@@ -43,48 +51,60 @@ TheModRenderer.prototype.EnsureDownsampledCanvas = function(frame, ctx, width, h
 		this.downsampledCanvasA.width = desiredWidth;
 	if(this.downsampledCanvasA.height != desiredHeight)
 		this.downsampledCanvasA.height = desiredHeight;
+
 	return { width: desiredWidth, height: desiredHeight };
 }
-*/
+
 TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height)
 {
-	//var downsampled = true;
+	ctx.mozImageSmoothingEnabled = false;
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.imageSmoothingEnabled = false;
+
+	var downsampleFactor = this.downsampleFactor;
+	var downsampled = (downsampleFactor != 1);
 
 	this.backgroundLayer.Render(frame, ctx, width, height);
 
-	//if(!downsampled)
+	var navRect = null;
+	var topRightSquaresRect = null;
+
+	if(!downsampled)
 		this.navBackground.Render(frame, ctx, width, height, 1);
-	/*else
+	else
 	{
 		var d = this.EnsureDownsampledCanvas(frame, ctx, width, height);
 		var ctxds = this.downsampledCanvasA.getContext('2d');
-		ctxds.scale(1/this.downsampleFactor, 1/this.downsampleFactor);
+		ctxds.mozImageSmoothingEnabled = false;
+		ctxds.webkitImageSmoothingEnabled = false;
+		ctxds.imageSmoothingEnabled = false;
 
-		ctxds.clearRect(0, 0, width, height);
+		ctxds.clearRect(0, 0, d.width, d.height);
 		//ctxds.fillStyle="#00f";
 		//ctxds.fillRect(0,0,width, height);
 
-		this.navBackground.Render(frame, ctxds, width, height, this.downsampleFactor);
-		ctx.drawImage(this.downsampledCanvasA, 0, 0, d.width, d.height, 0, 0, width, height);
+		navRect = this.navBackground.Render(frame, ctxds, d.width, d.height, downsampleFactor);
+		topRightSquaresRect = this.topRightSquares.Render(frame, ctxds, d.width, d.height, downsampleFactor);
+
+		ctx.drawImage(this.downsampledCanvasA,
+			navRect.left, navRect.top, navRect.width, navRect.height,
+			navRect.left * downsampleFactor, navRect.top * downsampleFactor, navRect.width * downsampleFactor, navRect.height * downsampleFactor);
+//*/
 		//ctx.drawImage(this.downsampledCanvasA, 0, 0);
-	}*/
+	}
 
   this.topBackCurtain.Render(frame, ctx, width, height, 0);
 	this.sunLayer.Render(frame, ctx, width, height);
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
 
-	//if(!downsampled)
+	if(!downsampled)
 		this.topRightSquares.Render(frame, ctx, width, height, 1);
-	/*else
+	else
 	{
-		ctxds.clearRect(0, 0, width, height);
-		//ctxds.fillStyle="#00f";
-		//ctxds.fillRect(0,0,width, height);
-
-		this.topRightSquares.Render(frame, ctxds, width, height, this.downsampleFactor);
-		ctx.drawImage(this.downsampledCanvasA, 0, 0, d.width, d.height, 0, 0, width, height);
-		//ctx.drawImage(this.downsampledCanvasA, 0, 0);
-	}*/
+		ctx.drawImage(this.downsampledCanvasA,
+			topRightSquaresRect.left, topRightSquaresRect.top, topRightSquaresRect.width, topRightSquaresRect.height,
+			topRightSquaresRect.left * downsampleFactor, topRightSquaresRect.top * downsampleFactor, topRightSquaresRect.width * downsampleFactor, topRightSquaresRect.height * downsampleFactor);
+	}
 }
 
 
