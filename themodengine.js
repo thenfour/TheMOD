@@ -150,7 +150,7 @@ TheModEngine.prototype.__animFrame = function()
 			.css('filter', 'alpha(opacity=' + Math.floor(mainOpacity * 10) + ');');
 	}
 
-	this.sceneRenderer.RenderPixelated(frame, ctx, width, height);
+	this.sceneRenderer.RenderPixelated(frame, ctx, width, height, c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -174,7 +174,7 @@ TheModEngine.prototype.__animFrame = function()
 		0, 0, this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
 */
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	this.sceneRenderer.RenderFullRes(frame, ctx, width, height);
+	this.sceneRenderer.RenderFullRes(frame, ctx, width, height, c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	if(this.showDebug)

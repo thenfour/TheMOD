@@ -1,15 +1,17 @@
 
 
-var TopRightSquaresLayer = function(downsampleFactor)
+var TopRightSquaresLayer = function()
 {
+	this.oddColorTable = new TheModColorMixingTable("#ccc", "#fff", 8);
+
 	this.config = {
 		xflip: true,
-		evenFillColor: null,
-		oddFillColor: '#ccc',
+		evenColorTable: null,
+		oddColorTable: this.oddColorTable,
 		left: 0,
 		top: 0,
-		height: 200 / downsampleFactor,
-		blockSizeX: 30 / downsampleFactor,
+		height: 200,
+		blockSizeX: 30,
 		showTwinkle: true,
 		
 		RowWidthFunction: function(y, top, bottom, canvasWidth){
@@ -23,8 +25,8 @@ var TopRightSquaresLayer = function(downsampleFactor)
 	};
 };
 
-TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight, downsampleFactor)
+TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
-	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, this.config);
+	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, this.config);
 };
 

@@ -30,8 +30,8 @@ var minEnv = false;
 RandEnvelope.prototype.varianceFactor = function(timeMS)
 {
 	var x = 1000 + (this.seed * timeMS);
-	var ret = periodFn(x / this.a) + periodFn(x * this.b) + periodFn(x * this.c)/* + periodFn(x / this.d)*/;// currently has range 0-8
-	ret = (ret / 2.9) - 1;// it should normally be divided by the height at this point, 3, but dividing smaller means getting bigger numbers that will be clamped out.
+	var ret = periodFn(x / this.a) + periodFn(x * this.b)/* + periodFn(x * this.c)*//* + periodFn(x / this.d)*/;// currently has range 0-8
+	ret = (ret / 2) - 1;// it should normally be divided by the height at this point, 3, but dividing smaller means getting bigger numbers that will be clamped out.
 	if(ret < -1) ret = -1;
 	if(ret > 1) ret = 1;
 	return ret;
@@ -186,16 +186,12 @@ function ParseHTMLColor(htmlColor)
 	return { r:255, g:0, b:255, rgb:"rgba(255,0,255," };
 }
 
-
+/*
 // accepts a string html color like #fff or #010340,
 // returns "rgba(r,g,b,a)"
 function ColorToRGBASpecial(htmlColor, A)
 {
-	//return "rgba(255,255,180,0.5";
 	return htmlColor.rgb + A + ")";
-//	var c = ParseHTMLColor(htmlColor);
-	//return "rgba(" + c.r + "," + c.g + "," +  c.b + "," + (Math.round(A*100)/100) + ")";
-	//return "rgba(".concat(c.r, ",", c.g, ",", c.b, ",", (Math.round(A*100)/100), ")");
 }
 
 // pretty specific funciton here that will mix between 2 HTML colors.
@@ -208,15 +204,72 @@ function MixColorsAndAddAlphaSpecial(c1, c2, pos, A)
 		Math.round(((c2.g - c1.g) * pos) + c1.g), ",",
 		Math.round(((c2.b - c1.b) * pos) + c1.b), ",",
 		(Math.round(A*100)/100), ")");
-	//var c1 = ParseHTMLColor(htmlColorA);
-	//var c2 = ParseHTMLColor(htmlColorB);
-	// return "rgba(" +
-	// 	Math.round(((c2.r - c1.r) * pos) + c1.r) + "," +
-	// 	Math.round(((c2.g - c1.g) * pos) + c1.g) + "," +
-	// 	Math.round(((c2.b - c1.b) * pos) + c1.b) + "," +
-	// 	(Math.round(A*100)/100) + ")";
 }
 
+function MixColorsSpecial(c1, c2, pos)
+{
+	return "rgba(128,128,128,0.5)";
+	return "#888";
+	return "rgb(".concat(
+		Math.round(((c2.r - c1.r) * pos) + c1.r), ",",
+		Math.round(((c2.g - c1.g) * pos) + c1.g), ",",
+		Math.round(((c2.b - c1.b) * pos) + c1.b)
+		);
+}
+
+// mixes from c1->c2 along pos1, then mixes that result to c3 along pos2.
+function MixColorsTwiceSpecial(c1, c2, pos1, c3, pos2)
+{
+	return "rgba(128,128,128,0.5)";
+	return "#888";
+	var r = ((c2.r - c1.r) * pos1) + c1.r;
+	r = ((c3.r - r) * pos2) + r;
+	var g = ((c2.g - c1.g) * pos1) + c1.g;
+	g = ((c3.g - g) * pos2) + g;
+	var b = ((c2.b - c1.b) * pos1) + c1.b;
+	b = ((c3.b - b) * pos2) + b;
+	return "rgb(".concat(
+		Math.round(r), ",",
+		Math.round(g), ",",
+		Math.round(b), ")"
+		);
+}
+*/
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function MixColors(c1, c2, c2amt)
+{
+	var r = ((c2.r - c1.r) * c2amt) + c1.r;
+	var g = ((c2.g - c1.g) * c2amt) + c1.g;
+	var b = ((c2.b - c1.b) * c2amt) + c1.b;
+	return rgbToHex(Math.round(r), Math.round(g), Math.round(b));
+}
+
+// precomputed table of colors
+var TheModColorMixingTable = function(c1, c2, steps)
+{
+	this.c1 = c1;
+	this.c2 = c2;
+	this.c1parsed = ParseHTMLColor(c1);
+	this.c2parsed = ParseHTMLColor(c2);
+	this.steps = steps;
+	this.t = [];
+	for(var i = 0; i < steps; ++ i)
+	{
+		this.t.push(MixColors(this.c1parsed, this.c2parsed, i / (steps - 1)));// maybe do this in such a way that i will REACH steps and result in 1.0?
+	}
+}
+
+TheModColorMixingTable.prototype.GetColor = function(amt)
+{
+	if(amt <= 0)
+		return this.t[0];
+	if(amt >= 1)
+		return this.t[this.steps - 1];
+	return this.t[(this.steps * amt) | 0];
+}
 
 
 

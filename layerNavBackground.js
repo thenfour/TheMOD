@@ -1,22 +1,35 @@
 // optimization:
-// of the 8 ms to render, about 6 of it is in translate/rotate/rect/fill.
-// maybe go 2x2?
-
 // i might be able to pre-compute the squares onto their own canvas.
 // the input dimensions are:
-// - alpha (16 steps)
-// - block size (size + translation) = 16 steps
-// - rotation (16 steps)
-// - fill color
-// hrm it's going to be tough to precompute anything that saves much time. in the end it still needs to be drawn.
+// time --> twinkle / alpha / size (fill color is computed based off these)
+// 16 steps each  is 4096 images. At 18px squared, which with rotation and movement is like 30px squared, 30x30 = 900 pixels total, that's say 4,096,000 pixels.
+// 4 million pixels isn't really that much. that's just a 2000x2000 image, about 16 MB. we can support one, even 2, of these.
+//
+// OK a lot of time is spent actually just processing the colors. 
+// also, i can see that #abcdef colors are much faster than using rgba() colors.
+/*
 
-var specialWhite = { r:255,g:255,b:255 };
+On optimization, I have tried a bunch of things;
+* drawing direct to canvas but with scale() to work in smaller dimensions. this yields basically no gain because of sub-pixel just scales it back up. slightly slower.
+* drawing to a separate canvas and drawImage scaled to the real one. This ends up being a lot of overhead that kills the performance.
+* mirroring direct on canvas. only drawing half the squares, and drawImage to mirror it elsewhere on the screen. Losing a lot of beauty here, and it doesn't gain anything in performance,
+  presumably because internally it must be copied first to a separate canvas and then back to the canvas. It's slower than just drawing all our squares.
+* mirroring on a pre-made offscreen canvas. this doesn't gain anything either; you end up bitblting and you should just do the pixelated to separate canvas technique.
+* don't use opacity; mix colors instead because the background is fixed, using global alpha. this is much faster! maybe i can now just precompute colors instead of square images.
+
+I think indeed caching square images is going to be the best, as long as I can figure out a system that's not ridiculously memory intensive.
+it will just be a lot of work to do this.
+
+
+*/
+
+//var specialWhite = { r:255,g:255,b:255 };
 var opacitySpeedX = 0.15;
 var opacitySpeedY = 0.15;
 var opacityXEnv =	new RandEnvelope(145, opacitySpeedX);
 var opacityYEnv = new RandEnvelope(146, opacitySpeedY);
 
-function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, config)
+function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 {
 	var showTwinkle = true;//config.showTwinkle;
 
@@ -42,11 +55,11 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 	var opacityMin = 0.3;
 	var opacityMax = 0.65;
 
-	var evenFillColor = ParseHTMLColor(config.evenFillColor);
-	var oddFillColor = ParseHTMLColor(config.oddFillColor);
+	//var evenFillColor = config.evenFillColor;
+	//var oddFillColor = config.oddFillColor;
 
-	var twinkleSpeed = 0.15;
-	var twinkleThreshold = 0.86;
+	var twinkleSpeed = 0.09;
+	var twinkleThreshold = 0.93;
 	// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
 	var maxTwinkleOpacity = 0.5;
 	var twinkleBrightness = 0.5;
@@ -62,7 +75,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 	// when modulating envelopes, how much does x/y dimension affect the
 	// envelope progression?
 	// values 0-20 will be plasma-like; higher can start to look more sharp / twinkly
-	var dimensionMult = 20 * downsampleFactor;
+	var dimensionMult = 20;
 	var previousRowWidth = null;
 	var rowWidth = null;
 
@@ -86,13 +99,13 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 		{
 			var ix = (x - left) / blockSizeX;
 
-			var fillColor = oddFillColor;
+			var fillColorTable = config.oddColorTable;
 			if((ix & 1) == (iy & 1))// checkerboard
 			{
-				fillColor = evenFillColor;
+				fillColorTable = config.evenColorTable;
 			}
 
-			if(!fillColor)
+			if(!fillColorTable)
 				continue;
 
 			var xalphaVary = (opacityXEnv.height((x * dimensionMult) + time) + 1) / 2;
@@ -122,12 +135,12 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 			//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 
 			var twinkleFactor = CachedRandEnvelope(ix, iy, twinkleSpeed).factor(time);
-			var fillStyle;// = ColorToRGBASpecial(fillColor, 1.0);
+			var fillStyle;
 			var finalOpacity;
 			if(twinkleFactor < twinkleThreshold)
 			{
 				finalOpacity = opacity * userAlpha;
-				fillStyle = ColorToRGBASpecial(fillColor, finalOpacity);
+				fillStyle = fillColorTable.c1;
 			}
 			else
 			{
@@ -137,9 +150,10 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 
 				var twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
 
-				var finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
+				finalOpacity = (1 - (opacity * userAlpha)) * twinkleOpacity;
 				finalOpacity += (opacity * userAlpha);
-				fillStyle = MixColorsAndAddAlphaSpecial(fillColor, specialWhite, twinkleFactor * twinkleBrightness, finalOpacity);
+				//fillStyle = MixColorsTwiceSpecial(fillColor, specialWhite, twinkleFactor * twinkleBrightness, config.backgroundColor, 1 - finalOpacity);
+				fillStyle = fillColorTable.GetColor(twinkleFactor * twinkleBrightness);
 			}
 
 			var rotation = 6.283 * finalOpacity;// 2pi
@@ -149,6 +163,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 
 			ctx.save();
 			// things get really cool if you transpose rotate & translate here
+			ctx.globalAlpha = finalOpacity;
 			ctx.translate(xtrans, ytrans);
 			ctx.rotate(rotation);
 			ctx.beginPath();
@@ -170,24 +185,31 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFa
 }
 
 
-var NavBackgroundLayer = function(downsampleFactor)
+var NavBackgroundLayer = function()
 {
+	this.evenColorTable = new TheModColorMixingTable(lightPurple, "#fff", 8);
+	this.oddColorTable = new TheModColorMixingTable(medPurple, "#fff", 8);
+
+//	this.evenFillColor = ParseHTMLColor(lightPurple);
+	//this.oddFillColor = ParseHTMLColor(medPurple);
+	//this.backgroundColor = ParseHTMLColor(darkDarkPurple);
 };
 
-NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight, downsampleFactor)
+NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
-	var footerStartsAtY = canvasHeight - (90 / downsampleFactor);// virtual coords, not downsampled
-	var navWidth = 184 / downsampleFactor;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
-	var top = 200 / downsampleFactor;
+	var footerStartsAtY = canvasHeight - 90;// virtual coords, not downsampled
+	var navWidth = 184;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
+	var top = 180;
 
-	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, downsampleFactor, {
+	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, {
 		xflip: false,
-		evenFillColor: lightPurple,
-		oddFillColor: medPurple,
+		evenColorTable: this.evenColorTable,
+		oddColorTable: this.oddColorTable,
+		//backgroundColor: this.backgroundColor,
 		left: 0,
 		top: top,
-		height: (canvasHeight - top - (43 / downsampleFactor)),
-		blockSizeX: 18 / downsampleFactor,
+		height: (canvasHeight - top - 43),
+		blockSizeX: 18,
 		showTwinkle: true,
 
 		RowWidthFunction: function(y, top, bottom){
@@ -195,7 +217,7 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 				return canvasWidth;
 			var yprog = (y - top) / (footerStartsAtY - top);
 			yprog = Math.pow(yprog, 25);
-			return navWidth + ((canvasWidth - navWidth) * yprog);
+			return (navWidth) + ((canvasWidth - navWidth) * yprog);
 		},
 
 		OpacityFunction: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){

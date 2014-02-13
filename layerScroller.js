@@ -35,6 +35,19 @@ var ScrollerLayer = function()
 	this.scrollerPathEnv = new RandEnvelope(30334, 0.9);
 };
 
+	var scrollText = "// greetz fly out 2 sdcompo: sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde,"
+		+ " and more funky tunes by norfair, carlos, j'écoute, coda, virt...  "
+		+ " WE are The MOD: Carl, Angelo, Damiano, Iënad, Wilfried.  "
+		+ " #musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-        "
+		+ " #winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0... "
+		+ " oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker.  "
+		+ " and newschool cheers to the ultimate tracker ever: Renoise. Renoise. RENOISE!"
+		+ "                                                  "
+		+ " Seattle shoutouts to Tadd, Eric Verlinde, Al Shabino, Shawn McGinn..."
+		+ "                                                                                            "
+		+ "                                                                                            "
+		;
+
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
 	var fontstretchX = 1.5;
@@ -46,8 +59,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	var yVarHeight = 7;
 //	var yVarSpeed = 0.9;
 	var yVarTimeFactor = 1.1;
-	var charsPerSegment = 7;
-	var scrollText = "// greetz fly out 2 sdcompo: sonicade, organic_io, chotoro, chunter, nt, airmann, ambtax1, keith303, mickrip, mios, ruthlinde, and more funky tunes by norfair, carlos, j'écoute, coda, virt...  and of course the band: tenfour, angelo, damiano, iënad, wilfried.  #musicdsp peepz: timbre, mnl, Jazzdude, mrl_, Ad0, flapjackers, vocodork, trip-        #winprog peepz: forgey, magey, maharg, drano, spec, furan, GarMan, programmax, mblagden, Ad0 (again??)................ oldschool cheers for the means to great music: NoiseTracker, Impulse Tracker, FastTracker.  and newschool cheers to the ultimate tracker ever: Renoise. Renoise.           RENOISE!                                                                                                                                                                ";
+	var charsPerSegment = 5;
 
 	var speed = 60;// = scrollerSpeedEnv.vary(frame.time, 1, 60, 0);// pixels per second
 

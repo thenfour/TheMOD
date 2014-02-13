@@ -16,7 +16,7 @@ var TheModFakeStorage = function()
 	this.pages =
 	[
 		{
-			html: 'scene jazz with a twist, art and music, collaboration of scene artists',
+			html: 'jazz / art / music / collaboration / scene',//'scene jazz with a twist, art and music, collaboration of scene artists',
 			isDefault: true,
 			pageTitle: 'The MOD: About',
 			navItem:
@@ -39,7 +39,7 @@ var TheModFakeStorage = function()
 			pageTitle: 'The MOD: Contact',
 			navItem:
 			{
-				title: 'About Us',
+				title: 'Contact Us',
 				id: 'contact'
 			}
 		}
