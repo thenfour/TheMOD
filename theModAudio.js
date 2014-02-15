@@ -76,6 +76,7 @@ TheModAudio.prototype.CueAudio = function()
 		source.src = this.currentSong.UrlOGG;
 	}
 	this.audioElement.appendChild(source);
+	this.audioElement.load();
 }
 
 TheModAudio.prototype.Play = function()
