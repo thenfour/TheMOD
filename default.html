@@ -3,21 +3,19 @@
 <!--
 
 TODO:
-x CONTENT management
-x page titles
-x nav is fixed and causes problems when scrolling vertically. same for footer. they should be relative to the container i think.
-# script loading dynamically (and thus a server ...) - forget it. use a compiler for this.
 - content
 	- photo display
 	- band members with scrolling.
 - non-html5/canvas variation of the page. wait till this is done.
-- script combination / compilation
-- hide fps info (maybe have a series of clicks?)
-- OGG files.
+- script combination / compilation / dynamic loading
+- hide fps info (series of keys: "gl hf", make it smaller)
+- add OGG files.
 
 - nice-to-have:
 	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
 	- optimization
+		- max page size
+		- emscripten? i hope this would make more consistent performance among browsers also.
 	- logo animation?
 	- way to edit content & nav
 
@@ -26,7 +24,7 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
 
 <head>
 	<meta charset="utf-8" />
-	<title>the mod</title>
+	<title>The MOD</title>
 	<script src="jquery-1.11.0.min.js"></script>
 	<script src="themodengine.js"></script>
 	<script src="themodImage.js"></script>
@@ -47,15 +45,19 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
 	<script src="theModCMS.js"></script>
 	<script src="theModAudio.js"></script>
 
+  <script type="text/javascript" src="jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="jquery.jscrollpane.min.js"></script>
+
+  <link type="text/css" href="jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
 	<style type="text/css">
+
 	* { margin: 0; padding: 0;}
+
 	body, html {
 		height:100%;
 		background-color: #000;
 	}
-
-
 
 @font-face {
     font-family: '8bitoperator';
@@ -70,6 +72,10 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
 
 	#container {
 		min-width: 600px;
+    max-width: 1100px;
+    margin-left:auto;
+    margin-right:auto;
+
 		min-height:570px;
     border: 15px solid #000;
     border-bottom:0;
@@ -112,26 +118,33 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
     z-index: 10;
   }
 	#contentContainer {
-    border: 0;
+    border: 0;/*solid 2px blue;*/
     position: absolute;
     left:0;
+    right:0;
     top:240px;
-    width:80%;
+    bottom:100px;
     text-align: center;
     z-index: 10;
   }
 	#content {
     color:#d3d3d3;
-    border: 0;
+    outline:none;
+    border: 0;/*solid 2px blue;*/
     margin-left:235px;
-    margin-right:auto;
-    overflow: hidden;
-    width:450px;
-    min-height: 200px;
+
+    /*overflow: scroll;*/
+    height:100%;
     text-align: left;
-    font-family: '8bitoperator';
-    font-size: 14px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;/*'8bitoperator';*/
+    font-size: 16px;
     z-index: 10;
+  }
+  #content p {
+    margin-bottom:15px;
+  }
+  #contentPlaceholder {
+    max-width:475px;
   }
   #copyright{
     color:#666;
@@ -217,7 +230,10 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
   }
 
 	</style>
+
+
 </head>
+
 
 <body>
 	<div id="container">
@@ -234,10 +250,10 @@ x nav is fixed and causes problems when scrolling vertically. same for footer. t
 		website design &amp; programming by <a href="http://tridentloop.com">trident loop</a>
 		</div>
 
-		<div id="contentContainer">
+		<div id="contentContainer"><!-- required in order for content to have horiz-center-like positioning via margin auto  -->
 			<div id="content">
-				Coming soon.
-			</div>
+        <div id="contentPlaceholder"></div><!-- required not to interfere with jScrollPane -->   
+      </div>
 		</div>
 
 		<div id="navContainer">
@@ -281,8 +297,26 @@ var demoEngine;
 var contentEngine;
 var audioEngine;
 
+var scrollContainer;
+
+function reinitScrollContainers()
+{
+    $.each(scrollContainer, function(){
+            var api = $(this).data('jsp');
+            api.reinitialise();
+            //api.setBorder(null);
+    });
+}
+
 $(document).ready(function()
 {
+  scrollContainer = $('#content');
+  scrollContainer.jScrollPane();
+
+// http://stackoverflow.com/questions/3537615/jscrollpane-resize
+// or http://jscrollpane.kelvinluck.com/dynamic_height.html
+  $(window).resize(reinitScrollContainers);
+
 	contentEngine = new TheModCMS({
 		storageEngine: new TheModFakeStorage(),
 		navProc: function(cms, navItem){
@@ -297,7 +331,9 @@ $(document).ready(function()
 			return newLink;
 		},
 		contentProc: function(cms, pageInfo){
-			$('#content').html(pageInfo.html);
+			$('#contentPlaceholder').html(pageInfo.html);
+      reinitScrollContainers();
+
 			window.document.title = pageInfo.pageTitle;
 		}
 	});
