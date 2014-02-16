@@ -8,8 +8,10 @@
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 pushd $DIR >/dev/null
 
+SRC=$DIR/src
 INTERMEDIATE=$DIR/intermediate
 OUTPUT=$DIR/output
+WWW=$DIR/../www/emscripten
 
 EMCC_PATH=~/Downloads/emsdk_portable/emscripten/1.8.2/emcc
 echo "Current directory      : " $DIR
@@ -24,11 +26,15 @@ mkdir $OUTPUT
 echo .
 
 # for each source file, run emcc -c to preprocess/compile to a .o file.
-
-$EMCC_PATH theMODsite.cpp -s EXPORTED_FUNCTIONS="['_animFrame']" -O2 --js-library theMODexternalLib.js -c
+echo "Building..."
+$EMCC_PATH $SRC/theMODsite.cpp -O2 -c -o $INTERMEDIATE/theMODsite.o
 
 # link .o files into output js.
+echo "Linking..."
+$EMCC_PATH $INTERMEDIATE/theMODsite.o --js-library $SRC/theMODexternalLib.js -s EXPORTED_FUNCTIONS="['_animFrame']" -o $OUTPUT/theMODems.js
 
 # copy files to www
+echo "Copying to WWW..."
+cp $OUTPUT/theMODems.js $WWW/theMODems.js
 
 popd >/dev/null
