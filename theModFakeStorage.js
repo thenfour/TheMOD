@@ -66,8 +66,8 @@ var TheModFakeStorage = function()
 	this.songs = 
 	[
 		{
-			UrlMP3: "mp3/Big Truffle in Little China.mp3",
-			UrlOGG: "mp3/Big Truffle in Little China.ogg",
+			UrlMP3: "mp3/Big Truffle In Little China.mp3",
+			UrlOGG: "mp3/Big Truffle In Little China.ogg",
 			Title: "Big Truffle In Little China",// used as an ID.
 			CanBeOpeningSong: true,
 			//StartAt: 180,
