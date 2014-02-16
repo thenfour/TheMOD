@@ -33,7 +33,7 @@ var TheModFakeStorage = function()
 			,
 			isDefault: true,
 			pageTitle: 'The MOD: About',
-			watermarkURL: 'defaultWatermark.png',
+			//watermarkURL: 'defaultWatermark.png',
 			navItem:
 			{
 				title: 'About The MOD',
@@ -43,7 +43,7 @@ var TheModFakeStorage = function()
 		{
 			html: 'carl, angelo, damiano, ienad, wilfried',
 			pageTitle: 'The MOD: Musicians',
-			watermarkURL: 'musiciansWatermark.png',
+			//watermarkURL: 'musiciansWatermark.png',
 			navItem:
 			{
 				title: 'Musicians',
@@ -53,7 +53,7 @@ var TheModFakeStorage = function()
 		{
 			html: 'Go ahead and contact us. ...',
 			pageTitle: 'The MOD: Contact',
-			watermarkURL: 'contactWatermark.png',
+			//watermarkURL: 'contactWatermark.png',
 			navItem:
 			{
 				title: 'Contact Us',

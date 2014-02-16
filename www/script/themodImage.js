@@ -7,7 +7,7 @@ var TheModImage = function(src)
 {
 	// init image
 	this.img = new Image();
-	this.src = src;
+	this.src = src + "?_=" + new Date().getTime();
 	this.loaded = false;
 
 	var thisImage = this;
