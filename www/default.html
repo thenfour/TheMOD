@@ -290,6 +290,13 @@ function reinitScrollContainers()
     });
 }
 
+// C++ returns numeric values for RGB colors. 0x01RRGGBB
+/*function CPPColorToRGB(x)
+{
+	return "#".concat(x.toString(16).slice(1));
+}
+*/
+
 $(document).ready(function()
 {
   $.when(
@@ -354,6 +361,8 @@ $(document).ready(function()
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
 	}, autoPlay, 2000);
+
+	//alert(_cppTest(' javascript.'));
 
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
       
