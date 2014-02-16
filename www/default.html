@@ -3,11 +3,9 @@
 <!--
 
 TODO:
-x hide fps info (series of keys: "gl hf", make it smaller)
-x autoplay when live
 / watermark images (wait for images)
-- script combination / compilation / dynamic loading
-	- for this i think i should actually set up a live web server (apache i guess) - on kyserver.
+x script dynamic loading
+- script combination / compilation
 - non-html5/canvas variation of the page. wait till this is done.
 	- http://stackoverflow.com/questions/923885/capture-html-canvas-as-gif-jpg-png-pdf
 
@@ -25,31 +23,11 @@ x autoplay when live
 <head>
 	<meta charset="utf-8" />
 	<title>The MOD</title>
-	<script src="jquery-1.11.0.min.js"></script>
-	<script src="mersenne-twister.js"></script>
+	<script src="script/jquery-1.11.0.min.js"></script>
+  <script src="script/jquery.mousewheel.js"></script>
+  <script src="script/jquery.jscrollpane.min.js"></script>
 
-  <script type="text/javascript" src="jquery.mousewheel.js"></script>
-  <script type="text/javascript" src="jquery.jscrollpane.min.js"></script>
-
-	<script src="themodengine.js"></script>
-	<script src="themodImage.js"></script>
-	<script src="themodrenderer.js"></script>
-	<script src="themodTween.js"></script>
-
-	<script src="themodutil.js"></script>
-	<script src="layerBackground.js"></script>
-	<script src="layerTopCurtain.js"></script>
-	<script src="layerLogo.js"></script>
-	<script src="layerSun.js"></script>
-	<script src="layerScroller.js"></script>
-	<script src="layerNavBackground.js"></script>
-	<script src="layerTopRightSquares.js"></script>
-
-	<script src="theModFakeStorage.js"></script>
-	<script src="theModCMS.js"></script>
-	<script src="theModAudio.js"></script>
-
-  <link type="text/css" href="jquery.jscrollpane.css" rel="stylesheet" media="all" />
+  <link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
 	<style type="text/css">
 
@@ -62,11 +40,11 @@ x autoplay when live
 
 @font-face {
     font-family: '8bitoperator';
-    src: url('8bitoperator-webfont.eot');
-    src: url('8bitoperator-webfont.eot?#iefix') format('embedded-opentype'),
-         url('8bitoperator-webfont.woff') format('woff'),
-         url('8bitoperator-webfont.ttf') format('truetype'),
-         url('8bitoperator-webfont.svg#8bitoperatorregular') format('svg');
+    src: url('font/8bitoperator-webfont.eot');
+    src: url('font/8bitoperator-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/8bitoperator-webfont.woff') format('woff'),
+         url('font/8bitoperator-webfont.ttf') format('truetype'),
+         url('font/8bitoperator-webfont.svg#8bitoperatorregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -211,7 +189,7 @@ x autoplay when live
   }
   #playButton
   {
-  	background-image: url('play.png');
+  	background-image: url('img/play.png');
   	background-position: -8px -0px;
   }
   #nowPlaying
@@ -279,6 +257,9 @@ x autoplay when live
 
 <script type="text/javascript">
 
+
+
+
 var lightBlue = "#600";
 var darkBlue = "#440000";
 var lightYellow = "#f2d700";
@@ -311,6 +292,25 @@ function reinitScrollContainers()
 
 $(document).ready(function()
 {
+  $.when(
+    $.getScript("script/mersenne-twister.js"),
+    $.getScript("script/themodengine.js"),
+    $.getScript("script/themodImage.js"),
+    $.getScript("script/themodrenderer.js"),
+    $.getScript("script/themodTween.js"),
+    $.getScript("script/themodutil.js"),
+    $.getScript("script/layerBackground.js"),
+    $.getScript("script/layerTopCurtain.js"),
+    $.getScript("script/layerLogo.js"),
+    $.getScript("script/layerSun.js"),
+    $.getScript("script/layerScroller.js"),
+    $.getScript("script/layerNavBackground.js"),
+    $.getScript("script/layerTopRightSquares.js"),
+    $.getScript("script/theModFakeStorage.js"),
+    $.getScript("script/theModCMS.js"),
+    $.getScript("script/theModAudio.js")
+    ).done(function() {
+
   scrollContainer = $('#content');
   scrollContainer.jScrollPane();
 
@@ -355,6 +355,8 @@ $(document).ready(function()
 	}, autoPlay, 2000);
 
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
+      
+    });
 });
 
 </script>

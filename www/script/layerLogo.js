@@ -2,7 +2,7 @@
 
 var LogoLayer = function()
 {
-	this.LogoImg = new TheModImage('themod.png');
+	this.LogoImg = new TheModImage('img/themod.png');
 };
 
 LogoLayer.prototype.Render = function(frame, ctx, width, height)
