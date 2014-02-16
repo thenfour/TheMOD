@@ -3,13 +3,13 @@
 <!--
 
 TODO:
-- content
-	- photo display
-	- band members with scrolling.
-- non-html5/canvas variation of the page. wait till this is done.
+x hide fps info (series of keys: "gl hf", make it smaller)
+x autoplay when live
+/ watermark images (wait for images)
 - script combination / compilation / dynamic loading
-- hide fps info (series of keys: "gl hf", make it smaller)
-- add OGG files.
+	- for this i think i should actually set up a live web server (apache i guess) - on kyserver.
+- non-html5/canvas variation of the page. wait till this is done.
+	- http://stackoverflow.com/questions/923885/capture-html-canvas-as-gif-jpg-png-pdf
 
 - nice-to-have:
 	- audio animation via annotations. there should be an in-between song animation too like the sun rays go away.
@@ -26,12 +26,16 @@ TODO:
 	<meta charset="utf-8" />
 	<title>The MOD</title>
 	<script src="jquery-1.11.0.min.js"></script>
+	<script src="mersenne-twister.js"></script>
+
+  <script type="text/javascript" src="jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="jquery.jscrollpane.min.js"></script>
+
 	<script src="themodengine.js"></script>
 	<script src="themodImage.js"></script>
 	<script src="themodrenderer.js"></script>
 	<script src="themodTween.js"></script>
 
-	<script src="mersenne-twister.js"></script>
 	<script src="themodutil.js"></script>
 	<script src="layerBackground.js"></script>
 	<script src="layerTopCurtain.js"></script>
@@ -44,9 +48,6 @@ TODO:
 	<script src="theModFakeStorage.js"></script>
 	<script src="theModCMS.js"></script>
 	<script src="theModAudio.js"></script>
-
-  <script type="text/javascript" src="jquery.mousewheel.js"></script>
-  <script type="text/javascript" src="jquery.jscrollpane.min.js"></script>
 
   <link type="text/css" href="jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
@@ -313,8 +314,8 @@ $(document).ready(function()
   scrollContainer = $('#content');
   scrollContainer.jScrollPane();
 
-// http://stackoverflow.com/questions/3537615/jscrollpane-resize
-// or http://jscrollpane.kelvinluck.com/dynamic_height.html
+	// http://stackoverflow.com/questions/3537615/jscrollpane-resize
+	// or http://jscrollpane.kelvinluck.com/dynamic_height.html
   $(window).resize(reinitScrollContainers);
 
 	contentEngine = new TheModCMS({
@@ -332,11 +333,18 @@ $(document).ready(function()
 		},
 		contentProc: function(cms, pageInfo){
 			$('#contentPlaceholder').html(pageInfo.html);
+			if(pageInfo.watermarkURL)
+			{
+				$('#content')
+					.css('background-image', 'url(' + pageInfo.watermarkURL + ')');
+			}
       reinitScrollContainers();
 
 			window.document.title = pageInfo.pageTitle;
 		}
 	});
+
+	var autoPlay = (window.location.href.indexOf("themod.be") != -1);
 
 	audioEngine = new TheModAudio(new TheModFakeStorage(), {
 		playElementID: 'playButton',
@@ -344,7 +352,7 @@ $(document).ready(function()
 		previousSongElementID: 'previousSongButton',
 		nextSongElementID: 'nextSongButton',
 		songNameElementID: 'songName'
-	}, false, 2000);
+	}, autoPlay, 2000);
 
 	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
 });

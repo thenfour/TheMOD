@@ -21,18 +21,19 @@ var TheModFakeStorage = function()
 			+ "add the human element to the music that deserves it the most. The result is a "
 			+ "blissful combination of catchy melodies, danceable beats, skewed surprises, and"
 			+ " ground-shaking grooves.</p>"
-			+ "<p>Electro-jazz artists since the 90's have been composing ground-breaking music"
+/*			+ "<p>Electro-jazz artists since the 90's have been composing ground-breaking music"
 			+ ", hidden mostly in the demoscene, a subculture associated mainly with computer "
 			+ "hacking and digital graffiti. The MOD has formed a collaboration with the best "
 			+ "of these artists with the goal of adding a sense of spontaneity, improvisation, "
 			+ "and a live connection with an audience. The MOD satisfies this potential through "
 			+ "an all-star cast of musicians: Angelo Gregorio on saxophone, Damiano La Rocca on "
 			+ "guitar, Carl Corcoran on keyboards, Iënad Friedman on electric bass, "
-			+ "Wilfried Manzanza on drums."
+			+ "Wilfried Manzanza on drums."*/
 
 			,
 			isDefault: true,
 			pageTitle: 'The MOD: About',
+			watermarkURL: 'defaultWatermark.png',
 			navItem:
 			{
 				title: 'About The MOD',
@@ -42,6 +43,7 @@ var TheModFakeStorage = function()
 		{
 			html: 'carl, angelo, damiano, ienad, wilfried',
 			pageTitle: 'The MOD: Musicians',
+			watermarkURL: 'musiciansWatermark.png',
 			navItem:
 			{
 				title: 'Musicians',
@@ -51,6 +53,7 @@ var TheModFakeStorage = function()
 		{
 			html: 'Go ahead and contact us. ...',
 			pageTitle: 'The MOD: Contact',
+			watermarkURL: 'contactWatermark.png',
 			navItem:
 			{
 				title: 'Contact Us',

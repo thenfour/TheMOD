@@ -30,6 +30,8 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 	this.divContainer.appendChild(this.onscreenCanvasElement);
 
 	this.showDebug = false;
+	this.dbKey = "glhf";
+	this.dbKeyTyped = "";
 
 	$(this.onscreenCanvasElement)
     .css('image-rendering', 'optimizeSpeed')
@@ -61,8 +63,22 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 
 	$(window).keydown(function(e){
 		var code = e.keyCode || e.which;
-		if(code == 32) {
+
+		var nextChar = thisEngine.dbKey.substr(thisEngine.dbKeyTyped.length, 1);
+
+		if(String.fromCharCode(code).toLowerCase() != nextChar.toLowerCase())
+		{
+			// not what we expect; reset.
+			thisEngine.dbKeyTyped = "";
+			return;
+		}
+
+		thisEngine.dbKeyTyped += nextChar;
+		if(thisEngine.dbKeyTyped == thisEngine.dbKey)
+		{
 			thisEngine.showDebug = !thisEngine.showDebug;
+			thisEngine.dbKeyTyped = "";
+			return;
 		}
 	});
 
