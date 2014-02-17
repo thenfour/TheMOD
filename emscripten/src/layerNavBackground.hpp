@@ -4,12 +4,12 @@
 
 #include "theMODUtil.hpp"
 
-#define ColorMixingSteps 8
+const uint ColorMixingSteps = 8;
 
 namespace SquareField
 {
-	template<typename T>
-	void Render(uint frameTimeMS, double canvasWidth, double canvasHeight, const T& config)
+	template<typename TConfig>
+	void Render(uint frameTimeMS, double canvasWidth, double canvasHeight, const TConfig& config)
 	{
 		uint bottom = config.top + config.height;
 
@@ -41,8 +41,8 @@ namespace SquareField
 		// envelope progression?
 		// values 0-20 will be plasma-like; higher can start to look more sharp / twinkly
 		double dimensionMult = 20;
-		uint previousRowWidth = -1;
-		uint rowWidth = -1;
+		int previousRowWidth = -1;
+		int rowWidth = -1;
 
 	 	for(uint y = config.top; y < bottom; y += config.blockSizeY)
 	 	{
@@ -133,14 +133,16 @@ namespace NavBackgroundLayer
 		TheModColorMixingTable<ColorMixingSteps> evenColorTable;
 		TheModColorMixingTable<ColorMixingSteps> oddColorTable;
 
-		const uint navWidth;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
-		const uint top;
-		const bool xflip;
-		const uint left;
+		const uint navWidth = 184;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
+		uint footerStartsAtY;// set this before rendering
+
+		const uint top = 180;
+		const bool xflip = false;
+		const uint left = 0;
 		uint height;// set this before rendering.
-		const uint blockSizeX;
-		const uint blockSizeY;
-		const bool showTwinkle;
+		const uint blockSizeX = 18;
+		const uint blockSizeY = 18;
+		const bool showTwinkle = true;
 		const bool oddFillEnabled = true;
 		const bool evenFillEnabled = true;
 		const double opacitySpeedX = 0.15;
@@ -148,18 +150,9 @@ namespace NavBackgroundLayer
 		const RandEnvelope opacityXEnv;
 		const RandEnvelope opacityYEnv;
 
-		uint footerStartsAtY;// set this before rendering
-
 		SquareFieldConfig() :
 			evenColorTable(lightPurple(), 0xffffff),
 			oddColorTable(medPurple(), 0xffffff),
-			navWidth(184),
-			top(180),
-			xflip(false),
-			left(0),
-			blockSizeX(18),
-			blockSizeY(18),
-			showTwinkle(true),
 			opacityXEnv(145, opacitySpeedX),
 			opacityYEnv(146, opacitySpeedY)
 		{

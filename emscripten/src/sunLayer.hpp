@@ -24,7 +24,7 @@ namespace SunLayer
 	static RandEnvelope bigRadiusEnv(2624, 0.1);
 	static RandEnvelope littleRadiusEnv(899, 0.1);
 
-	static Tween OpeningTween(4.8, 0, Easing::BounceOut);
+	static Tween<Easing::BounceOut> OpeningTween(4.8, 0);
 
 	inline void RenderSunLayer(uint frameTimeMS, uint width, uint height)
 	{

@@ -3,38 +3,71 @@
 
 typedef unsigned int uint;
 
-#include <random>
-#include <map>
-
+#include <cmath>
 
 ////////////////////////////////////////////////
 constexpr double pi() { return 3.141592653589793238463; }
 constexpr float pif() { return 3.14159265358979f; }
 
+
+
+
+
+class RandomGenerator{
+	private:
+		static const uint length=624;
+		static const uint bitPow_31=1<<31;
+		uint *mt;
+		uint idx=0;
+	public:
+		static const uint bitMask_32=0xffffffff;
+		RandomGenerator(uint seed){
+			mt=new uint[length];
+			mt[0]=seed;
+			for(uint i=1;i<length;i++) mt[i]=(1812433253*(mt[i-1]^(mt[i-1]>>30))+i)&bitMask_32;
+		}
+		uint get(){
+			if(idx==0) gen();
+			uint y=mt[idx];
+			y^= y>>11;
+			y^=(y<< 7)&2636928640;
+			y^=(y<<15)&4022730752;
+			y^= y>>18;
+			idx=(idx+1)%length;
+			return y;
+		}
+		void gen(){
+			for(uint i=0;i<length;i++){
+				uint y=(mt[i]&bitPow_31)+(mt[(i+1)%length]&(bitPow_31-1));
+				mt[i]=mt[(i+397)%length]^(y>>1);
+				if(y%2) mt[i]^=2567483615;
+			}
+			return;
+		}
+		~RandomGenerator(){
+			delete[] mt;
+		}
+};
+
+
+
+
 ////////////////////////////////////////////////
 class Rand
 {
-	std::mt19937 mt;
-	std::uniform_real_distribution<double> dist;
+	RandomGenerator rng;
 
 public:
-	Rand(int seed) :
-		mt(seed),
-		dist(0, 1)
+	Rand(uint seed) :
+		rng(seed)
 	{
 	}
 
 	double random()
 	{
-		return dist(mt);
+		return (double)rng.get() / rng.bitMask_32;
 	}
 };
-
-////////////////////////////////////////////////
-inline double my_mod(double a, double N)
-{
-	return a - N*floor(a/N);
-} //return in range [0, N)
 
 ////////////////////////////////////////////////
 class RandEnvelope
@@ -96,38 +129,34 @@ public:
 };
 
 
-// last key arg is speed * 100
-std::map<std::tuple<uint, uint, uint>, RandEnvelope*> __cachedRandEnvelopes;
-uint __cachedRandEnvelopeCount = 0;
-//RandEnvelope __cachedRandEnvelope(5, 1);
+// // last key arg is speed * 100
+// std::map<std::tuple<uint, uint, uint>, RandEnvelope*> __cachedRandEnvelopes;
+// uint __cachedRandEnvelopeCount = 0;
+// //RandEnvelope __cachedRandEnvelope(5, 1);
 
+// RandEnvelope& CachedRandEnvelope(uint x, uint y, double speed)
+// {
+// 	//return __cachedRandEnvelope;
+	
+// 	uint speed2 = (uint)(speed * 100);
+// 	auto key = std::tuple<uint, uint, uint>(x,y,speed2);
+// 	if(__cachedRandEnvelopes.find(key) == __cachedRandEnvelopes.end())
+// 	{
+// 		__cachedRandEnvelopes[key] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
+// 		__cachedRandEnvelopeCount ++;
+// 	}
+// 	return *__cachedRandEnvelopes[key];
+
+// }
+
+
+// last key arg is speed * 100
+RandEnvelope __cachedRandEnvelope(5, 1);
 RandEnvelope& CachedRandEnvelope(uint x, uint y, double speed)
 {
-	//return __cachedRandEnvelope;
-	
-	uint speed2 = (uint)(speed * 100);
-	auto key = std::tuple<uint, uint, uint>(x,y,speed2);
-	if(__cachedRandEnvelopes.find(key) == __cachedRandEnvelopes.end())
-	{
-		__cachedRandEnvelopes[key] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
-		__cachedRandEnvelopeCount ++;
-	}
-	return *__cachedRandEnvelopes[key];
-
-
-
-/*
-	if(!__cachedRandEnvelopes[x])
-	{
-		__cachedRandEnvelopes[x] = [];
-	}
-	if(!__cachedRandEnvelopes[x][y])
-	{
-		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
-		__cachedRandEnvelopeCount ++;
-	}
-	return __cachedRandEnvelopes[x][y];*/
+	return __cachedRandEnvelope;
 }
+
 
 
 
@@ -199,97 +228,6 @@ RandEnvelope& CachedRandEnvelope(uint x, uint y, double speed)
 // 	return Math.atan2(p.y - o.y, p.x - o.x);
 // }
 
-// // parses to r, g, b, rgbString
-// function ParseHTMLColor(htmlColor)
-// {
-// 	if(!htmlColor)
-// 		return null;
-// 	//return {r:80,g:80,b:80,rgb:"rgba(255,255,255,"};
-// 	if(htmlColor.length == 4)
-// 	{
-// 		// parse #fff
-// 		var r = parseInt(htmlColor.substr(1,1), 16);
-// 		var g = parseInt(htmlColor.substr(2,1), 16);
-// 		var b = parseInt(htmlColor.substr(3,1), 16);
-// 			r = ((r<<4)|r);
-// 			g = ((g<<4)|g);
-// 			b = ((b<<4)|b);
-// 		return {
-// 			r: r,
-// 			g: g,
-// 			b: b,
-// 			rgb: "rgba(" + r + "," + g + "," + b + ","
-// 		};
-// 	}
-// 	if(htmlColor.length == 7)
-// 	{
-// 		var r = parseInt(htmlColor.substr(1,2), 16);
-// 		var g = parseInt(htmlColor.substr(3,2), 16);
-// 		var b = parseInt(htmlColor.substr(5,2), 16);
-// 		return {
-// 			r: r,
-// 			g: g,
-// 			b: b,
-// 			rgb: "rgba(" + r + "," + g + "," + b + ","
-// 		};
-// 	}
-// 	return { r:255, g:0, b:255, rgb:"rgba(255,0,255," };
-// }
-
-// /*
-// // accepts a string html color like #fff or #010340,
-// // returns "rgba(r,g,b,a)"
-// function ColorToRGBASpecial(htmlColor, A)
-// {
-// 	return htmlColor.rgb + A + ")";
-// }
-
-// // pretty specific funciton here that will mix between 2 HTML colors.
-// // pos is 0-1
-// // and add A, returning "rgba(r,g,b,a)"
-// function MixColorsAndAddAlphaSpecial(c1, c2, pos, A)
-// {
-// 	return "rgba(".concat(
-// 		Math.round(((c2.r - c1.r) * pos) + c1.r), ",",
-// 		Math.round(((c2.g - c1.g) * pos) + c1.g), ",",
-// 		Math.round(((c2.b - c1.b) * pos) + c1.b), ",",
-// 		(Math.round(A*100)/100), ")");
-// }
-
-// function MixColorsSpecial(c1, c2, pos)
-// {
-// 	return "rgba(128,128,128,0.5)";
-// 	return "#888";
-// 	return "rgb(".concat(
-// 		Math.round(((c2.r - c1.r) * pos) + c1.r), ",",
-// 		Math.round(((c2.g - c1.g) * pos) + c1.g), ",",
-// 		Math.round(((c2.b - c1.b) * pos) + c1.b)
-// 		);
-// }
-
-// // mixes from c1->c2 along pos1, then mixes that result to c3 along pos2.
-// function MixColorsTwiceSpecial(c1, c2, pos1, c3, pos2)
-// {
-// 	return "rgba(128,128,128,0.5)";
-// 	return "#888";
-// 	var r = ((c2.r - c1.r) * pos1) + c1.r;
-// 	r = ((c3.r - r) * pos2) + r;
-// 	var g = ((c2.g - c1.g) * pos1) + c1.g;
-// 	g = ((c3.g - g) * pos2) + g;
-// 	var b = ((c2.b - c1.b) * pos1) + c1.b;
-// 	b = ((c3.b - b) * pos2) + b;
-// 	return "rgb(".concat(
-// 		Math.round(r), ",",
-// 		Math.round(g), ",",
-// 		Math.round(b), ")"
-// 		);
-// }
-// */
-// function rgbToHex(r, g, b) {
-//     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-// }
-
-
 ////////////////////////////////////////////////
 class TheModColor
 {
@@ -346,7 +284,6 @@ class TheModColorMixingTable
 public:
 	TheModColor c1;
 	TheModColor c2;
-	//uint steps;
 	TheModColor t[steps];
 
 	TheModColorMixingTable(TheModColor c1_, TheModColor c2_) :

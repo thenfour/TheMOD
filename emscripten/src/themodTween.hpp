@@ -1,30 +1,36 @@
 
 
-struct Easing
+namespace Easing
 {
-	static double Linear(double k)
+	struct Linear
 	{
-		return k;
-	}
-	static double BounceOut(double k)
+		static double ease(double k)
+		{
+			return k;
+		}
+	};
+	struct BounceOut
 	{
-		if ( k < ( 1.0 / 2.75 ) )
+		static double ease(double k)
 		{
-				return 7.5625 * k * k;
+			if ( k < ( 1.0 / 2.75 ) )
+			{
+					return 7.5625 * k * k;
+			}
+			else if ( k < ( 2.0 / 2.75 ) )
+			{
+					return 7.5625 * ( k -= ( 1.5 / 2.75 ) ) * k + 0.75;
+			}
+			else if ( k < ( 2.5 / 2.75 ) )
+			{
+					return 7.5625 * ( k -= ( 2.25 / 2.75 ) ) * k + 0.9375;
+			}
+			else
+			{
+					return 7.5625 * ( k -= ( 2.625 / 2.75 ) ) * k + 0.984375;
+			}
 		}
-		else if ( k < ( 2.0 / 2.75 ) )
-		{
-				return 7.5625 * ( k -= ( 1.5 / 2.75 ) ) * k + 0.75;
-		}
-		else if ( k < ( 2.5 / 2.75 ) )
-		{
-				return 7.5625 * ( k -= ( 2.25 / 2.75 ) ) * k + 0.9375;
-		}
-		else
-		{
-				return 7.5625 * ( k -= ( 2.625 / 2.75 ) ) * k + 0.984375;
-		}
-	}
+	};
 };
 
 
@@ -185,21 +191,17 @@ struct Easing
 // };
 
 
+template<typename TEasing>
 class Tween
 {
 	const double durationS;
-	std::function<double(double)> easing;
 	uint startTimeMS;
 
 public:
-	Tween(double durationSeconds, uint currentTimeMS, std::function<double(double)> easing) :
+	Tween(double durationSeconds, uint currentTimeMS) :
 		durationS(durationSeconds),
-		startTimeMS(currentTimeMS),
-		easing(easing)
+		startTimeMS(currentTimeMS)
 	{
-// 	this.easingFunction = easingFunction;
-// 	if(!this.easingFunction)
-// 		this. easingFunction = Easing.Linear.None;
 	}
 
 	double tween(uint timeMS, double a, double b)
@@ -209,38 +211,9 @@ public:
 		if(progress < 0) progress = 0;
 		if(progress > 1) progress = 1;
 
-		double k = this->easing(progress);
+		double k = TEasing::ease(progress);
 		double ret = a + ((b - a) * k);
 		return ret;
 	}
 };
-
-// var Tween = function(durationS, startFrame, easingFunction)
-// {
-// 	this.durationS = durationS;
-// 	if(!this.durationS)
-// 		this.durationS = 1.0;
-	
-// 	if(!startFrame)
-// 		this.startTimeMS = 0;
-// 	else
-// 		this.startTimeMS = startFrame.time;
-
-// 	this.easingFunction = easingFunction;
-// 	if(!this.easingFunction)
-// 		this. easingFunction = Easing.Linear.None;
-// }
-
-// Tween.prototype.tween = function(frame, a, b)
-// {
-// 	var elapsedMS = frame.time - this.startTimeMS;
-// 	var progress = elapsedMS / (this.durationS * 1000);
-// 	if(progress < 0) progress = 0;
-// 	if(progress > 1) progress = 1;
-
-// 	var k = this.easingFunction(progress);
-// 	var ret = a + ((b - a) * k);
-// 	return ret;
-// }
-
 
