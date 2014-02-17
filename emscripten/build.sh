@@ -17,7 +17,7 @@ EMCC_PATH=~/Downloads/emsdk_portable/emscripten/1.8.2/emcc
 declare -a SourceFiles=(theMODsite theMODtest)
 
 # functions that you are exporting from C++, to be called by javascript
-declare -a Exports=(_animFrame _cppRender _cppTest _cppInit _cppRenderSunLayer _cppRenderNavBackgroundLayer)
+declare -a Exports=(_animFrame _cppRender _cppTest _cppInit _cppRenderSunLayer _cppRenderNavBackgroundLayer _cppRenderTopRightSquaresLayer)
 
 OUTPUTFILE=theMODems.js
 

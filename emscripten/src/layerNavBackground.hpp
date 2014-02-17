@@ -178,7 +178,7 @@ namespace NavBackgroundLayer
 		uint blockSizeY;
 		bool showTwinkle;
 		uint footerStartsAtY;// set this before rendering
-		bool oddFillEnabled = false;
+		bool oddFillEnabled = true;
 		bool evenFillEnabled = true;
 		double opacitySpeedX = 0.15;
 		double opacitySpeedY = 0.15;

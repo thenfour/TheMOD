@@ -1,35 +1,62 @@
 
-/*
-var TopRightSquaresLayer = function()
-{
-	this.oddColorTable = new TheModColorMixingTable("#ccc", "#fff", 8);
+#pragma once
 
-	this.config = {
-		xflip: true,
-		evenColorTable: null,
-		oddColorTable: this.oddColorTable,
-		left: 0,
-		top: 0,
-		height: 200,
-		blockSizeX: 30,
-		showTwinkle: true,
-		
-		RowWidthFunction: function(y, top, bottom, canvasWidth){
+#include "layerNavBackground.hpp"
+
+namespace TopRightSquaresLayer
+{
+	struct SquareFieldConfig
+	{
+		TheModColorMixingTable evenColorTable;
+		TheModColorMixingTable oddColorTable;
+
+		uint top = 0;
+		uint left = 0;
+		uint height = 200;// set this before rendering.
+		bool xflip = true;
+		uint blockSizeX = 30;
+		uint blockSizeY = 30;
+		bool showTwinkle = true;
+		bool oddFillEnabled = true;
+		bool evenFillEnabled = false;
+		double opacitySpeedX = 0.15;
+		double opacitySpeedY = 0.15;
+		RandEnvelope opacityXEnv;
+		RandEnvelope opacityYEnv;
+
+		SquareFieldConfig() :
+			evenColorTable(lightPurple(), 0xffffff, 8),
+			oddColorTable(0xcccccc, 0xffffff, 8),
+			opacityXEnv(145, opacitySpeedX),
+			opacityYEnv(146, opacitySpeedY)
+		{
+		}
+
+		uint RowWidth(uint y, uint top, uint bottom, uint canvasWidth, uint canvasHeight) const
+		{
 			return canvasWidth;
-		},
-		OpacityFunction: function(x, y, top, bottom, left, right, previousRowWidth, thisRowWidth, ix, iy){
-			var yprog = 1 - ((y - top) / (bottom - top));
-			var xprog = 1 - ((x - left) / (right - left));
-			return 0.9 * (Math.pow(yprog, 2) * Math.pow(xprog, 2));
+		}
+
+		double Opacity(uint x, uint y, uint top, uint bottom, uint left, uint right, uint previousRowWidth, uint thisRowWidth, uint ix, uint iy) const
+		{
+			double yprog = 1.0 - (double(y - top) / (bottom - top));
+			double xprog = 1.0 - (double(x - left) / (right - left));
+			return 0.9 * (pow(yprog, 2) * pow(xprog, 2));
 		}
 	};
-};
 
-TopRightSquaresLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
+	SquareFieldConfig config;// singleton basically.
+
+	inline void Render(uint frameTimeMS, uint canvasWidth, uint canvasHeight)
+	{
+		SquareField::Render(frameTimeMS, canvasWidth, canvasHeight, config);
+	}
+}
+
+
+extern "C" void cppRenderTopRightSquaresLayer(uint frameTimeMS, uint width, uint height)
 {
-	return RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, this.config);
-};
-
-*/
+	TopRightSquaresLayer::Render(frameTimeMS, width, height);
+}
 
 

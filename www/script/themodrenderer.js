@@ -49,7 +49,12 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c
 		this.sunLayer.Render(frame, ctx, width, height);
 
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
-	this.topRightSquares.Render(frame, ctx, width, height);
+
+  if(cpp)
+  	_cppRenderTopRightSquaresLayer(frame.time, width, height);
+  else
+  	this.topRightSquares.Render(frame, ctx, width, height);
+  
   //this.logoLayer.Render(frame, ctx, width, height);
   this.scroller.Render(frame, ctx, width, height);
 
