@@ -61,6 +61,10 @@ done
 
 $EMCC_PATH $OFiles --js-library $SRC/$EXTERNLIBRARYFILE -s EXPORTED_FUNCTIONS="[${FormattedExports:2}]" -o $OUTPUT/$OUTPUTFILE
 
+echo "Running closure compiler..."
+mv $OUTPUT/$OUTPUTFILE "$OUTPUT/$OUTPUTFILE-ems.js"
+java -jar ./closureCompiler/compiler.jar --language_in ECMASCRIPT5 --compilation_level SIMPLE_OPTIMIZATIONS --js "$OUTPUT/$OUTPUTFILE-ems.js" --js_output_file $OUTPUT/$OUTPUTFILE
+
 # copy files to www
 echo "Copying to WWW..."
 cp $OUTPUT/$OUTPUTFILE $WWW/$OUTPUTFILE
