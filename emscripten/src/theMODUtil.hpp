@@ -1,7 +1,31 @@
 
 #pragma once
 
+typedef unsigned int uint;
+
 #include <random>
+#include <map>
+
+
+
+
+////////////////////////////////////////////////
+constexpr uint lightBlue() { return 0x660000; };
+constexpr uint darkBlue() { return 0x440000; }
+constexpr uint lightYellow() { return 0xf2d700; }
+constexpr uint darkYellow() { return 0x633c00; }
+constexpr uint darkGray() { return 0x6a5f5e; }
+constexpr uint lightPurple() { return 0x5e506f; }
+constexpr uint medPurple() { return 0x40364b; }
+constexpr uint darkPurple() { return 0x221d28; }
+constexpr uint darkDarkPurple() { return 0x0c0c15; }
+constexpr uint lightGray() { return 0xd3d3d3; }
+constexpr uint black() { return 0x0; }
+
+
+////////////////////////////////////////////////
+constexpr double pi() { return 3.141592653589793238463; }
+constexpr float pif() { return 3.14159265358979f; }
 
 ////////////////////////////////////////////////
 class Rand
@@ -22,14 +46,21 @@ public:
 	}
 };
 
+////////////////////////////////////////////////
+inline double my_mod(double a, double N)
+{
+	return a - N*floor(a/N);
+} //return in range [0, N)
 
 ////////////////////////////////////////////////
-class RandEnvelopeCPP
+class RandEnvelope
 {
 private:
-	double periodFn(double x)
+	double periodFn(double x) const
 	{
-		return abs(fmod(x, 4) - 2 );
+		//return sin(x);
+		return fabs(fmod(x, 4) - 2 );
+	//	return fabs(my_mod(x, 4) - 2 );
 	}
 
 	Rand r;
@@ -39,7 +70,7 @@ private:
 	double c;
 
 public:
-	RandEnvelopeCPP(int seed, double cyclesPerSecond) :
+	RandEnvelope(int seed, double cyclesPerSecond) :
 		r(seed)
 	{
 		this->seed = this->r.random() * 0.0063 * cyclesPerSecond;
@@ -48,9 +79,37 @@ public:
 		this->c = 1 - (this->r.random() * 0.13);
 	}
 
+	RandEnvelope() :
+		r(9)
+	{
+		this->seed = this->r.random() * 0.0063;
+		this->a = 1 - (this->r.random() * 0.11);
+		this->b = 1 - (this->r.random() * 0.12);
+		this->c = 1 - (this->r.random() * 0.13);
+	}
+
+	RandEnvelope(const RandEnvelope& rhs) :
+		a(rhs.a),
+		b(rhs.b),
+		c(rhs.c),
+		seed(rhs.seed),
+		r(rhs.r)
+	{
+	}
+
+  RandEnvelope& operator= (const RandEnvelope& rhs)
+  {
+		this->a = rhs.a;
+		this->b = rhs.b;
+		this->c = rhs.c;
+		this->seed = rhs.seed;
+		this->r = rhs.r;
+		return *this;
+  }
+
 	// given the time in MS, return a value from -1 to 1
 	// speed = 1 roughly means "1 cycle per second", but of course perturbed greatly via our functions
-	double varianceFactor(int timeMS)
+	double varianceFactor(double timeMS) const
 	{
 		double x = 1000 + (this->seed * timeMS);
 		double ret = periodFn(x / this->a) + periodFn(x * this->b);
@@ -61,18 +120,18 @@ public:
 	}
 
 	// returns -1 to 1
-	double height(int timeMS)
+	double height(int timeMS) const
 	{
 		return varianceFactor(timeMS);
 	}
 
 	// return 0 to 1
-	double factor(int timeMS)
+	double factor(int timeMS) const
 	{
 		return (varianceFactor(timeMS) + 1) / 2;
 	}
 
-	double vary(int timeMS, double originalValue, double variationAmt)
+	double vary(int timeMS, double originalValue, double variationAmt) const
 	{
 		return originalValue + (variationAmt * varianceFactor(timeMS));
 	}
@@ -80,22 +139,33 @@ public:
 };
 
 
-// var __cachedRandEnvelopes = [];
-// var __cachedRandEnvelopeCount = 0;
+// last key arg is speed * 100
+std::map<std::tuple<uint, uint, uint>, RandEnvelope> __cachedRandEnvelopes;
+uint __cachedRandEnvelopeCount = 0;
 
-// function CachedRandEnvelope(x, y, speed)
-// {
-// 	if(!__cachedRandEnvelopes[x])
-// 	{
-// 		__cachedRandEnvelopes[x] = [];
-// 	}
-// 	if(!__cachedRandEnvelopes[x][y])
-// 	{
-// 		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
-// 		__cachedRandEnvelopeCount ++;
-// 	}
-// 	return __cachedRandEnvelopes[x][y];
-// }
+RandEnvelope& CachedRandEnvelope(uint x, uint y, double speed)
+{
+	uint speed2 = (uint)(round(speed * 100));
+	auto key = std::tuple<uint, uint, uint>(x,y,speed2);
+	if(__cachedRandEnvelopes.find(key) == __cachedRandEnvelopes.end())
+	{
+		__cachedRandEnvelopes[key] = RandEnvelope(__cachedRandEnvelopeCount, speed);
+		__cachedRandEnvelopeCount ++;
+	}
+	return __cachedRandEnvelopes[key];
+
+/*
+	if(!__cachedRandEnvelopes[x])
+	{
+		__cachedRandEnvelopes[x] = [];
+	}
+	if(!__cachedRandEnvelopes[x][y])
+	{
+		__cachedRandEnvelopes[x][y] = new RandEnvelope(__cachedRandEnvelopeCount, speed);
+		__cachedRandEnvelopeCount ++;
+	}
+	return __cachedRandEnvelopes[x][y];*/
+}
 
 
 
@@ -257,35 +327,72 @@ public:
 //     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 // }
 
-// function MixColors(c1, c2, c2amt)
-// {
-// 	var r = ((c2.r - c1.r) * c2amt) + c1.r;
-// 	var g = ((c2.g - c1.g) * c2amt) + c1.g;
-// 	var b = ((c2.b - c1.b) * c2amt) + c1.b;
-// 	return rgbToHex(Math.round(r), Math.round(g), Math.round(b));
-// }
 
-// // precomputed table of colors
-// var TheModColorMixingTable = function(c1, c2, steps)
-// {
-// 	this.c1 = c1;
-// 	this.c2 = c2;
-// 	this.c1parsed = ParseHTMLColor(c1);
-// 	this.c2parsed = ParseHTMLColor(c2);
-// 	this.steps = steps;
-// 	this.t = [];
-// 	for(var i = 0; i < steps; ++ i)
-// 	{
-// 		this.t.push(MixColors(this.c1parsed, this.c2parsed, i / (steps - 1)));// maybe do this in such a way that i will REACH steps and result in 1.0?
-// 	}
-// }
+// optimization:don't disassemble & reassemble colors.
+class TheModColor
+{
+public:
+	uint r;
+	uint g;
+	uint b;
+	TheModColor() : r(0),g(0),b(0) {}
+	TheModColor(uint c) :
+		b(c & 0xff),
+		g((c >> 8) & 0xff),
+		r((c >> 16) & 0xff)
+	{
+	}
+	TheModColor(uint r, uint g, uint b) :
+		b(b),
+		g(g),
+		r(r)
+	{
+	}
 
-// TheModColorMixingTable.prototype.GetColor = function(amt)
-// {
-// 	if(amt <= 0)
-// 		return this.t[0];
-// 	if(amt >= 1)
-// 		return this.t[this.steps - 1];
-// 	return this.t[(this.steps * amt) | 0];
-// }
+	inline uint rgb() const
+	{
+		return (r << 16) | (g << 8) | b;
+	}
+};
 
+
+inline TheModColor MixColors(TheModColor c1, TheModColor c2, double c2amt)
+{
+	uint r = (c2amt * (c2.r - c1.r)) + c1.r;
+	uint g = (c2amt * (c2.g - c1.g)) + c1.g;
+	uint b = (c2amt * (c2.b - c1.b)) + c1.b;
+	return TheModColor(r,g,b);
+}
+
+
+class TheModColorMixingTable
+{
+public:
+	TheModColor c1;
+	TheModColor c2;
+	uint steps;
+	std::vector<TheModColor> t;
+
+	TheModColorMixingTable(TheModColor c1_, uint c2_, uint steps_) :
+		c1(c1_),
+		c2(c2_),
+		steps(steps_)
+	{
+		for(uint i = 0; i < steps; ++ i)
+		{
+			t.push_back(
+				// maybe do this in such a way that i will REACH steps and result in 1.0?
+				MixColors(c1, c2, (double)i / (steps - 1)));
+		}
+	}
+
+	TheModColor GetColor(double amt) const
+	{
+		if(amt <= 0)
+			return this->t[0];
+		if(amt >= 1)
+			return this->t[this->steps - 1];
+		return this->t[(int)round(amt * this->steps)];
+	}
+
+};

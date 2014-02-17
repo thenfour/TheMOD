@@ -64,6 +64,11 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 	$(window).keydown(function(e){
 		var code = e.keyCode || e.which;
 
+		if(String.fromCharCode(code).toLowerCase() == 'c')
+		{
+			__useCPP = !__useCPP;
+		}
+
 		var nextChar = thisEngine.dbKey.substr(thisEngine.dbKeyTyped.length, 1);
 
 		if(String.fromCharCode(code).toLowerCase() != nextChar.toLowerCase())
@@ -114,6 +119,8 @@ TheModEngine.prototype.__updateCanvasSizes = function()
   	.css("height", containerHeight + "px")
   	;
 }
+
+var __useCPP = false;
 
 TheModEngine.prototype.__animFrame = function()
 {
@@ -166,7 +173,7 @@ TheModEngine.prototype.__animFrame = function()
 			.css('filter', 'alpha(opacity=' + Math.floor(mainOpacity * 10) + ');');
 	}
 
-	this.sceneRenderer.RenderPixelated(frame, ctx, width, height, c);
+	this.sceneRenderer.RenderPixelated(frame, ctx, width, height, c, __useCPP);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -190,13 +197,13 @@ TheModEngine.prototype.__animFrame = function()
 		0, 0, this.onscreenCanvasElement.width, this.onscreenCanvasElement.height);
 */
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	this.sceneRenderer.RenderFullRes(frame, ctx, width, height, c);
+	//this.sceneRenderer.RenderFullRes(frame, ctx, width, height, c);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	if(this.showDebug)
 	{
 		var frameElapse = (new Date().getTime() - this.startTime) - frame.time;
-		var frameDurationAvgCount = 100;
+		var frameDurationAvgCount = 20;
 
 		this.frameDurations.push(frameElapse);
 		this.avgFrameDuration += (frameElapse - this.avgFrameDuration) / (this.frameDurations.length);// adjust moving average without enumerating everything.
@@ -214,6 +221,7 @@ TheModEngine.prototype.__animFrame = function()
 			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")",
 			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title,
 			//"env returning (" + Math.round(minEnv*100)/100 + " ... " + Math.round(maxEnv*100)/100 + ")"
+			__useCPP ? "Using C++ renderer" : "Using javascript rendering."
 		];
 
 	  ctx.font = "18px calibri";

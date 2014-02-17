@@ -3,7 +3,7 @@
 var TheModRenderer = function()
 {
 	this.backgroundLayer = new BackgroundLayer();
-	this.logoLayer = new LogoLayer();
+	//this.logoLayer = new LogoLayer();
 	this.topBackCurtain = new TopBackCurtainLayer();
 	this.sunLayer = new SunLayer();
 	this.scroller = new ScrollerLayer();
@@ -31,25 +31,30 @@ TheModRenderer.prototype.GetGlobalInfo = function()
 
 var _tMctx = null;
 
-TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c)
+TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c, cpp)
 {
 	_tMctx = ctx;
 	this.backgroundLayer.Render(frame, ctx, width, height);
-	this.navBackground.Render(frame, ctx, width, height);
+
+	if(cpp)
+		_cppRenderNavBackgroundLayer(frame.time, width, height);
+	else
+		this.navBackground.Render(frame, ctx, width, height);
+
   this.topBackCurtain.Render(frame, ctx, width, height, 0);
-	this.sunLayer.Render(frame, ctx, width, height);
+
+	if(cpp)
+		_cppRenderSunLayer(frame.time, width, height);
+	else
+		this.sunLayer.Render(frame, ctx, width, height);
+
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
 	this.topRightSquares.Render(frame, ctx, width, height);
-  this.logoLayer.Render(frame, ctx, width, height);
+  //this.logoLayer.Render(frame, ctx, width, height);
   this.scroller.Render(frame, ctx, width, height);
 
-  _cppRender(frame.time, width, height);
+  //_cppRender(frame.time, width, height);
 
   _tMctx = null;
-}
-
-
-TheModRenderer.prototype.RenderFullRes = function(frame, ctx, width, height, c)
-{
 }
 
