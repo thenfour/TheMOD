@@ -54,16 +54,11 @@ extern "C"
 	void canvasSetLineWidth(double w);
 	void canvasStroke();
 
-	void canvasSetSunLayerShadowColor();// // 	ctx.shadowColor = 'rgba(0,0,0,0.2)';
+	void canvasSetSunLayerShadowColor();
 	void canvasSetSunLayerGradientFill(double bigR);//
-	//   var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, bigR);
-//   grd.addColorStop(0, '#ffc');
-//   grd.addColorStop(0.15, '#fed58c');
-//   grd.addColorStop(1, '#e19c26');
 
-//   ctx.fillStyle = grd;
-
-
+	void squareFieldXFlip(uint halfWidth);
+	void sfrs(double finalOpacity, double xtrans, double ytrans, double rotation, uint fillStyle, double sqPos, double sqSize);
 }
 
 inline void canvasSetFillStyle(const TheModColor& s)
@@ -76,5 +71,9 @@ inline void canvasSetStrokeStyle(const TheModColor& s)
 	__canvasSetStrokeStyle(s.rgb() | 0x01000000);
 }
 
+inline void squareFieldRenderSquare(double finalOpacity, double xtrans, double ytrans, double rotation, const TheModColor& fillStyle, double sqPos, double sqSize)
+{
+	sfrs(finalOpacity, xtrans, ytrans, rotation, fillStyle.rgb() | 0x01000000, sqPos, sqSize);
+}
 
 

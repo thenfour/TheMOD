@@ -29,6 +29,7 @@ var minEnv = false;
 // speed = 1 roughly means "1 cycle per second", but of course perturbed greatly via our functions
 RandEnvelope.prototype.varianceFactor = function(timeMS)
 {
+	//return 0.5;
 	var x = 1000 + (this.seed * timeMS);
 	var ret = periodFn(x / this.a) + periodFn(x * this.b)/* + periodFn(x * this.c)*//* + periodFn(x / this.d)*/;// currently has range 0-8
 	ret = (ret / 2) - 1;// it should normally be divided by the height at this point, 3, but dividing smaller means getting bigger numbers that will be clamped out.

@@ -3,7 +3,7 @@
 var TheModRenderer = function()
 {
 	this.backgroundLayer = new BackgroundLayer();
-	//this.logoLayer = new LogoLayer();
+	this.logoLayer = new LogoLayer();
 	this.topBackCurtain = new TopBackCurtainLayer();
 	this.sunLayer = new SunLayer();
 	this.scroller = new ScrollerLayer();
@@ -55,10 +55,8 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c
   else
   	this.topRightSquares.Render(frame, ctx, width, height);
   
-  //this.logoLayer.Render(frame, ctx, width, height);
+  this.logoLayer.Render(frame, ctx, width, height);
   this.scroller.Render(frame, ctx, width, height);
-
-  //_cppRender(frame.time, width, height);
 
   _tMctx = null;
 }

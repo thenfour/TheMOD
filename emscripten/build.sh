@@ -47,7 +47,7 @@ OFiles=""
 for var in "${SourceFiles[@]}"
 do
   #echo "${var}"
-	$EMCC_PATH $SRC/${var}.cpp -O2 -c -o $INTERMEDIATE/${var}.o -std=c++11
+	$EMCC_PATH $SRC/${var}.cpp -O3 -c -o $INTERMEDIATE/${var}.o -std=c++11
 	OFiles="$OFiles $INTERMEDIATE/${var}.o"
 done
 

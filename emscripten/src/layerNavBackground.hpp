@@ -4,36 +4,37 @@
 
 #include "theMODUtil.hpp"
 
+#define ColorMixingSteps 8
+
 namespace SquareField
 {
 	template<typename T>
 	void Render(uint frameTimeMS, double canvasWidth, double canvasHeight, const T& config)
 	{
-		//var specialWhite = { r:255,g:255,b:255 };
-
 		uint bottom = config.top + config.height;
 
-		double scaleMin = 0.5;
-		double scaleMax = 1.7;
-		double rotationMaximum = 0.5;// 0 - 1=90 deg.
-		double rotationSpeedX = 0.15;
-		double rotationSpeedY = 0.09;
+		const double scaleMin = 0.5;
+		const double scaleMax = 1.7;
+		const double rotationMaximum = 0.5;// 0 - 1=90 deg.
+		const double rotationSpeedX = 0.15;
+		const double rotationSpeedY = 0.09;
 
-		double opacityMin = 0.3;
-		double opacityMax = 0.65;
+		const double opacityMin = 0.3;
+		const double opacityMax = 0.65;
 
-		double twinkleSpeed = 0.09;
-		double twinkleThreshold = 0.93;
+		const double twinkleSpeed = 0.09;
+		const double twinkleThreshold = 0.93;
 		// these two will adjust the twinkle effect. it affects opacity of the square, and the color. both of these are 0-1.
-		double maxTwinkleOpacity = 0.5;
-		double twinkleBrightness = 0.5;
+		const double maxTwinkleOpacity = 0.5;
+		const double twinkleBrightness = 0.5;
 
-		canvasSave();
 	 	if(config.xflip)
 	 	{
-	 		canvasTranslate(canvasWidth / 2, 0);
-	 		canvasScale(-1, 1);
-	 		canvasTranslate(-(canvasWidth / 2), 0);
+	 		squareFieldXFlip(canvasWidth / 2);
+	 	}
+	 	else
+	 	{
+			canvasSave();
 	 	}
 
 		// when modulating envelopes, how much does x/y dimension affect the
@@ -42,8 +43,6 @@ namespace SquareField
 		double dimensionMult = 20;
 		uint previousRowWidth = -1;
 		uint rowWidth = -1;
-
-// 	var time = frame.time;
 
 	 	for(uint y = config.top; y < bottom; y += config.blockSizeY)
 	 	{
@@ -59,6 +58,7 @@ namespace SquareField
 	 		for(uint x = config.left; x < rowWidth; x += config.blockSizeX)
 	 		{
 	 			uint ix = (x - config.left) / config.blockSizeX;
+				//squareFieldRenderSquare(0.5, 0.5, 0.5, 0.5, 0xff00ff, 0.5, 8);
 
 	 			bool isOdd = ((ix & 1) == (iy & 1));// checkerboard
 
@@ -67,7 +67,7 @@ namespace SquareField
 	 			if(!config.evenFillEnabled && !isOdd)
 					continue;
 
-				const TheModColorMixingTable& fillColorTable(isOdd ? config.oddColorTable : config.evenColorTable);
+				const TheModColorMixingTable<ColorMixingSteps>& fillColorTable(isOdd ? config.oddColorTable : config.evenColorTable);
 
 	 			double xalphaVary = (config.opacityXEnv.height((dimensionMult * x) + frameTimeMS) + 1) / 2;
 	 			double yalphaVary = (config.opacityYEnv.height((dimensionMult * y) + frameTimeMS) + 1) / 2;
@@ -88,12 +88,10 @@ namespace SquareField
 
 				double blockScale = (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
 				double thisBlockSizeX = blockScale * config.blockSizeX;
-				//var thisBlockSizeY = blockSizeY * (scaleMin + ((scaleMax - scaleMin) * alpha * userAlpha));
 
 				// this is actually incorrect; for a true grid use blockSizeX / Y, but this gives a cool effect that things are sorta wavy / bulgy
 				double xtrans = (double)x + ((double)thisBlockSizeX / 2);
 				double ytrans = (double)y + ((double)config.blockSizeY / 2);
-				//ctx.translate(x + (blockSizeX / 2), y + (blockSizeY / 2));
 
 				double twinkleFactor = CachedRandEnvelope(ix, iy, twinkleSpeed).factor(frameTimeMS);
 				TheModColor fillStyle;
@@ -107,57 +105,23 @@ namespace SquareField
 				{
 					// scale it to 0-1
 					twinkleFactor = (twinkleFactor - twinkleThreshold) / (1.0 - twinkleThreshold);
-					//twinkleFactor = twinkleFactor * twinkleFactor;
 
 					double twinkleOpacity = twinkleFactor * maxTwinkleOpacity;
 
 					finalOpacity = (1.0 - (opacity * userAlpha)) * twinkleOpacity;
 					finalOpacity += (opacity * userAlpha);
-					//fillStyle = MixColorsTwiceSpecial(fillColor, specialWhite, twinkleFactor * twinkleBrightness, config.backgroundColor, 1 - finalOpacity);
 					fillStyle = fillColorTable.GetColor(twinkleFactor * twinkleBrightness);
 				}
 
 				double rotation = 2.0 * pi() * finalOpacity;
-				// we could maybe have some squares that rotate a different direction.
-				//if(ix % 2 == 0)
-				//	rotation = 6.283 - rotation;
 
-				canvasSave();
-// 			ctx.save();
-// 			// things get really cool if you transpose rotate & translate here
-				canvasSetGlobalAlpha(finalOpacity);
-// 			ctx.globalAlpha = finalOpacity;
-				canvasTranslate(xtrans, ytrans);
-// 			ctx.translate(xtrans, ytrans);
-				canvasRotate(rotation);
-// 			ctx.rotate(rotation);
-				canvasBeginPath();
-// 			ctx.beginPath();
-				canvasRect(-(thisBlockSizeX / 2), -(thisBlockSizeX / 2), thisBlockSizeX, thisBlockSizeX);
-// 			ctx.rect(-(thisBlockSizeX / 2), -(thisBlockSizeX / 2), thisBlockSizeX, thisBlockSizeX);
-				canvasSetFillStyle(fillStyle);
-// 			ctx.fillStyle = fillStyle;
-				canvasFill();
-// 			ctx.fill();
-// 			//ctx.drawImage(tbutton.img, x, y);
-
-				canvasRestore();
-// 			ctx.restore();//*/
+				squareFieldRenderSquare(finalOpacity, xtrans, ytrans, rotation, fillStyle, -(thisBlockSizeX / 2), thisBlockSizeX);
+				
 			}// X
-// 		}
 		}// Y
-// 	}
 
 		canvasRestore();
-// 	ctx.restore();
-
-// 	returnRect.width = returnRect.right - returnRect.left;
-// 	returnRect.height = returnRect.bottom - returnRect.top;
-
-// 	return returnRect;
-// }
 	}
-
 }
 
 
@@ -166,28 +130,29 @@ namespace NavBackgroundLayer
 {
 	struct SquareFieldConfig
 	{
-		TheModColorMixingTable evenColorTable;
-		TheModColorMixingTable oddColorTable;
+		TheModColorMixingTable<ColorMixingSteps> evenColorTable;
+		TheModColorMixingTable<ColorMixingSteps> oddColorTable;
 
-		uint navWidth;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
-		uint top;
-		bool xflip;
-		uint left;
+		const uint navWidth;// it's cool to make this NOT an even multiple of blockSizeX, so the blocks get a different size because of our "big" anti-aliasing
+		const uint top;
+		const bool xflip;
+		const uint left;
 		uint height;// set this before rendering.
-		uint blockSizeX;
-		uint blockSizeY;
-		bool showTwinkle;
+		const uint blockSizeX;
+		const uint blockSizeY;
+		const bool showTwinkle;
+		const bool oddFillEnabled = true;
+		const bool evenFillEnabled = true;
+		const double opacitySpeedX = 0.15;
+		const double opacitySpeedY = 0.15;
+		const RandEnvelope opacityXEnv;
+		const RandEnvelope opacityYEnv;
+
 		uint footerStartsAtY;// set this before rendering
-		bool oddFillEnabled = true;
-		bool evenFillEnabled = true;
-		double opacitySpeedX = 0.15;
-		double opacitySpeedY = 0.15;
-		RandEnvelope opacityXEnv;
-		RandEnvelope opacityYEnv;
 
 		SquareFieldConfig() :
-			evenColorTable(lightPurple(), 0xffffff, 8),
-			oddColorTable(medPurple(), 0xffffff, 8),
+			evenColorTable(lightPurple(), 0xffffff),
+			oddColorTable(medPurple(), 0xffffff),
 			navWidth(184),
 			top(180),
 			xflip(false),

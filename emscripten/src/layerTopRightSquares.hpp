@@ -7,8 +7,8 @@ namespace TopRightSquaresLayer
 {
 	struct SquareFieldConfig
 	{
-		TheModColorMixingTable evenColorTable;
-		TheModColorMixingTable oddColorTable;
+		TheModColorMixingTable<ColorMixingSteps> evenColorTable;
+		TheModColorMixingTable<ColorMixingSteps> oddColorTable;
 
 		uint top = 0;
 		uint left = 0;
@@ -25,8 +25,8 @@ namespace TopRightSquaresLayer
 		RandEnvelope opacityYEnv;
 
 		SquareFieldConfig() :
-			evenColorTable(lightPurple(), 0xffffff, 8),
-			oddColorTable(0xcccccc, 0xffffff, 8),
+			evenColorTable(lightPurple(), 0xffffff),
+			oddColorTable(0xcccccc, 0xffffff),
 			opacityXEnv(145, opacitySpeedX),
 			opacityYEnv(146, opacitySpeedY)
 		{

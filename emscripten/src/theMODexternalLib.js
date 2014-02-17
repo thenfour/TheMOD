@@ -7,11 +7,11 @@ LibraryManager.library.jsalert = function(s) {
 };
 
 LibraryManager.library.__canvasSetFillStyle = function(s) {
-	_tMctx.fillStyle="#".concat(s.toString(16).slice(1));
+	_tMctx.fillStyle="#"+(s.toString(16).slice(1));
 };
 
 LibraryManager.library.__canvasSetStrokeStyle = function(s) {
-	_tMctx.strokeStyle="#".concat(s.toString(16).slice(1));
+	_tMctx.strokeStyle="#"+(s.toString(16).slice(1));
 };
 LibraryManager.library.canvasRect = function(x,y,w,h) {
 	_tMctx.rect(x,y,w,h);
@@ -85,4 +85,24 @@ LibraryManager.library.canvasSetSunLayerGradientFill = function(bigR) {
   grd.addColorStop(1, '#e19c26');
 	_tMctx.fillStyle = grd;
 };
+
+
+LibraryManager.library.squareFieldXFlip = function(hw) {
+	_tMctx.save();
+	_tMctx.translate(hw,0);
+	_tMctx.scale(-1,1);
+	_tMctx.translate(-hw,0);
+}
+
+LibraryManager.library.sfrs = function(finalOpacity, xtrans, ytrans, rotation, fillStyle, sqPos, sqSize){
+	_tMctx.save();
+	_tMctx.globalAlpha = finalOpacity;
+	_tMctx.translate(xtrans, ytrans);
+	_tMctx.rotate(rotation);
+	_tMctx.beginPath();
+	_tMctx.rect(sqPos, sqPos, sqSize, sqSize);
+	_tMctx.fillStyle = "#"+fillStyle.toString(16).slice(1);
+	_tMctx.fill();
+	_tMctx.restore();
+}
 
