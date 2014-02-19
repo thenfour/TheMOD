@@ -15,6 +15,7 @@ cd ../www
 # 	--output_file=min/theMOD.min.js \
 # 	--compiler-flags=--js=
 
+echo "Calling closure compiler...."
 
 java -jar ../closurecompiler/compiler.jar --js_output_file min/theMOD.min.js \
 	--warning_level=QUIET --jscomp_off=suspiciousCode \
@@ -39,6 +40,7 @@ java -jar ../closurecompiler/compiler.jar --js_output_file min/theMOD.min.js \
 	--js "script/themodrenderer.js" \
 	--js "script/theMODmain.js"
 
+echo "Done!"
 
 
 

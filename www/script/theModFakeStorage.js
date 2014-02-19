@@ -44,7 +44,7 @@ var TheModFakeStorage = function()
 				title:
 				[
 					{ lang: "en-US", value: "Musicians" },
-					{ lang: "nl-BE", value: "Musiciens" },
+					{ lang: "nl-BE", value: "Muzikanten" },
 					{ lang: "fr-BE", value: "Les Musiciens" }
 				],
 				id: 'musicians'
