@@ -37,9 +37,11 @@ var TheModCMS = function(config)
 			;
 	}
 
-	// figure out which page we're currently on.
-	var hash = window.location.hash.substring(1);
-	this.__navigateToHash(hash);
+	// figure out which page we're currently on. the following is required by chrome for some reason.
+	setTimeout(function() {
+		var hash = window.location.hash.substring(1);
+		__globalCMS.__navigateToHash(hash);
+	}, 1);
 };
 
 TheModCMS.prototype.MakeHash = function(pageID, langID)
@@ -95,9 +97,17 @@ TheModCMS.prototype.__navigateExec = function()
 			;
 	}
 
-	$('#contentPlaceholder').html(this.config.storageEngine.GetPageContentHTML(this.currentPage, this.currentLanguage));
+	// replace the content thing altogether.
+	$('#content').remove();
+	var contentElement = document.createElement('div');
+	contentElement.id = "content";
+	$(contentElement).html("<div id=\"contentInner\">" + this.config.storageEngine.GetPageContentHTML(this.currentPage, this.currentLanguage) + "</div>");
+	document.getElementById('container').appendChild(contentElement);
 
-  reinitScrollContainers();
+	//$('#content').html(this.config.storageEngine.GetPageContentHTML(this.currentPage, this.currentLanguage));
+  $('#content').jScrollPane();
+
+//  reinitScrollContainers();
 
 	window.document.title = this.config.storageEngine.GetPageTitle(this.currentPage, this.currentLanguage);
 }

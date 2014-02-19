@@ -20,31 +20,47 @@ var demoEngine;
 var contentEngine;
 var audioEngine;
 
-var scrollContainer;
 
 function reinitScrollContainers()
 {
-    $.each(scrollContainer, function(){
-            var api = $(this).data('jsp');
-            api.reinitialise();
-            //api.setBorder(null);
-    });
+  $('#content').data('jsp').reinitialise();
 }
 
 function isCanvasSupported(){
+	//return false;
   var elem = document.createElement('canvas');
   return !!(elem.getContext && elem.getContext('2d'));
+}
+
+function isAudioSupported() {
+	var elem = document.createElement('audio');
+	return !!(elem.pause);
 }
 
 
 function OnPrereqsLoaded()
 {
-  scrollContainer = $('#content');
-  scrollContainer.jScrollPane();
-
 	// http://stackoverflow.com/questions/3537615/jscrollpane-resize
 	// or http://jscrollpane.kelvinluck.com/dynamic_height.html
   $(window).resize(reinitScrollContainers);
+
+	var autoPlay = (window.location.href.indexOf("themod.be") != -1);
+
+	if(isAudioSupported())
+	{
+		audioEngine = new TheModAudio(new TheModFakeStorage(), {
+			playElementID: 'playButton',
+			pauseElementID: 'pauseButton',
+			previousSongElementID: 'previousSongButton',
+			nextSongElementID: 'nextSongButton',
+			songNameElementID: 'songName'
+		}, autoPlay, 2000);
+	}
+
+	if(isCanvasSupported())
+		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
+	else
+		demoEngine = new TheModNonCanvasDemo('canvasHere');
 
 	contentEngine = new TheModCMS({
 		storageEngine: new TheModFakeStorage(),
@@ -54,21 +70,6 @@ function OnPrereqsLoaded()
 			{ lang: "fr-BE", anchorID: "taalFR" }
 		]
 	});
-
-	var autoPlay = (window.location.href.indexOf("themod.be") != -1);
-
-	audioEngine = new TheModAudio(new TheModFakeStorage(), {
-		playElementID: 'playButton',
-		pauseElementID: 'pauseButton',
-		previousSongElementID: 'previousSongButton',
-		nextSongElementID: 'nextSongButton',
-		songNameElementID: 'songName'
-	}, autoPlay, 2000);
-
-	if(isCanvasSupported())
-		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
-	else
-		demoEngine = new TheModNonCanvasDemo('canvasHere');
 }
 
 

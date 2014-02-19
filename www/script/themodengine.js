@@ -27,6 +27,10 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 
 	//this.offscreenCanvasElement = document.createElement('canvas');
 	this.onscreenCanvasElement = document.createElement('canvas');
+
+	//if(typeof(G_vmlCanvasManager) != 'undefined') 
+	//	G_vmlCanvasManager.initElement(this.onscreenCanvasElement);
+
 	this.divContainer.appendChild(this.onscreenCanvasElement);
 
 	this.showDebug = false;
@@ -53,7 +57,7 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 		{
 		  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
 		  function(callback) {
-		    window.setTimeout(callback, 1000 / targetFps);
+		    window.setTimeout(callback, 1000 / this.targetFps);
 		  };
 		})();
 	}
@@ -224,11 +228,7 @@ TheModEngine.prototype.__animFrame = function()
 			Math.round(frame.frameRate) + " fps; time=" + frame.time + " (" + width + "," + height + ") " + ((frame.frameNumber % 2 == 0) ? "#" : " "),
 			"frame overhead: " + frameElapse + "; frame# " + frame.frameNumber,
 			"frame overhead AVG: " + Math.round(this.avgFrameDuration * 10) / 10 + ", over " + this.frameDurations.length + " frames",
-			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")",
-			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title,
-			//"env returning (" + Math.round(minEnv*100)/100 + " ... " + Math.round(maxEnv*100)/100 + ")"
-			__useCPP ? "Using C++ renderer" : "Using javascript rendering.",
-			__measureTextCalls + " calls to measure text"
+			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")"
 		];
 
 	  ctx.font = "18px calibri";
