@@ -1,4 +1,8 @@
 
+# NOTE
+
+this is no longer used. emscripten is cool, and a better dev process, but still not as fast as hand-optimized javascript.
+
 # Requirements
 
 * Emscripten (and thus java, python, python2 alias, node.js, ...)
