@@ -10,9 +10,9 @@ var TheModFakeStorage = function()
 			{
 				title:
 				[
-					{ lang: "en-US", value: "About The MOD en" },
-					{ lang: "nl-BE", value: "About The MOD nl" },
-					{ lang: "fr-BE", value: "About The MOD fr" }
+					{ lang: "en-US", value: "About The MOD" },
+					{ lang: "nl-BE", value: "Over The MOD" },
+					{ lang: "fr-BE", value: "Sur The MOD" }
 				],
 				id: 'default'// used as an ID.
 			},
@@ -21,18 +21,20 @@ var TheModFakeStorage = function()
 			pageTitle:
 			[
 				{ lang: "en-US", value: "The MOD: About" },
-				{ lang: "nl-BE", value: "nl The MOD: About" },
-				{ lang: "fr-BE", value: "fr The MOD: About" }
+				{ lang: "nl-BE", value: "The MOD: Over ons" },
+				{ lang: "fr-BE", value: "The MOD: Sur nous" }
 			],
 			content:
 			[
 				{ lang: "en-US", value: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
 					+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
 					+ "add the human element to the music that deserves it the most. The result is a "
-					+ "blissful combination of catchy melodies, danceable beats, skewed surprises, and"
-					+ " ground-shaking grooves.</p>" },
-				{ lang: "nl-BE", value: "Goed." },
-				{ lang: "fr-BE", value: "Bon." }
+					+ "blissful combination of catchy melodies, danceable beats, asymmetric surprises, and"
+					+ " ground-shaking grooves.</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },// it's important to specify heights so the scroll container can init properly before the image has even loaded.
+
+				{ lang: "nl-BE", value: "..." },
+
+				{ lang: "fr-BE", value: "..." }
 			]
 		},
 		//-------------------------------------------------------------------------------------
@@ -41,24 +43,24 @@ var TheModFakeStorage = function()
 			{
 				title:
 				[
-					{ lang: "en-US", value: "Musicians en" },
-					{ lang: "nl-BE", value: "Musicians nl" },
-					{ lang: "fr-BE", value: "Musicians fr" }
+					{ lang: "en-US", value: "Musicians" },
+					{ lang: "nl-BE", value: "Musiciens" },
+					{ lang: "fr-BE", value: "Les Musiciens" }
 				],
 				id: 'musicians'
 			},
 			//watermarkURL: 'musiciansWatermark.png',
 			pageTitle:
 			[
-				{ lang: "en-US", value: "Musicians en" },
-				{ lang: "nl-BE", value: "Musicians nl" },
-				{ lang: "fr-BE", value: "Musicians fr" }
+				{ lang: "en-US", value: "The MOD: Musicians" },
+				{ lang: "nl-BE", value: "The MOD: Muzikanten" },
+				{ lang: "fr-BE", value: "The MOD: Les Musiciens" }
 			],
 			content: 
 			[
-				{ lang: "en-US", value: "carl, angelo, damiano, ienad, wilfried" },
-				{ lang: "nl-BE", value: "muziekanten hier" },
-				{ lang: "fr-BE", value: "les musiciens" }
+				{ lang: "en-US", value: "..." },
+				{ lang: "nl-BE", value: "..." },
+				{ lang: "fr-BE", value: "..." }
 			]
 		},
 
@@ -68,23 +70,23 @@ var TheModFakeStorage = function()
 			{
 				title:
 				[
-					{ lang: "en-US", value: "Contact Us en" },
-					{ lang: "nl-BE", value: "Contact Us nl" },
-					{ lang: "fr-BE", value: "Contact Us fr" }
+					{ lang: "en-US", value: "Contact Us" },
+					{ lang: "nl-BE", value: "Contact" },
+					{ lang: "fr-BE", value: "Contactez-Nous" }
 				],
 				id: 'contact'
 			},
 			pageTitle:
 			[
-				{ lang: "en-US", value: "The MOD: Contact en" },
-				{ lang: "nl-BE", value: "The MOD: Contact nl" },
-				{ lang: "fr-BE", value: "The MOD: Contact fr" }
+				{ lang: "en-US", value: "The MOD: Contact" },
+				{ lang: "nl-BE", value: "The MOD: Contact" },
+				{ lang: "fr-BE", value: "The MOD: Contactez-Nous" }
 			],
 			content: 
 			[
-				{ lang: "en-US", value: "carl, angelo, damiano, ienad, wilfried" },
-				{ lang: "nl-BE", value: "muziekanten hier" },
-				{ lang: "fr-BE", value: "les musiciens" }
+				{ lang: "en-US", value: "..." },
+				{ lang: "nl-BE", value: "..." },
+				{ lang: "fr-BE", value: "..." }
 			]
 		}
 	];

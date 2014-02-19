@@ -27,8 +27,6 @@ x script dynamic loading
   <script src="script/jquery.mousewheel.js"></script>
   <script src="script/jquery.jscrollpane.min.js"></script>
 
-  <script src="script/theModCMS.js"></script>
-
   <link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
 	<style type="text/css">
@@ -326,7 +324,7 @@ $(document).ready(function()
     $.getScript("script/layerNavBackground.js"),
     $.getScript("script/layerTopRightSquares.js"),
     $.getScript("script/theModFakeStorage.js"),
-    //$.getScript("script/theModCMS.js"),
+    $.getScript("script/theModCMS.js"),
     $.getScript("script/theModAudio.js")
     )
   .fail(function() {
