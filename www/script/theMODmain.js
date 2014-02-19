@@ -31,6 +31,12 @@ function reinitScrollContainers()
     });
 }
 
+function isCanvasSupported(){
+  var elem = document.createElement('canvas');
+  return !!(elem.getContext && elem.getContext('2d'));
+}
+
+
 function OnPrereqsLoaded()
 {
   scrollContainer = $('#content');
@@ -59,7 +65,10 @@ function OnPrereqsLoaded()
 		songNameElementID: 'songName'
 	}, autoPlay, 2000);
 
-	demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
+	if(isCanvasSupported())
+		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
+	else
+		demoEngine = new TheModNonCanvasDemo('canvasHere');
 }
 
 

@@ -31,6 +31,7 @@ declare -a SCRIPTS=( \
 	"layerNavBackground.js" \
 	"layerTopRightSquares.js" \
 	"themodrenderer.js" \
+	"theMODnoCanvas.js" \
 	"theMODmain.js" \
 )
 
@@ -49,11 +50,10 @@ do
 	ScriptTags+="<script src=\"script\\/${var}\"><\\/script>"
 done
 
-# java -jar ../closurecompiler/compiler.jar \
-# 	--js_output_file min/theMOD.min.js \
-#  	--warning_level=QUIET --jscomp_off=suspiciousCode \
-# 	$ClosureJS
-
+java -jar ../closurecompiler/compiler.jar \
+	--js_output_file min/theMOD.min.js \
+ 	--warning_level=QUIET --jscomp_off=suspiciousCode \
+	$ClosureJS
 
 
 echo "Creating default.dev.html"
