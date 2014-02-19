@@ -56,6 +56,11 @@ function OnPrereqsLoaded()
 			songNameElementID: 'songName'
 		}, autoPlay, 2000);
 	}
+	else
+	{
+		$('#mediaContainer')
+			.css('display', 'none');
+	}
 
 	if(isCanvasSupported())
 		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);

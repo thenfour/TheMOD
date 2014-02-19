@@ -56,7 +56,7 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c
   this.topRightSquares.Render(frame, ctx, width, height);
   
   this.logoLayer.Render(frame, ctx, width, height);
-  //this.scroller.Render(frame, ctx, width, height);
+  this.scroller.Render(frame, ctx, width, height);
 
   _tMctx = null;
 }
