@@ -1,66 +1,94 @@
-/*
-
-scene jazz music
-
-
-musicians:
-carl corcoran
-angelo
-
-
-*/
 
 //////////////////////////////////////////////////////////////////////////
 var TheModFakeStorage = function()
 {
 	this.pages =
 	[
+		//-------------------------------------------------------------------------------------
 		{
-			html: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
-			+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
-			+ "add the human element to the music that deserves it the most. The result is a "
-			+ "blissful combination of catchy melodies, danceable beats, skewed surprises, and"
-			+ " ground-shaking grooves.</p>"
-/*			+ "<p>Electro-jazz artists since the 90's have been composing ground-breaking music"
-			+ ", hidden mostly in the demoscene, a subculture associated mainly with computer "
-			+ "hacking and digital graffiti. The MOD has formed a collaboration with the best "
-			+ "of these artists with the goal of adding a sense of spontaneity, improvisation, "
-			+ "and a live connection with an audience. The MOD satisfies this potential through "
-			+ "an all-star cast of musicians: Angelo Gregorio on saxophone, Damiano La Rocca on "
-			+ "guitar, Carl Corcoran on keyboards, Iënad Friedman on electric bass, "
-			+ "Wilfried Manzanza on drums."*/
-
-			,
-			isDefault: true,
-			pageTitle: 'The MOD: About',
-			//watermarkURL: 'defaultWatermark.png',
 			navItem:
 			{
-				title: 'About The MOD',
+				title:
+				[
+					{ lang: "en-US", value: "About The MOD en" },
+					{ lang: "nl-BE", value: "About The MOD nl" },
+					{ lang: "fr-BE", value: "About The MOD fr" }
+				],
 				id: 'default'// used as an ID.
-			}
+			},
+			isDefault: true,
+			//watermarkURL: 'defaultWatermark.png',
+			pageTitle:
+			[
+				{ lang: "en-US", value: "The MOD: About" },
+				{ lang: "nl-BE", value: "nl The MOD: About" },
+				{ lang: "fr-BE", value: "fr The MOD: About" }
+			],
+			content:
+			[
+				{ lang: "en-US", value: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
+					+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
+					+ "add the human element to the music that deserves it the most. The result is a "
+					+ "blissful combination of catchy melodies, danceable beats, skewed surprises, and"
+					+ " ground-shaking grooves.</p>" },
+				{ lang: "nl-BE", value: "Goed." },
+				{ lang: "fr-BE", value: "Bon." }
+			]
 		},
+		//-------------------------------------------------------------------------------------
 		{
-			html: 'carl, angelo, damiano, ienad, wilfried',
-			pageTitle: 'The MOD: Musicians',
-			//watermarkURL: 'musiciansWatermark.png',
 			navItem:
 			{
-				title: 'Musicians',
+				title:
+				[
+					{ lang: "en-US", value: "Musicians en" },
+					{ lang: "nl-BE", value: "Musicians nl" },
+					{ lang: "fr-BE", value: "Musicians fr" }
+				],
 				id: 'musicians'
-			}
+			},
+			//watermarkURL: 'musiciansWatermark.png',
+			pageTitle:
+			[
+				{ lang: "en-US", value: "Musicians en" },
+				{ lang: "nl-BE", value: "Musicians nl" },
+				{ lang: "fr-BE", value: "Musicians fr" }
+			],
+			content: 
+			[
+				{ lang: "en-US", value: "carl, angelo, damiano, ienad, wilfried" },
+				{ lang: "nl-BE", value: "muziekanten hier" },
+				{ lang: "fr-BE", value: "les musiciens" }
+			]
 		},
+
+		//-------------------------------------------------------------------------------------
 		{
-			html: 'Go ahead and contact us. ...',
-			pageTitle: 'The MOD: Contact',
-			//watermarkURL: 'contactWatermark.png',
 			navItem:
 			{
-				title: 'Contact Us',
+				title:
+				[
+					{ lang: "en-US", value: "Contact Us en" },
+					{ lang: "nl-BE", value: "Contact Us nl" },
+					{ lang: "fr-BE", value: "Contact Us fr" }
+				],
 				id: 'contact'
-			}
+			},
+			pageTitle:
+			[
+				{ lang: "en-US", value: "The MOD: Contact en" },
+				{ lang: "nl-BE", value: "The MOD: Contact nl" },
+				{ lang: "fr-BE", value: "The MOD: Contact fr" }
+			],
+			content: 
+			[
+				{ lang: "en-US", value: "carl, angelo, damiano, ienad, wilfried" },
+				{ lang: "nl-BE", value: "muziekanten hier" },
+				{ lang: "fr-BE", value: "les musiciens" }
+			]
 		}
 	];
+	//-------------------------------------------------------------------------------------
 
 
 	this.songs = 
@@ -123,6 +151,38 @@ TheModFakeStorage.prototype.GetDefaultPage = function()
 			return page;
 	}
 	return null;
+}
+
+TheModFakeStorage.prototype.GetLocalizedValue = function(o, lang)
+{
+	for(var i = 0; i < o.length; ++ i)
+	{
+		if(o[i].lang == lang)
+			return o[i].value;
+	}
+	return "ERROR-TEXT-NOT-FOUND";
+}
+
+TheModFakeStorage.prototype.GetPageTitle = function(pageInfo, lang)
+{
+	return this.GetLocalizedValue(pageInfo.pageTitle, lang);
+}
+
+TheModFakeStorage.prototype.GetPageContentHTML = function(pageInfo, lang)
+{
+	return this.GetLocalizedValue(pageInfo.content, lang);
+}
+
+TheModFakeStorage.prototype.GetPageNavTitle = function(navItem, lang)
+{
+	return this.GetLocalizedValue(navItem.title, lang);
+}
+
+
+
+TheModFakeStorage.prototype.GetDefaultLanguage = function()
+{
+	return "en-US";
 }
 
 TheModFakeStorage.prototype.__getSongIndex = function(song)

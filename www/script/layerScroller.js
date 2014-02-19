@@ -48,6 +48,8 @@ var ScrollerLayer = function()
 		+ "                                                                                            "
 		;
 
+var __measureTextCalls = 0;
+
 ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 {
 	var fontstretchX = 1.5;
@@ -59,7 +61,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 	var yVarHeight = 7;
 //	var yVarSpeed = 0.9;
 	var yVarTimeFactor = 1.1;
-	var charsPerSegment = 5;
+	var charsPerSegment = 8;
 
 	var speed = 60;// = scrollerSpeedEnv.vary(frame.time, 1, 60, 0);// pixels per second
 
@@ -88,6 +90,7 @@ ScrollerLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
 			totalScrollWidth = this.totalScrollWidth;// it's the same!
 			break;
 		}
+		//__measureTextCalls ++;
 		newTextSegments.push({
 			text: text,
 			width: width,

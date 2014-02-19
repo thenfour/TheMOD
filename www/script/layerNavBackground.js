@@ -189,10 +189,6 @@ var NavBackgroundLayer = function()
 {
 	this.evenColorTable = new TheModColorMixingTable(lightPurple, "#fff", 8);
 	this.oddColorTable = new TheModColorMixingTable(medPurple, "#fff", 8);
-
-//	this.evenFillColor = ParseHTMLColor(lightPurple);
-	//this.oddFillColor = ParseHTMLColor(medPurple);
-	//this.backgroundColor = ParseHTMLColor(darkDarkPurple);
 };
 
 NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHeight)
@@ -205,11 +201,10 @@ NavBackgroundLayer.prototype.Render = function(frame, ctx, canvasWidth, canvasHe
 		xflip: false,
 		evenColorTable: this.evenColorTable,
 		oddColorTable: this.oddColorTable,
-		//backgroundColor: this.backgroundColor,
 		left: 0,
 		top: top,
 		height: (canvasHeight - top - 43),
-		blockSizeX: 18,
+		blockSizeX: 25,
 		showTwinkle: true,
 
 		RowWidthFunction: function(y, top, bottom){

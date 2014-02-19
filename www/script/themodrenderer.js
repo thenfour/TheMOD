@@ -36,24 +36,24 @@ TheModRenderer.prototype.RenderPixelated = function(frame, ctx, width, height, c
 	_tMctx = ctx;
 	this.backgroundLayer.Render(frame, ctx, width, height);
 
-	if(cpp)
-		_cppRenderNavBackgroundLayer(frame.time, width, height);
-	else
-		this.navBackground.Render(frame, ctx, width, height);
+	//if(cpp)
+	//	_cppRenderNavBackgroundLayer(frame.time, width, height);
+	//else
+	this.navBackground.Render(frame, ctx, width, height);
 
   this.topBackCurtain.Render(frame, ctx, width, height, 0);
 
-	if(cpp)
-		_cppRenderSunLayer(frame.time, width, height);
-	else
-		this.sunLayer.Render(frame, ctx, width, height);
+	//if(cpp)
+	//	_cppRenderSunLayer(frame.time, width, height);
+	//else
+	this.sunLayer.Render(frame, ctx, width, height);
 
   this.topBackCurtain.Render(frame, ctx, width, height, 1);
 
-  if(cpp)
-  	_cppRenderTopRightSquaresLayer(frame.time, width, height);
-  else
-  	this.topRightSquares.Render(frame, ctx, width, height);
+  //if(cpp)
+  //	_cppRenderTopRightSquaresLayer(frame.time, width, height);
+  //else
+  this.topRightSquares.Render(frame, ctx, width, height);
   
   this.logoLayer.Render(frame, ctx, width, height);
   this.scroller.Render(frame, ctx, width, height);

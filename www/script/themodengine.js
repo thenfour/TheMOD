@@ -124,7 +124,13 @@ var __useCPP = false;
 
 TheModEngine.prototype.__animFrame = function()
 {
-	//var c = this.offscreenCanvasElement;
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	setTimeout(function()
+	{
+	  window.requestAnimFrame(__globalAnimFrame);
+	}, (1000 / this.targetFps));
+
+		//var c = this.offscreenCanvasElement;
 	var c = this.onscreenCanvasElement;
 
 	var frame =
@@ -221,7 +227,8 @@ TheModEngine.prototype.__animFrame = function()
 			"(" + this.onscreenCanvasElement.width + ", " + this.onscreenCanvasElement.height +  ")",
 			'playing @ ' + Math.round(this.audioInterface.getCurrentSongPosition() * 10) / 10 + " of " + this.audioInterface.currentSong.Title,
 			//"env returning (" + Math.round(minEnv*100)/100 + " ... " + Math.round(maxEnv*100)/100 + ")"
-			__useCPP ? "Using C++ renderer" : "Using javascript rendering."
+			__useCPP ? "Using C++ renderer" : "Using javascript rendering.",
+			__measureTextCalls + " calls to measure text"
 		];
 
 	  ctx.font = "18px calibri";
@@ -243,12 +250,6 @@ TheModEngine.prototype.__animFrame = function()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ctx.restore();
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	setTimeout(function()
-	{
-	  window.requestAnimFrame(__globalAnimFrame);
-	}, (1000 / this.targetFps));
 }
 
 
