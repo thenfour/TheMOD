@@ -46,6 +46,15 @@ function OnPrereqsLoaded()
 
 	var autoPlay = (window.location.href.indexOf("themod.be") != -1);
 
+	contentEngine = new TheModCMS({
+		storageEngine: new TheModFakeStorage(),
+		languages: [
+			{ lang: "en-US", anchorID: "taalEN" },
+			{ lang: "nl-BE", anchorID: "taalNL" },
+			{ lang: "fr-BE", anchorID: "taalFR" }
+		]
+	});
+	
 	if(isAudioSupported())
 	{
 		audioEngine = new TheModAudio(new TheModFakeStorage(), {
@@ -66,15 +75,6 @@ function OnPrereqsLoaded()
 		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
 	else
 		demoEngine = new TheModNonCanvasDemo('canvasHere');
-
-	contentEngine = new TheModCMS({
-		storageEngine: new TheModFakeStorage(),
-		languages: [
-			{ lang: "en-US", anchorID: "taalEN" },
-			{ lang: "nl-BE", anchorID: "taalNL" },
-			{ lang: "fr-BE", anchorID: "taalFR" }
-		]
-	});
 }
 
 

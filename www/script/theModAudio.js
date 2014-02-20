@@ -25,6 +25,8 @@ var TheModAudio = function(storageEngine, mediaControls, autoPlay, initialAudioD
 	$('#' + mediaControls.nextSongElementID).click(function() { __globalAudio.NextSong(); });
 
 	this.audioElement = document.createElement('audio');
+	document.getElementById(mediaControls.playElementID).appendChild(this.audioElement);
+
 	$(this.audioElement).on("ended", function() { __globalAudio.NextSong();});
 	$(this.audioElement).on("loadedmetadata", function() { __globalAudio.OnPlay(); });
 
@@ -83,7 +85,9 @@ TheModAudio.prototype.Play = function()
 {
 	if(!this.audioElement)
 		return;
+
 	this.audioElement.play();
+	
 	$('#' + this.mediaControls.playElementID).css('display', 'none');
 	$('#' + this.mediaControls.pauseElementID).css('display', 'inline-block');
 }
