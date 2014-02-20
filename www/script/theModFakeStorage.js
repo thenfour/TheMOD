@@ -64,9 +64,28 @@ var TheModFakeStorage = function()
 			],
 			content: 
 			[
-				{ lang: "en-US", value: "..." },
-				{ lang: "nl-BE", value: "..." },
-				{ lang: "fr-BE", value: "..." }
+				{ lang: "en-US", value:
+					"<p><h2>Carl Corcoran, keyboard</h2></p>"
+					+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
+					+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
+					+ "<p><h2>Iënad Friedman, bass</h2></p>"
+					+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
+				},
+				{ lang: "nl-BE", value:
+					"<p><h2>Carl Corcoran, keyboard</h2></p>"
+					+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
+					+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
+					+ "<p><h2>Iënad Friedman, bass</h2></p>"
+					+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
+				},
+
+				{ lang: "fr-BE", value:
+					"<p><h2>Carl Corcoran, keyboard</h2></p>"
+					+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
+					+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
+					+ "<p><h2>Iënad Friedman, bass</h2></p>"
+					+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
+				}
 			]
 		},
 
@@ -122,8 +141,20 @@ var TheModFakeStorage = function()
 					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
 					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
 				},
-				{ lang: "nl-BE", value: "..." },
-				{ lang: "fr-BE", value: "..." }
+
+				{ lang: "nl-BE", value:
+					"<p>Luister ons op SoundCloud: <a href=\"https://soundcloud.com/the-mod\">https://soundcloud.com/the-mod</a></p>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+				},
+
+				{ lang: "fr-BE", value:
+					"<p>Écoutez-nous sur SoundCloud: <a href=\"https://soundcloud.com/the-mod\">https://soundcloud.com/the-mod</a></p>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+					+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
+				}
 			]
 		}
 	];
