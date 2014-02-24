@@ -31,17 +31,24 @@ var TheModFakeStorage = function()
 					+ "blissful combination of catchy melodies, danceable beats, asymmetric surprises, and"
 					+ " ground-shaking grooves.</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
 
-				{ lang: "nl-BE", value: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
-					+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
-					+ "add the human element to the music that deserves it the most. The result is a "
-					+ "blissful combination of catchy melodies, danceable beats, asymmetric surprises, and"
-					+ " ground-shaking grooves.</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },
 
-				{ lang: "fr-BE", value: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
-					+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
-					+ "add the human element to the music that deserves it the most. The result is a "
-					+ "blissful combination of catchy melodies, danceable beats, asymmetric surprises, and"
-					+ " ground-shaking grooves.</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" }
+
+
+
+				{ lang: "nl-BE", value: "<p>"
++ "The MOD is een jazz fusion kwintet dat bewerkingen van underground electro-jazz/funk brengt. "
++ "We werken samen met electro-jazzartiesten wereldwijd om het menselijke aspect toe te voegen "
++ "aan de muziek die dat het meest verdient. Het resultaat is een verrukkelijke combinatie van"
++ " aanstekelijke melodieën, dansbare ritmes, asymmetrische verrassingen en grooves "
++ "die de grond onder je voeten doen beven. "
+					+ "</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
+
+				{ lang: "fr-BE", value: "<p>"
++ "The MOD est un quintette de fusion jazz qui interprète des arrangements de jazz/funk électro "
++ "underground. Nous collaborons avec des artistes électro jazz de par le monde, ce qui ajoute un "
++ "élément humain indispensable à la musique. Le résultat est une combinaison aboutie de mélodies "
++ "entraînantes, de beats dansants, d'asymétries surprenantes, et de grooves envoûtants."
+					+ "</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" }// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
 			]
 		},
 		//-------------------------------------------------------------------------------------
@@ -183,7 +190,7 @@ var TheModFakeStorage = function()
 			UrlMP3: "mp3/Go Anywhere.mp3",
 			UrlOGG: "mp3/Go Anywhere.ogg",
 			Title: "Go Anywhere",
-			CanBeOpeningSong: false,
+			CanBeOpeningSong: true,
 			//StartAt: 180,
 			Annotation: []
 		}

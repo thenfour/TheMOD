@@ -23,7 +23,7 @@ TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
 TheModRenderer.prototype.GetGlobalInfo = function()
 {
 	return {
-		targetFrameRate: 24,
+		targetFrameRate: 15,
 		pixelSizeX: 1,
 		pixelSizeY: 1
 	};

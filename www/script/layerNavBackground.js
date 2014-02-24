@@ -102,6 +102,7 @@ function RenderSquarePattern(frame, ctx, canvasWidth, canvasHeight, config)
 			var fillColorTable = config.oddColorTable;
 			if((ix & 1) == (iy & 1))// checkerboard
 			{
+				continue;// for performance :/
 				fillColorTable = config.evenColorTable;
 			}
 

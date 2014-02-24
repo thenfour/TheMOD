@@ -39,6 +39,13 @@ declare -a SCRIPTS=( \
 
 echo "Minifying / optimizing / combining scripts..."
 
+REVISION=$(git rev-list HEAD | wc -l)
+REVISION=$((REVISION)) # turns to number
+
+echo "Revision serial #: $REVISION"
+
+echo "Deleting existing compiled files..."
+rm ./min/*
 
 # generate command line args
 #set -x #echo on
@@ -53,7 +60,7 @@ done
 # SIMPLE_OPTIMIZATIONS
 # WHITESPACE_ONLY
 java -jar ../closurecompiler/compiler.jar \
-	--js_output_file min/theMOD.min.js \
+	--js_output_file min/theMOD.min.$REVISION.js \
  	--warning_level=QUIET \
  	--compilation_level=SIMPLE_OPTIMIZATIONS \
  	--jscomp_off=suspiciousCode \
@@ -65,7 +72,7 @@ sed -e "s/THEMODSCRIPTSHERE/$ScriptTags/g" default.src.html >default.dev.html
 
 # echo "Creating default.html"
 #     <script src="script/theMODmain.js"></script>
-sed -e $"s/THEMODSCRIPTSHERE/<script src=\"min\/theMOD.min.js\"><\/script>/g" default.src.html >default.html
+sed -e $"s/THEMODSCRIPTSHERE/<script src=\"min\/theMOD.$REVISION.min.js\"><\/script>/g" default.src.html >default.html
 
 echo "Done!"
 
