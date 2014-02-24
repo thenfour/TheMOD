@@ -60,7 +60,7 @@ done
 # SIMPLE_OPTIMIZATIONS
 # WHITESPACE_ONLY
 java -jar ../closurecompiler/compiler.jar \
-	--js_output_file min/theMOD.min.$REVISION.js \
+	--js_output_file min/theMOD.$REVISION.min.js \
  	--warning_level=QUIET \
  	--compilation_level=SIMPLE_OPTIMIZATIONS \
  	--jscomp_off=suspiciousCode \
