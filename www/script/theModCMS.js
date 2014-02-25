@@ -9,33 +9,47 @@ var TheModCMS = function(config)
 	this.config = config;
 
 	// fill nav
-	var allPages = this.config.storageEngine.GetAllPages();
-	for(var i = 0; i < allPages.length; ++ i)
-	{
-		var navItem = allPages[i];
-		var newLink = document.createElement('a');
-		$(newLink)
-			.attr("id", navItem.id)
-			.addClass('navLink')
-			.click(function(){
+	$("a").each(function(i, o) {
+		var pageID = $(this).data('navlinkforpage');
+		if(!pageID)
+			return;
+		var lang = $(this).data("lang");
+		if(!lang)
+			return;
+
+		// add a lang attribute for the heck of it; browsers like it.
+		if(!$(this).attr("lang"))
+		{
+			$(this).attr("lang", lang);
+		}
+
+		var hash = __globalCMS.MakeHash(pageID, lang);
+
+		$(this)
+			.attr("href", hash)
+			.click(function(e) {
+				//e.preventDefault();
 				__globalCMS.__navigateToHash($(this).attr('href'));
 			});
-			;
-		document.getElementById('navLinks').appendChild(newLink);
-	}
+	});
 
 	// configure language selection.
-	var allLanguages = this.config.languages;
-	for(var i = 0; i < allLanguages.length; ++ i)
-	{
-		var thisLangInfo = allLanguages[i];
-		var langID = thisLangInfo.lang;
-		$("#" + thisLangInfo.anchorID)
-			.click(function(){
+	$("a").each(function(i, o) {
+		var lang = $(this).data('navlinkforlanguage');
+		if(!lang)
+			return;
+
+		// add a lang attribute for the heck of it; browsers like it.
+		if(!$(this).attr("lang"))
+		{
+			$(this).attr("lang", lang);
+		}
+
+		$(this).click(function (e) {
+				//e.preventDefault();
 				__globalCMS.__navigateToHash($(this).attr('href'));
-			})
-			;
-	}
+		});
+	});
 
 	// figure out which page we're currently on. the following is required by chrome for some reason.
 	setTimeout(function() {
@@ -77,37 +91,73 @@ TheModCMS.prototype.__navigateExec = function()
 	if(!this.currentLanguage)
 		this.currentLanguage = this.config.storageEngine.GetDefaultLanguage();
 
-	// fix nav links (lang could have changed)
-	var allPages = this.config.storageEngine.GetAllPages();
-	for(var i = 0; i < allPages.length; ++ i)
-	{
-		var navItem = allPages[i];
-		$("#" + navItem.id)
-			.text(this.config.storageEngine.GetPageNavTitle(navItem, this.currentLanguage))
-			.attr("href", this.MakeHash(navItem.id, this.currentLanguage))
-	}
+	// fix nav-to-page links
+	$("a").each(function(i, o) {
+		var pageID = $(this).data('navlinkforpage');
+		if(!pageID)
+			return;
+		var lang = $(this).data("lang");
+		if(!lang)
+			return;
 
-	// configure language selection links (page could have changed)
-	var allLanguages = this.config.languages;
-	for(var i = 0; i < allLanguages.length; ++ i)
-	{
-		var thisLangInfo = allLanguages[i];
-		$("#" + thisLangInfo.anchorID)
-			.attr("href", this.MakeHash(this.currentPage.navItem.id, thisLangInfo.lang))
-			;
-	}
+		// no need to set href; each page/lang combo has a unique element.
 
-	// replace the content thing altogether.
-	$('#content').remove();
-	var contentElement = document.createElement('div');
-	contentElement.id = "content";
-	$(contentElement).html("<div id=\"contentInner\">" + this.config.storageEngine.GetPageContentHTML(this.currentPage, this.currentLanguage) + "</div>");
-	document.getElementById('container').appendChild(contentElement);
+		if(lang == __globalCMS.currentLanguage)
+		{
+			$(this).show();
+		}
+		else
+			$(this).hide();
+	});
 
-	//$('#content').html(this.config.storageEngine.GetPageContentHTML(this.currentPage, this.currentLanguage));
-  $('#content').jScrollPane();
+	// fix nav-to-language links
+	$("a").each(function(i, o) {
+		var lang = $(this).data('navlinkforlanguage');
+		if(!lang)
+			return;
 
-//  reinitScrollContainers();
+		$(this)
+			.attr("href", __globalCMS.MakeHash(__globalCMS.currentPage.navItem.id, lang))
+
+	});
+
+	// reveal the right content. to do this, first hide all content, then remove jscroller stuff, then show, then add jscroll.
+	// this is the safest way to ensure sizes and things are done properly.
+	$("div").each(function(i, o) {
+		var lang = $(this).data("contentforlanguage");
+		if(!lang)
+			return;
+		var pageID = $(this).data("contentforpage");
+		if(!pageID)
+			return;
+
+		//if($(this).data('jsp'))
+		//	$(this).data('jsp').destroy();// remove the jquery scroller thingy.
+
+		$(this).hide();// this is a content div; hide it.
+	});
+
+	$("div").each(function(i, o) {
+		var lang = $(this).data("contentforlanguage");
+		if(!lang)
+			return;
+		var pageID = $(this).data("contentforpage");
+		if(!pageID)
+			return;
+		var match = (pageID == __globalCMS.currentPage.navItem.id) && (lang.indexOf(__globalCMS.currentLanguage) != -1);
+		if(match)
+		{
+			$(this).show();
+		  //$(this).jScrollPane();
+			// i don't know why but it will set width:0 and margin-left:some_huge_value *sometimes*.
+			// this hacks it away.
+		  //$('.jspPane').css("margin-left", "0");
+		  //$('.jspPane').css("width", "");
+
+		}
+	});
+
+  reinitScrollContainers();
 
 	window.document.title = this.config.storageEngine.GetPageTitle(this.currentPage, this.currentLanguage);
 }

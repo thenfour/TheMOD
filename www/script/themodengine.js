@@ -31,8 +31,6 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
 	//if(typeof(G_vmlCanvasManager) != 'undefined') 
 	//	G_vmlCanvasManager.initElement(this.onscreenCanvasElement);
 
-	this.divContainer.appendChild(this.onscreenCanvasElement);
-
 	this.showDebug = false;
 	this.dbKey = "glhf";
 	this.dbKeyTyped = "";
@@ -44,6 +42,8 @@ var TheModEngine = function(divContainerID, sceneRenderer, fadeContainerID, audi
     .css('image-rendering', '-o-crisp-edges')
     .css('image-rendering', 'crisp-edges')
     .css('-ms-interpolation-mode', 'nearest-neighbor');
+
+	this.divContainer.appendChild(this.onscreenCanvasElement);
 
 	this.lastRenderInfo =	{
 		mainOpacity: 1.0
@@ -169,19 +169,19 @@ TheModEngine.prototype.__animFrame = function()
 	if(!renderInfo) renderInfo = this.lastRenderInfo;
 	this.lastRenderInfo = renderInfo;
 
-	var mainOpacity = renderInfo.mainOpacity;
-	if(mainOpacity > 0.995)
-	{
-		$(this.fadeContainer)
-			.css('opacity', '')
-			.css('filter', '');
-	}
-	else
-	{
-		$(this.fadeContainer)
-			.css('opacity', mainOpacity)
-			.css('filter', 'alpha(opacity=' + Math.floor(mainOpacity * 10) + ');');
-	}
+	// var mainOpacity = renderInfo.mainOpacity;
+	// if(mainOpacity > 0.995)
+	// {
+	// 	$(this.fadeContainer)
+	// 		.css('opacity', '')
+	// 		.css('filter', '');
+	// }
+	// else
+	// {
+	// 	$(this.fadeContainer)
+	// 		.css('opacity', mainOpacity)
+	// 		.css('filter', 'alpha(opacity=' + Math.floor(mainOpacity * 10) + ');');
+	// }
 
 	this.sceneRenderer.RenderPixelated(frame, ctx, width, height, c, __useCPP);
 

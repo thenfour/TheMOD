@@ -16,7 +16,7 @@ var TheModRenderer = function()
 TheModRenderer.prototype.GetFrameInfo = function(frame, ctx)
 {
 	return {
-		mainOpacity: this.fadeInTween.tween(frame, 0, 1)
+		mainOpacity: 1.0//this.fadeInTween.tween(frame, 0, 1)
 	};
 }
 

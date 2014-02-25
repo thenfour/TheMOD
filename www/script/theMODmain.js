@@ -23,8 +23,17 @@ var audioEngine;
 
 function reinitScrollContainers()
 {
-  $('#content').data('jsp').reinitialise();
+	$('.content').each(function(){
+		if($(this).data('jsp'))
+			$(this).data('jsp').reinitialise();
+	});
+
+	// i don't know why but it will set width:0 and margin-left:some_huge_value *sometimes*.
+	// this hacks it away.
+  $('.jspPane').css("margin-left", "0");
+  $('.jspPane').css("width", "");
 }
+
 
 function isCanvasSupported(){
 	//return false;
@@ -40,6 +49,12 @@ function isAudioSupported() {
 
 function OnPrereqsLoaded()
 {
+	$('.content').jScrollPane();
+	// i don't know why but it will set width:0 and margin-left:some_huge_value *sometimes*.
+	// this hacks it away.
+  $('.jspPane').css("margin-left", "0");
+  $('.jspPane').css("width", "");
+
 	// http://stackoverflow.com/questions/3537615/jscrollpane-resize
 	// or http://jscrollpane.kelvinluck.com/dynamic_height.html
   $(window).resize(reinitScrollContainers);
@@ -71,10 +86,13 @@ function OnPrereqsLoaded()
 			.css('display', 'none');
 	}
 
-	if(isCanvasSupported())
-		demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
-	else
-		demoEngine = new TheModNonCanvasDemo('canvasHere');
+	// the timeout here allows browsers to init properly.
+	setTimeout(function(){
+		if(isCanvasSupported())
+			demoEngine = new TheModEngine('canvasHere', new TheModRenderer(), 'container', audioEngine);
+		else
+			demoEngine = new TheModNonCanvasDemo('canvasHere');
+	}, 20);
 }
 
 
