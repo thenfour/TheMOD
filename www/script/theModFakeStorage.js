@@ -8,12 +8,6 @@ var TheModFakeStorage = function()
 		{
 			navItem:
 			{
-				// title:
-				// [
-				// 	{ lang: "en-US", value: "About The MOD" },
-				// 	{ lang: "nl-BE", value: "Over The MOD" },
-				// 	{ lang: "fr-BE", value: "Sur The MOD" }
-				// ],
 				id: 'default'// used as an ID.
 			},
 			isDefault: true,
@@ -22,45 +16,12 @@ var TheModFakeStorage = function()
 				{ lang: "en-US", value: "The MOD: About" },
 				{ lang: "nl-BE", value: "The MOD: Over ons" },
 				{ lang: "fr-BE", value: "The MOD: Sur nous" }
-			],
-// 			content:
-// 			[
-// 				{ lang: "en-US", value: "<p>The MOD is a jazz fusion quintet performing arrangements of underground "
-// 					+ "electro jazz/funk. We collaborate with electro jazz artists around the world to "
-// 					+ "add the human element to the music that deserves it the most. The result is a "
-// 					+ "blissful combination of catchy melodies, danceable beats, asymmetric surprises, and"
-// 					+ " ground-shaking grooves.</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
-
-
-
-
-
-// 				{ lang: "nl-BE", value: "<p>"
-// + "The MOD is een jazz fusion kwintet dat bewerkingen van underground electro-jazz/funk brengt. "
-// + "We werken samen met electro-jazzartiesten wereldwijd om het menselijke aspect toe te voegen "
-// + "aan de muziek die dat het meest verdient. Het resultaat is een verrukkelijke combinatie van"
-// + " aanstekelijke melodieën, dansbare ritmes, asymmetrische verrassingen en grooves "
-// + "die de grond onder je voeten doen beven. "
-// 					+ "</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" },// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
-
-// 				{ lang: "fr-BE", value: "<p>"
-// + "The MOD est un quintette de fusion jazz qui interprète des arrangements de jazz/funk électro "
-// + "underground. Nous collaborons avec des artistes électro jazz de par le monde, ce qui ajoute un "
-// + "élément humain indispensable à la musique. Le résultat est une combinaison aboutie de mélodies "
-// + "entraînantes, de beats dansants, d'asymétries surprenantes, et de grooves envoûtants."
-// 					+ "</p><img style=\"width:527px;height:351px\" src=\"img/themodphoto.jpg\" />" }// it's important to specify dimensions so the scroll container can init properly before the image has even loaded.
-// 			]
+			]
 		},
 		//-------------------------------------------------------------------------------------
 		{
 			navItem:
 			{
-				// title:
-				// [
-				// 	{ lang: "en-US", value: "Musicians" },
-				// 	{ lang: "nl-BE", value: "Muzikanten" },
-				// 	{ lang: "fr-BE", value: "Les Musiciens" }
-				// ],
 				id: 'musicians'
 			},
 			pageTitle:
@@ -68,44 +29,12 @@ var TheModFakeStorage = function()
 				{ lang: "en-US", value: "The MOD: Musicians" },
 				{ lang: "nl-BE", value: "The MOD: Muzikanten" },
 				{ lang: "fr-BE", value: "The MOD: Les Musiciens" }
-			],
-			// content: 
-			// [
-			// 	{ lang: "en-US", value:
-			// 		"<p><h2>Carl Corcoran, keyboard</h2></p>"
-			// 		+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
-			// 		+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
-			// 		+ "<p><h2>Iënad Friedman, bass</h2></p>"
-			// 		+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
-			// 	},
-			// 	{ lang: "nl-BE", value:
-			// 		"<p><h2>Carl Corcoran, keyboard</h2></p>"
-			// 		+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
-			// 		+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
-			// 		+ "<p><h2>Iënad Friedman, bass</h2></p>"
-			// 		+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
-			// 	},
-
-			// 	{ lang: "fr-BE", value:
-			// 		"<p><h2>Carl Corcoran, keyboard</h2></p>"
-			// 		+ "<p><h2>Angelo Gregorio, saxophone</h2></p>"
-			// 		+ "<p><h2>Damiano La Rocca, guitar</h2></p>"
-			// 		+ "<p><h2>Iënad Friedman, bass</h2></p>"
-			// 		+ "<p><h2>Wilfried Manzanza, drums</h2></p>"
-			// 	}
-			// ]
-		},
+			]		},
 
 		//-------------------------------------------------------------------------------------
 		{
 			navItem:
 			{
-				// title:
-				// [
-				// 	{ lang: "en-US", value: "Contact Us" },
-				// 	{ lang: "nl-BE", value: "Contact" },
-				// 	{ lang: "fr-BE", value: "Contactez-Nous" }
-				// ],
 				id: 'contact'
 			},
 			pageTitle:
@@ -113,25 +42,13 @@ var TheModFakeStorage = function()
 				{ lang: "en-US", value: "The MOD: Contact" },
 				{ lang: "nl-BE", value: "The MOD: Contact" },
 				{ lang: "fr-BE", value: "The MOD: Contactez-Nous" }
-			],
-			// content: 
-			// [
-			// 	{ lang: "en-US", value: "+32 (0)499 315 763<br /><a href=\"contact@themod.be\">contact@themod.be</a>" },
-			// 	{ lang: "nl-BE", value: "+32 (0)499 315 763<br /><a href=\"contact@themod.be\">contact@themod.be</a>" },
-			// 	{ lang: "fr-BE", value: "+32 (0)499 315 763<br /><a href=\"contact@themod.be\">contact@themod.be</a>" }
-			// ]
+			]
 		},
 
 		//-------------------------------------------------------------------------------------
 		{
 			navItem:
 			{
-				// title:
-				// [
-				// 	{ lang: "en-US", value: "Listen" },
-				// 	{ lang: "nl-BE", value: "Audio" },
-				// 	{ lang: "fr-BE", value: "Écoutez" }
-				// ],
 				id: 'listen'
 			},
 			pageTitle:
@@ -139,30 +56,7 @@ var TheModFakeStorage = function()
 				{ lang: "en-US", value: "The MOD: Listen" },
 				{ lang: "nl-BE", value: "The MOD: Audio" },
 				{ lang: "fr-BE", value: "The MOD: Écoutez" }
-			],
-			// content: 
-			// [
-			// 	{ lang: "en-US", value: 
-			// 		"<p>Visit us on soundcloud: <a href=\"https://soundcloud.com/the-mod\">https://soundcloud.com/the-mod</a></p>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 	},
-
-			// 	{ lang: "nl-BE", value:
-			// 		"<p>Luister ons op SoundCloud: <a href=\"https://soundcloud.com/the-mod\">https://soundcloud.com/the-mod</a></p>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 	},
-
-			// 	{ lang: "fr-BE", value:
-			// 		"<p>Écoutez-nous sur SoundCloud: <a href=\"https://soundcloud.com/the-mod\">https://soundcloud.com/the-mod</a></p>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 		+ "<iframe width=\"550\" height=\"166\" scrolling=\"no\" frameborder=\"no\" src=\"https:\/\/w.soundcloud.com\/player\/?url=https%3A\/\/api.soundcloud.com\/tracks\/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false\"><\/iframe>"
-			// 	}
-			// ]
+			]
 		}
 	];
 	//-------------------------------------------------------------------------------------
@@ -244,17 +138,6 @@ TheModFakeStorage.prototype.GetPageTitle = function(pageInfo, lang)
 {
 	return this.GetLocalizedValue(pageInfo.pageTitle, lang);
 }
-
-TheModFakeStorage.prototype.GetPageContentHTML = function(pageInfo, lang)
-{
-	return this.GetLocalizedValue(pageInfo.content, lang);
-}
-
-TheModFakeStorage.prototype.GetPageNavTitle = function(navItem, lang)
-{
-	return this.GetLocalizedValue(navItem.title, lang);
-}
-
 
 
 TheModFakeStorage.prototype.GetDefaultLanguage = function()

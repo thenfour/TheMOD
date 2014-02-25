@@ -11,7 +11,6 @@ issues:
 	<title>The MOD</title>
 
 THEMODSCRIPTSHERE
-
     <link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
 	<style type="text/css">
@@ -105,7 +104,39 @@ THEMODSCRIPTSHERE
   }
   .content p {
     margin-bottom:15px;
+    clear:both;/* new paragraphs will break img/text hugging */
   }
+  .content h2 {
+  	font-size:18px;
+  }
+
+  .content .musicianProfileLeft,
+  .content .musicianProfileRight {
+  	width:450px;
+    clear:both;/* new paragraphs will break img/text hugging */
+  }
+  .content .musicianProfileLeft img
+  {
+  	float:left;
+  	padding-bottom:17px;
+  	margin-right:12px;
+  }
+  .content .musicianProfileLeft div
+  {
+  	padding-top:25px;
+  }
+
+  .content .musicianProfileRight img
+  {
+  	float:right;
+  	padding-bottom:17px;
+  	margin-left:12px;
+  }
+  .content .musicianProfileRight div
+  {
+  	padding-top:25px;
+  }
+
   #copyright{
     color:#666;
     overflow: hidden;
@@ -272,21 +303,63 @@ die de grond onder je voeten doen beven.
 
 		<div class="content" data-contentforpage="default" data-contentforlanguage="fr-BE" lang="fr-BE"><div class="contentInner">
 <p>
+
 The MOD est un quintette de fusion jazz qui interprète des arrangements de jazz/funk électro 
 underground. Nous collaborons avec des artistes électro jazz de par le monde, ce qui ajoute un 
-élément humain indispensable à la musique. Le résultat est une combinaison aboutie de mélodies 
-entraînantes, de beats dansants, d'asymétries surprenantes, et de grooves envoûtants.
+élément humain à cette musique qui mérite d'être jouée en live. Le résultat est une combinaison 
+aboutie de mélodies entraînantes, de beats dansants, d'asymétries surprenantes, et de grooves 
+envoûtants.
  </p><p><img style="width:527px;height:351px" src="img/themodphoto.jpg" /></p>
 		</div></div>
 
 
 		<!-- MUSICIANS ================================ -->
-		<div class="content" data-contentforpage="musicians" data-contentforlanguage="en-US;nl-BE;fr-BE" lang="en-US"><div class="contentInner">
-			<p><h2>Carl Corcoran, keyboard</h2></p>
-			<p><h2>Angelo Gregorio, saxophone</h2></p>
-			<p><h2>Damiano La Rocca, guitar</h2></p>
-			<p><h2>Iënad Friedman, bass</h2></p>
-			<p><h2>Wilfried Manzanza, drums</h2></p>
+		<div class="content" data-contentforpage="musicians" data-contentforlanguage="en-US;nl-BE;fr-BE" lang="en-US">
+		<div class="contentInner">
+
+			<div class="musicianProfileLeft">
+				<img style="width:163px;height:230px" src="img/carl.jpg" />
+				<div>
+				<h2>Carl Corcoran</h2>
+				keyboards<br />
+				</div>
+			</div>
+
+			<div class="musicianProfileRight">
+				<img style="width:157px;height:191px" src="img/angelo.jpg" class="portrait-right" />
+				<div>
+				<h2>Angelo Gregorio</h2>
+				saxophone<br />
+				<a href="http://www.angelogregorio.com/">http://www.angelogregorio.com/</a>
+				</div>
+			</div>
+
+			<div class="musicianProfileLeft">
+				<img style="width:155px;height:192px" src="img/damiano.jpg" class="portrait-left" />
+				<div>
+				<h2>Damiano La Rocca</h2>
+				guitar<br />
+				<a href="http://www.damianolarocca.com/">http://www.damianolarocca.com/</a>
+				</div>
+			</div>
+
+			<div class="musicianProfileRight">
+				<img style="width:151px;height:212px" src="img/ienad.jpg" class="portrait-right" />
+				<div>
+				<h2>Iënad Friedman</h2>
+				bass<br />
+				</div>
+			</div>
+
+			<div class="musicianProfileLeft">
+				<img style="width:159px;height:205px" src="img/wilfried.jpg" class="portrait-left" />
+				<div>
+				<h2>Wilfried Manzanza</h2>
+				drums<br />
+				</div>
+			</div>
+
+
 		</div></div>
 
 
@@ -300,21 +373,21 @@ entraînantes, de beats dansants, d'asymétries surprenantes, et de grooves envo
 
 
 		<!-- LISTEN ================================ -->
-		<div class="content" data-contentforpage="listen" data-contentforlanguage="en-US"><div class="contentInner">
+		<div class="content" data-contentforpage="listen" data-contentforlanguage="en-US" lang="en-US"><div class="contentInner">
 			<p>Visit us on soundcloud: <a href="https://soundcloud.com/the-mod">https://soundcloud.com/the-mod</a></p>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 		</div></div>
 
-		<div class="content" data-contentforpage="listen" data-contentforlanguage="nl-BE"><div class="contentInner">
+		<div class="content" data-contentforpage="listen" data-contentforlanguage="nl-BE" lang="nl-BE"><div class="contentInner">
 			<p>Luister ons op SoundCloud: <a href="https://soundcloud.com/the-mod">https://soundcloud.com/the-mod</a></p>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723141&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 		</div></div>
 
-		<div class="content" data-contentforpage="listen" data-contentforlanguage="fr-BE"><div class="contentInner">
+		<div class="content" data-contentforpage="listen" data-contentforlanguage="fr-BE" lang="fr-BE"><div class="contentInner">
 			<p>Écoutez-nous sur SoundCloud: <a href="https://soundcloud.com/the-mod">https://soundcloud.com/the-mod</a></p>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723587&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>
 			 <iframe width="550" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/135723539&amp;color=5e506f&amp;auto_play=false&amp;hide_related=true&amp;show_artwork=false"></iframe>

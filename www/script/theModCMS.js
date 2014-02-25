@@ -121,8 +121,7 @@ TheModCMS.prototype.__navigateExec = function()
 
 	});
 
-	// reveal the right content. to do this, first hide all content, then remove jscroller stuff, then show, then add jscroll.
-	// this is the safest way to ensure sizes and things are done properly.
+	// reveal the right content. to do this, first hide all content
 	$("div").each(function(i, o) {
 		var lang = $(this).data("contentforlanguage");
 		if(!lang)
@@ -148,12 +147,6 @@ TheModCMS.prototype.__navigateExec = function()
 		if(match)
 		{
 			$(this).show();
-		  //$(this).jScrollPane();
-			// i don't know why but it will set width:0 and margin-left:some_huge_value *sometimes*.
-			// this hacks it away.
-		  //$('.jspPane').css("margin-left", "0");
-		  //$('.jspPane').css("width", "");
-
 		}
 	});
 
