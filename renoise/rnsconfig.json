@@ -1,0 +1,567 @@
+/*
+
+
+*/
+
+
+{
+  "Settings":
+  {
+    "logWidth" : 800,
+    "logHeight" : 600,
+    "logTruncateColumn" : 122,
+    "H1Font" : "Georgia11",
+    "H2Font" : "small",
+    "mappingCellWidth" : 18,
+    "enableTerminalOutput" : false
+  },
+  "Devices":
+  [
+    { "Name" : "Impulse ( Impulse )", "Channel" : 0 },
+    { "Name" : "SL MkII (Port 1)", "Channel" : 0 },
+    { "Name" : "microKEY-37 (KEYBOARD)", "Channel" : 0 }
+  ],
+  "Songs":
+  [
+    {
+      "Name" : "(blank)",
+      "Devices":
+      [
+        [        ],
+        [        ],
+        [        ]
+      ]
+    },
+
+    {
+      "Name" : "Beat From a Broken Heart",
+      "Prefix" : "bfbh-",
+      "Devices" :
+      [
+        [
+"gen-PlasticBlocks"
+        ],
+        [
+"gen-Isotonous",
+"gen-Elevator"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Big Truffle in Little China",
+      "Prefix" : "btilc-",
+      "Devices" :
+      [
+        [
+"gen-bleepage",
+"ioiwy-liveprey",
+"gen-rainbow"
+        ],
+        [
+"btilc-piano",
+"gen-Isotonous",
+"gen-Elevator",
+"btilc-epiano",
+"gen-rainbow"
+        ],
+        [
+        ]
+      ]
+    },
+
+
+
+    {
+      "Name" : "Bubble Bath Aftermath",
+      "Prefix" : "bba-",
+      "Devices" :
+      [
+        [
+{ "name" : "gen-Isotonous", "layers" : [
+	{ "instrument" : "gen-Isotonous", "transpose" : "24" }
+]},
+"gen-Elevator"
+        ],
+        [
+{ "name" : "bba-bootychords++", "layers" : [
+	{ "instrument" : "bba-bootychords", "transpose" : "24" },
+	//{ "instrument" : "gen-Elevator", "transpose" : "12" },
+	{ "instrument" : "wnlgd-tronflute", "transpose" : "12" }
+]},
+"ioiwy-liveprey"
+        ],
+        [
+        ]
+      ]
+    },
+
+
+//"chill-lead2",
+//"chill-smooth"
+
+    {
+      "Name" : "Chillzone",
+      "Prefix" : "chill-",
+      "bpm" : 125,
+      "Devices" :
+      [
+
+        // impulse 49
+        [
+          { "name" : "arp+string", "layers" : [
+            { "instrument" : "chill-arp" },
+            { "instrument" : "chill-marcatostring", "transpose" : "12" }
+          ]},
+          { "name" : "pad", "layers" : [
+            { "instrument" : "gen-Isotonous", "transpose" : "24" }
+          ]}
+        ],
+
+        // SL-MkII
+        [
+          { "name" : "pad+bell", "layers" : [
+            { "instrument" : "gen-Isotonousoct", "transpose" : "24", "keyRange" : "C0-B5" },
+            { "instrument" : "gen-piabelloct", "transpose" : "0", "keyRange" : "C6-C8" }
+          ]},
+          { "name" : "pad", "layers" : [
+            { "instrument" : "gen-Isotonous", "transpose" : "24" }
+          ]}
+        ]
+      ]
+    },
+
+
+    {
+      "Name" : "ChineseIdentityConflict",
+      "Prefix" : "cic-",
+      "bpm" : 85,
+      "Devices":
+      [
+        [
+          { "name" : "cic-mellowcomp", "layers" : [
+            { "instrument" : "cic-mellowcomp", "transpose" : "12" }
+          ]},
+"cic-arp arp",
+"cic-arp"
+        ],
+        [
+"cic-mellowlead",
+"cic-mellowlead+bell",
+"cic-bell and clap",
+"cic-claps"
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Go Anywhere",
+      "Prefix" : "ga-",
+      "Devices" :
+      [
+        [
+{"name" : "ga-mellotron+wheeze", "layers" : [
+  { "instrument" : "ga-mellotron+wheeze", "transpose" : "12" }
+]},
+"tlr-solocomp"
+        ],
+
+        [
+{"name" : "ga-keycomp+bell", "layers" : [
+  { "instrument" : "ga-keycomp+bell", "transpose" : "12" }
+]},
+"scarbeerhodes",
+"kia-epiano"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "If Only It Were You",
+      "Prefix" : "ioiwy-",
+      "Devices" :
+      [
+        [
+"ioiwy-clav2",
+"ioiwy-liveprey",
+"scarbeerhodes"
+        ],
+        [
+"scarbeerhodes",
+"ioiwy-liveprey"
+        ],
+        [
+        ]
+      ]
+    },
+
+
+    {
+      "Name" : "Intro3",
+      "Prefix" : "i3-",
+      "bpm" : 110,
+      "Devices" :
+      [
+        [
+{"name" : "gen-piabell", "layers" : [
+  { "instrument" : "gen-piabell", "transpose" : "12" }
+]},
+"i3-bell",
+"mbps-bell"
+        ],
+        [
+"i3-piano",
+"btilc-piano"
+        ],
+        [
+        ]
+      ]
+    }
+
+
+    {
+      "Name" : "Kiabrandultlan",
+      "Prefix" : "kia-",
+      "bpm" : 125,
+      "Devices" :
+      [
+        [
+{"name" : "kia-string+clav", "layers" : [
+  { "instrument" : "kia-string+clav", "transpose" : "12" }
+]},
+"kia-string+funkii",
+"tlr-solocomp",
+"kia-epiano"
+        ],
+        [
+{"name" : "kia-epiano", "layers" : [
+  { "instrument" : "kia-epiano", "transpose" : "12" },
+  { "instrument" : "scarbeerhodes", "transpose" : "12" }
+]},
+{"name" : "kia-epiano+organ", "layers" : [
+  { "instrument" : "kia-epiano+organ", "transpose" : "12" }
+]},
+"kia-epiano+funkii",
+"kia-epiano"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Lazy Boy",
+      "Prefix" : "lazy-",
+      "Devices" :
+      [
+        [
+{"name" : "lazy-synth", "layers" : [
+  { "instrument" : "lazy-synth", "transpose" : "12" }
+]},
+"lazy-flute",
+"ioiwy-rhodes",
+"btilc-piano",
+"btilc-epiano"
+        ],
+        [
+{"name" : "lazy-rhodes", "layers" : [
+  { "instrument" : "lazy-rhodes", "transpose" : "12" }
+]},
+"lazy-flute",
+"btilc-piano",
+"ioiwy-rhodes",
+"btilc-epiano"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Maria's Closet",
+      "Prefix" : "mc-",
+      "Devices" :
+      [
+        [
+{ "name" : "gen-Edgeoptional", "layers" : [
+  { "instrument" : "gen-Edgeoptional", "transpose" : "12" }
+]},
+"gen-pinginmotion",
+"gen-rainbow"
+        ],
+				[
+{ "name" : "airconditioned", "layers" : [
+  { "instrument" : "gen-Airconditioned", "transpose" : "12" }
+]},
+{ "name" : "airconditioned+ping", "layers" : [
+  { "instrument" : "gen-Airconditioned", "transpose" : "24", "keyRange" : "C0-C8" },
+  { "instrument" : "gen-pinginmotion", "transpose" : "12", "keyRange" : "C0-C8" }
+]},
+{ "name" : "airconditioned+rainbow", "layers" : [
+  { "instrument" : "gen-Airconditioned", "transpose" : "24", "keyRange" : "C0-B5" },
+  { "instrument" : "gen-rainbow", "transpose" : "0", "keyRange" : "C6-C8" }
+]},
+"gen-pinginmotion",
+"gen-rainbow",
+"gen-vicioussid",
+"gen-bleepage"
+        ]
+      ]
+    },
+
+
+    {
+      "Name" : "Megabits Per Second",
+      "Prefix" : "mbps-",
+      "bpm" : 95,
+      "Devices" :
+      [
+        [
+"mbps-bell"
+        ],
+        [
+"mbps-epiano"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "SCA Type 2",
+      "Prefix" : "sca-",
+      "Devices" :
+      [
+        [
+{ "name" : "sca-sectionV", "layers" : [
+  { "instrument" : "sca-sectionV", "transpose" : "12" }
+]},
+"sca-horn+sectionV",
+"sca-whistler",
+"sca-ringer"
+        ],
+        [
+"sca-whistler",
+"sca-ringer",
+"sca-vox"
+"sca-horn"
+        ],
+        [
+"sca-vox"
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Sexy Walk",
+      "Prefix" : "sw-",
+      "Devices" :
+      [
+        [
+{ "name" : "sw-waterstone", "layers" : [
+  { "instrument" : "sw-waterstone", "transpose" : "24" }
+]}
+        ],
+        [
+{ "name" : "sw-isotonous", "layers" : [
+  { "instrument" : "sw-isotonous", "transpose" : "24" }
+]}
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "The Devil's Portrait",
+      "Prefix" : "dp-",
+      "Devices" :
+      [
+        [
+"dp-org1",
+"dp-wah lead",
+"dp-wah bass"
+        ],
+        [
+"dp-wah bass+lead+5th",
+"dp-wah lead"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "The Last Resort",
+      "Prefix" : "tlr-",
+      "Devices" :
+      [
+        [
+{ "name" : "tlr-comp", "layers" : [
+  { "instrument" : "tlr-comp", "transpose" : "12" }
+]},
+{ "name" : "tlr-solocomp", "layers" : [
+  { "instrument" : "tlr-solocomp", "transpose" : "12" }
+]},
+"tlr-solo",
+"tlr-snare",
+"tlr-beep"
+        ],
+        [
+{ "name" : "tlr-beep+snare+beep", "layers" : [
+  { "instrument" : "tlr-beep+snare+beep", "transpose" : "12" }
+]},
+{ "name" : "tlr-solo", "layers" : [
+  { "instrument" : "tlr-solo", "transpose" : "12" }
+]},
+"tlr-snare",
+"tlr-comp",
+"tlr-solocomp"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "When Northern Lights Go Down",
+      "Prefix" : "wnlgd-",
+      "Devices" :
+      [
+
+// impulse
+        [
+{ "name" : "tronflute", "layers" : [
+  { "instrument" : "wnlgd-tronflute", "transpose" : "24" }
+]}
+        ],
+
+// SL-MKII
+        [
+{ "name" : "comp+bell", "layers" : [
+  { "instrument" : "wnlgd-comp", "transpose" : "24", "keyRange" : "C0-B5" },
+  { "instrument" : "gen-piabell", "transpose" : "0", "keyRange" : "C6-C8" }
+]}
+        ]
+      ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "Name" : "This Is Rabbit Country!",
+      "Prefix" : "rabbits-",
+      "Devices":
+      [
+        [
+"rabbits-glock",
+"rabbits-odddrive",
+"rabbits-roton strings"
+        ],
+        [
+"rabbits-aerona",
+"ioiwy-rhodes",
+"rabbits-glock",
+"rabbits-odddrive"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "Bonfire",
+      "Prefix" : "bonfire-",
+      "Devices" :
+      [
+        [
+"bonfire-arp",
+"bonfire-lead",
+"ioiwy-rhodes",
+"btilc-piano"
+        ],
+        [
+"bonfire-lead",
+"bonfire-arp",
+"ioiwy-rhodes",
+"btilc-piano"
+        ],
+        [
+        ]
+      ]
+    },
+
+    {
+      "Name" : "'85 Ninja Get Together",
+      "Prefix" : "ninja-",
+      "Devices" :
+      [
+        [
+"ninja-lead",
+"ninja-echodrop",
+"ninja-anvil",
+"ninja-melodi1",
+"ninja-melodi2",
+"ninja-melodi3",
+"ninja-pad"
+        ],
+        [
+"ninja-lead",
+"ninja-echodrop",
+"ninja-anvil",
+"ninja-melodi1",
+"ninja-melodi2",
+"ninja-melodi3",
+"ninja-pad"
+        ],
+        [
+        ]
+      ]
+    }
+
+
+
+  ]
+}
+
+
+
