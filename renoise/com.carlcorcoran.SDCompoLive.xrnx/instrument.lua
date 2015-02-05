@@ -7,7 +7,7 @@ require("globals")
 -- 	"name" : "wtf+lol",
 -- 	"layers" :
 -- 	[
--- 		{ "instrument" : "wtf", "transpose" : "12", "keyRange" : "C3-C5" },
+-- 		{ "instrument" : "wtf", "transpose" : "12", "keyRange" : "C3-C5", "gain" : "0" },
 -- 		{ "instrument" : "lol", "transpose" : "12", "keyRange" : "C3-C5" }
 -- 	]
 -- }
@@ -76,7 +76,7 @@ function EnsureProgramObject(inp)
 		return {
 			name = inp,
 			theModProgram = true,
-			layers = { { instrument = inp, transpose = 0, keyRange = { 0, 119 } } }
+			layers = { { instrument = inp, transpose = 0, keyRange = { 0, 119 }, gain = 0 } }
 		}
 	end
 
@@ -93,7 +93,20 @@ function EnsureProgramObject(inp)
 
 	for layerIndex = 1, #inp["layers"] do
 		local jsonLayer = inp["layers"][layerIndex]
+
 		local keyRange = ParseKeyRange(jsonLayer["keyRange"])
+		
+		local gain = jsonLayer["gain"]
+		if not gain then
+			gain = 0.0
+		end
+		gain = tonumber(gain)
+
+		--print(jsonLayer["instrument"] .. " gain: " .. tostring(gain))
+
+		if gain > 6 then
+			renoise.app():show_error(string.format("!!!! Gain can't be greater than 6db. %s", jsonLayer["instrument"]))
+		end
 		local transpose = 0
 		if jsonLayer["transpose"] then
 			transpose = tonumber(jsonLayer["transpose"])
@@ -108,7 +121,8 @@ function EnsureProgramObject(inp)
 		local newLayer = {
 			instrument = jsonLayer["instrument"],
 			transpose = transpose,
-			keyRange = keyRange
+			keyRange = keyRange,
+			gain = gain
 		}
 
 		table.insert(ret.layers, newLayer)
@@ -125,7 +139,7 @@ end
 CC.nullProgram = {
 	name = "(nil)",
 	theModProgram = true,
-	layers = { { instrument = "(none)", transpose = 0, keyRange = { 0, 119 } } }
+	layers = { { instrument = "(none)", transpose = 0, keyRange = { 0, 119 }, gain = 0 } }
 }
 
 

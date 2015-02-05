@@ -144,3 +144,25 @@ function string.starts(String,Start)
   return string.sub(String,1,string.len(Start))==Start
 end
 
+
+-- DSP utilities
+function dbToRatio(db)
+    return 10 ^ (db/20)
+end
+
+function ratioToDB(ratio)
+	return math.log10(ratio) * 20
+end
+
+
+function volumeToString(ratio)
+	local db = ratioToDB(ratio)
+	if db < 0 then
+		return string.format("%.04f", db)
+	end
+	if db == 0 then
+		return "±0"
+	end
+	return string.format("+%.04f", db)
+end
+

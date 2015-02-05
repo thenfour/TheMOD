@@ -68,8 +68,8 @@ function GetMapping_()
   --local src = RemoveComments(table.concat(renoise.song().comments, '\n'))
   
   local mappingFileName = renoise.song().file_name .. ".themod.js"
-  local src = RemoveComments(readTextFile());
-
+  local src = RemoveComments(readTextFile(mappingFileName));
+
   local ok, m = pcall(json.decode, src)
   if not ok then
     LogMessage("Your json failed to parse.")
@@ -155,7 +155,8 @@ function DisplayMappingHeader(m, song)
             for i = 1, unfilledCharCount do
               unfilledStr = unfilledStr .. unfilledChar
             end
-            LogMessage(string.format("%s%s vol:%0.4f keyRange:%d-%d <- %s", filledStr, unfilledStr, ri.volume, layer.keyRange[1], layer.keyRange[2], ri.name))
+            local volumeString = volumeToString(ri.volume)
+            LogMessage(string.format("%s%s vol:%s keyRange:%d-%d <- %s", filledStr, unfilledStr, volumeString, layer.keyRange[1], layer.keyRange[2], ri.name))
           end-- if
         end-- for renoise.instruments
       end-- if instrumentName
@@ -340,6 +341,7 @@ function ApplyMapping(m)
               ri.midi_input_properties.device_name = m["Devices"][sdi]["Name"]
               ri.midi_input_properties.channel = tonumber(m["Devices"][sdi]["Channel"])
               ri.transpose = layer.transpose
+              ri.volume = dbToRatio(layer.gain)
               ri.midi_input_properties.note_range = layer.keyRange
 
               LogMessage(string.format("Assigning instrument  : %s (%s : %s)", ri.name, m["Devices"][sdi]["Name"], m["Devices"][sdi]["Channel"]))
@@ -399,7 +401,8 @@ end
 
 
 ------------------------------------------------------------------------------
--- DONE: adapt for instrument object
+-- TODO: this should be changed to work with multi-layer instruments. And maybe it should be a DEVICE volume change or something?
+-- for now just don't use it.
 function InstrumentVolumeChange(mm, d)
   --print(string.format("Song CC: %d", mm.int_value))
   local gainDelta = 0.05
@@ -431,7 +434,7 @@ function InstrumentVolumeChange(mm, d)
 
   for _,ri in pairs(renoise.song().instruments) do
     if ri.name == instrumentName then
-      print(string.format("gain change instrument %s %f %f", ri.name, ri.volume, gainDelta))
+      --print(string.format("gain change instrument %s %f %f", ri.name, ri.volume, gainDelta))
       
       local newVolume = ri.volume + gainDelta
       -- *** std::logic_error: 'invalid volume value '2'. valid values are (0 to 1.99526).'
