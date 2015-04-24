@@ -43,3 +43,10 @@ Been tinkering with several things and abandoned them. some of it still remains:
   * Audio automation - maybe animate the sun or something to the audio
   * Logo animation
 
+
+
+# /RENOISE/com.carlcorcoran.SDCompoLive.xrnx
+
+# /RENOISE/com.carlcorcoran.TheModVisuals.xrnx
+
+a tool that can be used to map novation launchpad mini to OSC commands, and control LED lights?

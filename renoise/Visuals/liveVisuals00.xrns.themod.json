@@ -1,0 +1,102 @@
+/*
+
+TODO: reset other radio groups along with the multi OSC
+
+colors:
+
+   off         red
+     00 10 20 30
+dkgr 01 11 21 31 orange
+     02 12 22 32
+     03 13 23 33
+ green yellow    amber
+
+
+*/
+
+{
+  "Settings":
+  {
+    "Device" : "Launchpad Mini",
+    "DeviceRows" : "9",
+    "DeviceColumns" : "9",
+    "HighlightDuration" : "400",
+    "OSCHost" : "localhost",
+    "OSCPort" : "12000",
+    "Colors" : {
+      // refer to the chart above, and use the "show color sample" menu item to see them on the device
+      "[Inactive]" : "02",
+      "[Inactive2]" : "01",
+      "[Active]" : "31",
+      "[Highlight]" : "30",
+      "[EmptyModuleInactive]" : "13"
+    }
+  },
+  "Title":
+  [
+    "-- -- -- -- -- -- -- --",
+    "-- -- -- -- -- -- -- --"
+  ],
+  "Mappings":
+  {
+    "Row 0" : 
+    {
+      "Column 1" : { "RadioGroup" : "ChannelA", "Color" : "[Inactive]", "OSC" : [ "TheMODVisuals/ChannelAStart" ] },
+      "Column 2" : { "RadioGroup" : "ChannelA", "Color" : "[Inactive]", "OSC" : [ "TheMODVisuals/ChannelAEnd" ] },
+      "Column 3" : { "RadioGroup" : "ChannelB", "Color" : "[Inactive2]", "OSC" : [ "TheMODVisuals/ChannelBStart" ] },
+      "Column 4" : { "RadioGroup" : "ChannelB", "Color" : "[Inactive2]", "OSC" : [ "TheMODVisuals/ChannelBEnd" ] },
+      "Column 5" : { "RadioGroup" : "ChannelC", "Color" : "[Inactive]", "OSC" : [ "TheMODVisuals/ChannelCStart" ] },
+      "Column 6" : { "RadioGroup" : "ChannelC", "Color" : "[Inactive]", "OSC" : [ "TheMODVisuals/ChannelCEnd" ] },
+      "Column 7" : { "RadioGroup" : "ChannelD", "Color" : "[Inactive2]", "OSC" : [ "TheMODVisuals/ChannelDStart" ] },
+      "Column 8" : { "RadioGroup" : "ChannelD", "Color" : "[Inactive2]", "OSC" : [ "TheMODVisuals/ChannelDEnd" ] }
+    },
+    "Row A" : 
+    {
+      "Column 1" : { "RadioGroup" : "Layer0", "Color" : "[EmptyModuleInactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module0Start"
+        ] },
+      "Column 2" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module1Start"
+        ] },
+      "Column 3" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module2Start"
+        ] },
+      "Column 4" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module3Start"
+        ] },
+      "Column 5" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module4Start"
+        ] },
+      "Column 6" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module5Start"
+        ] },
+      "Column 7" : { "RadioGroup" : "Layer0", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer0Module6Start"
+        ] }
+    },
+    "Row B" : 
+    {
+      "Column 1" : { "RadioGroup" : "Layer1", "Color" : "[EmptyModuleInactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module0Start"
+        ] },
+      "Column 2" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module1Start"
+        ] },
+      "Column 3" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module2Start"
+        ] },
+      "Column 4" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module3Start"
+        ] },
+      "Column 5" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module4Start"
+        ] },
+      "Column 6" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module5Start"
+        ] },
+      "Column 7" : { "RadioGroup" : "Layer1", "Color" : "[Inactive]", "OSC" : [
+        "TheMODVisuals/Layer1Module6Start"
+        ] }
+    }
+  }
+}

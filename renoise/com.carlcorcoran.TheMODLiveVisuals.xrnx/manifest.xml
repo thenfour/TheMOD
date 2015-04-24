@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RenoiseScriptingTool doc_version="0">
+  <ApiVersion>4</ApiVersion>
+  <AutoUpgraded>true</AutoUpgraded>
+  <Id>com.carlcorcoran.TheMODLiveVisuals</Id>
+  <Version>1.0</Version>
+  <Author>tenfour | carlco@gmail.com</Author>
+  <Name>The MOD Live Visuals</Name>
+  <Category>MIDI</Category>
+  <Description>A bunch of midi mappings for Novation Launchpad Mini that will set LED and transform/forward to AteBitVJ</Description>
+  <Homepage>http://tools.renoise.com</Homepage>
+</RenoiseScriptingTool>
