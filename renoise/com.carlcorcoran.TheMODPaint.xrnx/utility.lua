@@ -103,7 +103,7 @@ function CalculateVelocity(red, green)
   -- 0x08 bit 3  : clear the other buffer's copy of this LED (for double buffer support)
   -- 0x04 bit 2  : copy. if 1, write to both buffers.
   -- 0x03 bit 0-1: red LED brightness.
-  return red + (green * 16) + 0xC
+  return red + (green * 16) + 0x0
 end
 
 function CalculateMessage(x, y, red, green)
@@ -131,15 +131,50 @@ function CalculateData(x, y, red, green)
   return ((y - 1) * 0x10) + x
 end
 
--- red / green are 0-3.
--- brightness is 0-1 floating
-function SetButtonLED(device, x, y, red, green)
-  -- http://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf
-  device:send { CalculateMessage(x, y, red, green), CalculateData(x, y, red, green), CalculateVelocity(red, green) }
+
+------------------------------------------------------------------------------
+-- in order to use (x,y) as table keys...
+function XYToKey(x, y)
+	return tostring(x) .. "," .. tostring(y)
 end
 
-function LaunchpadClear(device)
+function KeyToXY(k)
+	local comma = string.find(k, ",")
+	return tonumber(k:sub(1, comma - 1)), tonumber(k:sub(comma + 1))
+end
+
+
+------------------------------------------------------------------------------
+-- red / green are 0-3.
+-- brightness is 0-1 floating
+function SetButtonLED(device, x, y, red, green, lpstate)
+	-- this is an empty spot on the grid; don't send messages for it.
+	if x == 8 and y == 0 then
+		return
+	end
+
+	-- sanitize r/g
+	red = math.floor(red + 0.5)
+	green = math.floor(green + 0.5)
+	if red < 0 then red = 0 end
+	if green < 0 then green = 0 end
+	if red > 3 then red = 3 end
+	if green > 3 then green = 3 end
+
+  -- http://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf
+  device:send { CalculateMessage(x, y, red, green), CalculateData(x, y, red, green), CalculateVelocity(red, green) }
+  lpstate.launchpadUpdatedLEDs[XYToKey(x,y)] = true
+end
+
+------------------------------------------------------------------------------
+function LaunchpadClear(device, lpstate)
   device:send { 0xb0, 0, 0 }
+  --return
+  --for x = 0, 8 do
+  --	for y = 0, 8 do
+  --		SetButtonLED(device, x, y, 0, 0)
+  --	end
+  --end
 end
 
 ------------------------------------------------------------------------------
@@ -160,21 +195,9 @@ end
 ------------------------------------------------------------------------------
 -- parses our simple 2-digit launchpad colors from a mapping. like "00" or "32" or whatever.
 -- returns r,g for red/green components. each component is 0-3
-function ParseLaunchpadColor(colorStr, recursionDepth)
-  return tonumber(colorStr:sub(1, 1)), tonumber(colorStr:sub(2, 2))
-end
-
-------------------------------------------------------------------------------
--- in order to use (x,y) as table keys...
-function XYToKey(x, y)
-	return tostring(x) .. "," .. tostring(y)
-end
-
-function KeyToXY(k)
-	local comma = string.find(k, ",")
-	return tonumber(k:sub(1, comma - 1)), tonumber(k:sub(comma + 1))
-end
-
+--function ParseLaunchpadColor(colorStr)
+--  return tonumber(colorStr:sub(1, 1)), tonumber(colorStr:sub(2, 2))
+--end
 
 
 ------------------------------------------------------------------------------
@@ -195,4 +218,54 @@ function StringToBitmap(str)
 	return ret
 end
 
+
+------------------------------------------------------------------------------
+-- params are bits 0 or 1
+-- http://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf
+-- 4 Copy    : If 1: copy the LED states from the new ‘displayed’ buffer to the new ‘updating’ buffer.
+-- 3 Flash   : If 1: continually flip ‘displayed’ buffers to make selected LEDs flash.
+-- 2 Update  : Set buffer 0 or buffer 1 as the new ‘updating’ buffer.
+-- 0 Display : Set buffer 0 or buffer 1 as the new ‘displaying’ buffer.
+function CalculateDBParam(copy, update, display)
+	return 0x20 + (copy * 0x10) + (update * 4) + display
+end
+
+------------------------------------------------------------------------------
+function LaunchpadDoubleBufferBegin(device, lpstate)
+	local newUpdateBuffer = 1
+	if lpstate.launchpadDisplayBuffer == 1 then
+		newUpdateBuffer = 0
+	end
+
+	lpstate.launchpadUpdatedLEDs = {}
+
+	-- basically we only want to create a copy of the display buffer to the back buffer,
+	-- and start updating to the back buffer. this does that in 1 shot:
+  device:send { 0xb0, 0, CalculateDBParam(1, newUpdateBuffer, lpstate.launchpadDisplayBuffer) }
+end
+
+
+------------------------------------------------------------------------------
+-- if clearUnsetButtons is true, then all buttons that were not set since LaunchpadDoubleBufferBegin will be cleared.
+function LaunchpadDoubleBufferEnd(device, lpstate, clearUnsetButtons)
+	local newDisplayBuffer = 1
+	if lpstate.launchpadDisplayBuffer == 1 then
+		newDisplayBuffer = 0
+	end
+
+	if clearUnsetButtons then
+	  for x = 0, 8 do
+	  	for y = 0, 8 do
+	  		--print(x, y)
+	  		if not lpstate.launchpadUpdatedLEDs[XYToKey(x,y)] then
+	  			SetButtonLED(device, x, y, 0, 0, lpstate)
+	  		end
+	  	end
+	  end
+	end
+
+	-- just present it. so, no copy and just present the new display buffer.
+  device:send { 0xb0, 0, CalculateDBParam(1, newDisplayBuffer, newDisplayBuffer) }
+	lpstate.launchpadDisplayBuffer = newDisplayBuffer
+end
 
