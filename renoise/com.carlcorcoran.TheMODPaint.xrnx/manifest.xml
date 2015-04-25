@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RenoiseScriptingTool doc_version="0">
+  <ApiVersion>4</ApiVersion>
+  <AutoUpgraded>true</AutoUpgraded>
+  <Id>com.carlcorcoran.TheMODPaint</Id>
+  <Version>1.0</Version>
+  <Author>tenfour | carlco@gmail.com</Author>
+  <Name>The MOD Paint</Name>
+  <Category>MIDI</Category>
+  <Description>Paint utility for Launchpad Mini</Description>
+  <Homepage>http://tools.renoise.com</Homepage>
+</RenoiseScriptingTool>

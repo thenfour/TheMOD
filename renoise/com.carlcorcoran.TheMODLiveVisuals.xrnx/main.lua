@@ -197,7 +197,7 @@ function OnTheMODLiveVisualsStart()
 	  return
 	end
 
-	renoise.app():show_warning('The MOD Live Visuals ready to rock')
+	--renoise.app():show_warning('The MOD Live Visuals ready to rock')
 end
 
 
@@ -205,7 +205,7 @@ end
 -- midi mappings & menu items. Note that these are separate from the configurable ones in your JSON.
 -- these are like, fundamental app things.
 renoise.tool():add_menu_entry {
-  name = "Main Menu:Tools:The MOD Live Visuals:Show Color Sample",
+  name = "Main Menu:Tools:The MOD Live Visuals - Show Color Sample",
   invoke = OnDisplayColorSample
 }
 
