@@ -12,6 +12,7 @@ CC.busyButtons = {}-- maps button to ref count of timers for it
 --CC.animationSpeed = tonumber(CC.mapping["Settings"]["AnimationSpeed"])
 --CC.overlayBitmap = StringToBitmap(CC.mapping["Settings"]["AnimationOverlay"])
 --CC.overlayWidth = tonumber(CC.mapping["Settings"]["AnimationOverlayWidth"])
+CC.showOverlay = true
 
 
 ------------------------------------------------------------------------------
@@ -161,19 +162,19 @@ end
 
 ------------------------------------------------------------------------------
 function AnimFrame()
-	local animTime = os.clock() - CC.animationStartTime
+	local animTime = os.clock()-- - CC.animationStartTime
 
 	-- find some theoretical point.
-	local ang = animTime / 1.5 -- seconds per revolution
-	ang = ang * 2 * math.pi
-	local radius = (math.sin(animTime * 2) + 1.5) / 2 * 5
-	local ptX = math.cos(ang) * radius
-	local ptY = math.sin(ang) * radius
+	--local ang = animTime / 5.5 -- seconds per revolution
+	--ang = ang * 2 * math.pi
+	--local radius = (math.sin(animTime * 2) + 1.5) / 2 * 5
+	--local ptX = math.cos(ang) * radius
+	--local ptY = math.sin(ang) * radius
 
-	ptX = ptX + 4
-	ptY = ptY + 4
+	--ptX = ptX + 4
+	--ptY = ptY + 4
 
-	local bmpOffsetX = animTime * 7
+	local bmpOffsetX = animTime * 9
 
 	LaunchpadDoubleBufferBegin(CC.outputDevice, CC)
 	for x=0,7 do
@@ -183,15 +184,22 @@ function AnimFrame()
 			bmpX = bmpX % CC.overlayWidth
 			bmpX = math.floor(bmpX)
 			local bmp = CC.overlayBitmap[XYToKey(bmpX,y)]
-			if bmp then
+			if bmp and 	CC.showOverlay then
 				local r,g = KeyToXY(bmp)
 				SetButtonLED(CC.outputDevice, x, y + 1, r,g, CC)
 			else
-				local sinArg1 = (Dist(x,y,ptX,ptY) / 13)-- assuming pt is always in the grid, max distance is sqrt(8*8)=11
+				--local sinArg1 = (Dist(x,y,ptX,ptY) / 15)-- assuming pt is always in the grid, max distance is ~ sqrt(8*8)
+				--local sinArg2 = 25 + animTime + math.sqrt(x * y) --((x+66) / 9) + ((x+50) / 7) + (animTime + 22) * 0.3
+				--local sinArg2 = (x * 3 + math.sin(animTime / 2.5))
+				--sinArg2 = sinArg2 + (y * 3 * math.cos(animTime / 3))
+				--((((math.sin((x + animTime + 41) * 1.5) + math.sin((y + animTime + 45) * 1.5)) + 2) / 4) * 3)
 				local sinArg2 = ((x * animTime) / 3) + ((y * animTime) / 4)
+				local g = (math.sin(sinArg2) + 1) / 2 * 2
+
 				SetButtonLED(CC.outputDevice, x, y + 1,
-					sinArg1 * 2,
-					(math.sin(sinArg2) + 1) / 2 * 2,
+					0,--sinArg1,
+					g,
+					--(math.sin(sinArg2) + 1) / 2 * 3,
 					CC)
 			end
 		end
@@ -217,6 +225,7 @@ end
 function OnTheMODAnimate()
 	OnTheMODAnimateStop()
 
+	CC.showOverlay = false
 	CC.animationRunning = true
 	CC.animationStartTime = os.clock()
 
@@ -301,6 +310,9 @@ function OnTheMODLiveVisualsStart()
 end
 
 
+function OnTheMODToggleOverlay()
+	CC.showOverlay = not CC.showOverlay
+end
 
 ------------------------------------------------------------------------------
 function IsTrigger(m)
@@ -355,5 +367,15 @@ renoise.tool():add_midi_mapping {
 renoise.tool():add_menu_entry {
   name = "Main Menu:Tools:The MOD Live Visuals - animate stop",
   invoke = OnTheMODAnimateStop
+}
+
+
+renoise.tool():add_midi_mapping {
+  name = "TheMODLiveVisuals:ToggleOverlay",
+  invoke = function(m) if IsTrigger(m) then OnTheMODToggleOverlay() end end
+}
+renoise.tool():add_menu_entry {
+  name = "Main Menu:Tools:The MOD Live Visuals - toggle overlay",
+  invoke = OnTheMODToggleOverlay
 }
 
