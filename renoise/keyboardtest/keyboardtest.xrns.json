@@ -1,0 +1,145 @@
+{
+	"Aliases" :
+	{
+		// things you can alias by @hi. like colors for example. kinda like a preprocessor
+		"red" : "#ff0000",
+		"blue" : "#0f0"
+	},
+	"Settings" :
+	{
+		//"NoSongImage" : "...",
+		"BaseColorScheme" : "__base",// TODO: default color scheme base
+		"LogWindowWidth" : "640",
+		"LogWindowHeight" : "480",
+		"OscHost" : "localhost",
+		"OscPort" : "8000",
+		"OscProtocol" : "UDP"
+		//"DefaultAssignmentDevice" : "SLMK2"// output device
+	},
+	"ColorSchemes" :
+	[
+		{ "Name" : "__base" }
+		// color schemes can be defined inline later too.
+		// so instead of "ColorScheme" = "__base"
+		// do: "ColorScheme" = { "Normal" : "#f0f", "Active" : "#82C" }
+		{ "Name" : "Red", "Normal" : "#f00", "Active" : "#82C" },
+		{ "Name" : "Green", "Normal" : "#0f0", "Active" : "#82C" },
+		{ "Name" : "Blue", "Normal" : "#00f", "Active" : "#82C" },
+
+		{ "Name" : "NextSong", "Normal" : "#f0f", "Active" : "#82C" },
+		{ "Name" : "NoSong", "Normal" : "#101", "Active" : "#416" },
+		{ "Name" : "ReapplyStatus", "Normal" : "#220", "Active" : "#416" },
+		{ "Name" : "ReloadConfig", "Normal" : "#f00", "Active" : "#416" },
+		{ "Name" : "PatchChange", "Normal" : "#039", "Active" : "#093" }
+	],
+	"DeviceDefs" :
+	[
+		{ "Name" : "Launchpad",
+			"InputDeviceName" : "Launchpad Pro (Standalone Port)",// optional
+			"OutputDeviceName" : "Launchpad Pro (Standalone Port)",// optional
+			"IsLaunchpadPro" : "1",// optional
+			"ButtonDefs" :
+			[
+				// defines buttons. all button names across the JSON must be unique.
+				// launchpads automatically get "A1" style buttons mapped.
+				// { "Name" : "Reload", "CC" : "120", "Channel" : "0" }, <-- non-launchpad style
+				// { "Name" : "SelectPreviousSong", "LPPKey" : "b1" }
+			]
+		},
+		{ "Name" : "Key1",
+			"InputDeviceName" : "QX49",
+			"OutputDeviceName" : "QX49"
+		}
+	],
+	"HotkeyAssignments" :
+	[
+		{ "Name" : "SelectPreviousSong", "ButtonName" : "B1", "ColorScheme" : "NextSong" },
+		{ "Name" : "SelectNoSong", "ButtonName" : "C1", "ColorScheme" : "NoSong" },
+		{ "Name" : "SelectNextSong", "ButtonName" : "D1", "ColorScheme" : "NextSong" },
+		{ "Name" : "ReapplyStatus", "ButtonName" : "H1", "ColorScheme" : "ReapplyStatus" },
+		{ "Name" : "ReloadConfiguration", "ButtonName" : "I1", "ColorScheme" : "ReloadConfig" }
+	],
+	"Patches" :
+	[
+		{ "Name" : "Bells",
+			"Layers" : [
+			  { "Instrument" : "gen-piabell", "Transpose" : "0", "Gain" : "-3", "KeyRange" : "G1-G4", "Channel" : "0" },
+			  { "Instrument" : "gen-pinginmotion", "Transpose" : "0", "Gain" : "-3" }
+		  ]
+		}
+		,
+		{ "Name" : "kick",
+			"Layers" : [{ "Instrument" : "kick" }]
+		},
+		{ "Name" : "snare",
+			"Layers" : [{ "Instrument" : "snare" }]
+		},
+		{ "Name" : "kick+snare",
+			"Layers" : [
+			  { "Instrument" : "kick" },
+			  { "Instrument" : "snare" }
+		  ]
+		}
+	],
+	"Samples" :
+	[
+		{ "Name" : "Snare",
+			"Layers" : [ { "Instrument" : "snare", "Note" : "C5", "Velocity" : "120" } ]
+		},
+		{ "Name" : "Kick", "Instrument" : "kick", "Note" : "C5", "Velocity" : "120" },
+		{ "Name" : "Rhodes",
+			"Instrument" : "Rhodes2"
+			// leave out velocity to use the velocity of the user's key trigger
+			// leave out note; it can be set by a child sample
+		}
+	],
+	"Songs" :
+	[
+		{ "Name" : "Base (1)",
+			"Image" : "base.png",
+			"ButtonMap" : [
+				// assign triggers to device + patches or samples
+				// "Button" is the primary key, so inheritance will overwrite.
+				{ "Button" : "B8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "Bells" }]},// patch change
+				{ "Button" : "C8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "Bells" }]}// patch change with default device
+				// this assignment triggers sample directly
+				// "@lpsample" is a variable, indicating the name of the sample to override
+				// TODO: support note value like {"C", "5"}, where 5 can be a variable,
+				// TODO: support an octave up / down method
+				// TODO: don't preprocess anything; do it at runtime to support changing variables
+				{ "Button" : "B1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "C5" } ] },
+				{ "Button" : "C1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "D5" } ] },
+				{ "Button" : "D1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "E5" } ] },
+				{ "Button" : "E1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "F5" } ] },
+				{ "Button" : "F1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "G5" } ] },
+				{ "Button" : "G1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "A5" } ] },
+				{ "Button" : "H1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "B5" } ] }
+			]
+		},
+		{ "Name" : "song1",
+			"Inherits" : "Base",
+			"Image" : "song1.png",
+			"Variables" : [ { "@lpsample" : "Rhodes" } ],
+			"ButtonMap" : [
+				{ "Button" : "D8", "ColorScheme" : "Red", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "snare" }]},
+				{ "Button" : "E8", "ColorScheme" : "Blue", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "kick" }]},
+				{ "Button" : "F8", "ColorScheme" : "Green", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "kick+snare" }]}
+				{ "Button" : "G6",
+					"ColorScheme" : "Green",
+					"SampleTriggers" :
+					[
+						"Snare",
+						{ "Layers" : [ { "Instrument" : "snare", "Note" : "C5", "Velocity" : "120" } ] },
+						{ "Instrument" : "snare", "Note" : "C3", "Velocity" : "120" }
+					]
+				}
+			]
+		}
+		{ "Name" : "song2",
+			"Inherits" : "Base",
+			"Image" : "song2.png"
+		}
+	]
+}
+
+
