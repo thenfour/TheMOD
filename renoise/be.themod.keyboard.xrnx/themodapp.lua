@@ -3,6 +3,7 @@
 
 -- TODO:
 -- - get rid of two separate dropdowns
+-- - support song inheritance
 -- - play samples (just get reload config to play that sample)
 --   - support keyup event
 --   - launchpad support keyup + velocity
@@ -13,7 +14,7 @@
 
 require("renoise/http/json")
 require("utility")
-require("config")
+require("config/config")
 require("launchpadpro")
 require("samplePlayer")
 
@@ -44,7 +45,6 @@ end
 ------------------------------------------------------------------------------
 -- re-creates UI and initializes state based on config.
 function TheMODApp:ReloadConfiguration(why)
-
 	local oldSelectedSongIndex = self.selectedSongIndex
 
 	self:shutdown()
@@ -60,7 +60,7 @@ function TheMODApp:ReloadConfiguration(why)
 
 	self.txtStatus = nil-- UI element
 	self.songBitmap = nil-- UI element
-  self.inputDevicePopups = nil-- maps user device name to input device popup UI element
+  --self.inputDevicePopups = nil-- maps user device name to input device popup UI element
   self.outputDevicePopups = nil-- maps user device name to output device popup UI element
 	self.mainDialog = nil-- UI element
 	self.samplePlayer = nil-- ModSamplePlayer object for triggering samples directly from script

@@ -1,6 +1,7 @@
 -- themod keyboard
 -- 2015-10-22
-require('utility')
+require('../utility')
+require('config/ModSong')
 
 -- todo: ctrl+f "todo"
 
@@ -91,12 +92,28 @@ function ModConfig:substituteAliases(s)
 end
 
 
+function ModConfig:parseObjectName(raw, unnamedObjName)
+	if raw then
+		return self:substituteAliases(raw)
+	else
+		return "__unnamed_"..unnamedObjName.."_"..tostring(getUniqueObjectID())
+	end
+end
+
+
+function ModConfig:findSong(name)
+	for _,v in pairs(self.songs) do
+		if string.lower(v.name) == string.lower(name) then
+			return v
+		end
+	end
+	return nil
+end
+
 
 function ModConfig:findButtonDef(buttonName)
-	--log("FindButtonDef("..buttonName..")..")
 	for _, dd in pairs(self.deviceDefs) do
 		for _, b in pairs(dd.buttonDefs) do
-			--log("...comparing "..buttonName.." to " .. b.name)
 			if b.name == buttonName then return b end
 		end
 	end
@@ -381,89 +398,4 @@ function ModPatchLayer:__init(config, patch, raw)
 	end
 
 end
-
-
---------------------------------------------------------------------------------------------
-class 'ModSong'
-
-function ModSong:__init(config, raw)
-	self.config = config
-	self.raw = raw
-	if raw.Name then
-		self.name = config:substituteAliases(raw.Name)
-	else
-		self.name = "__unnamed_Song_"..tostring(getUniqueObjectID())
-	end
-
-	self.inherits = config:substituteAliases(raw.Inherits)
-	self.image = config:substituteAliases(raw.Image)
-
-	self.buttonMap = {}-- array
-	if raw.ButtonMap then
-		for k, v in pairs(raw.ButtonMap) do
-			self.buttonMap[k] = ModSongButtonMapping(config, self, v)
-		end
-	end
-
-end
-
-class 'ModSongButtonMapping'
-
-function ModSongButtonMapping:__init(config, song, raw)
-	self.config = config
-	self.raw = raw
-	self.song = song
-
-	self.buttonName = config:substituteAliases(raw.Button)
-	self.colorScheme = config:getColorSchemeName(raw.ColorScheme)
-
-	self.patchAssignments = {}
-	if raw.PatchAssignments then
-		for k, v in pairs(raw.PatchAssignments) do
-			self.patchAssignments[k] = ModSongButtonPatchAssignment(config, self, song, v)
-		end
-	end
-
-	self.sampleTriggers = {}-- always sample names
-	--log("parsing sample triggers..." .. tostring(raw.SampleTriggers))
-	if raw.SampleTriggers then
-		for k, v in pairs(raw.SampleTriggers) do
-			local sampleName = nil
-			if type(v) == "string" then
-				sampleName = config:substituteAliases(v)
-				--log("song sample trigger parsed: "..sampleName)
-			else
-				local sample = ModSample(self.config, v)
-				table.insert(self.config.samples, sample)
-				sampleName = sample.name
-				--log("created unnamed sample "..sampleName)
-			end
-
-			self.sampleTriggers[k] = sampleName
-		end
-	end
-
-	-- setVariable
-
-end
-
-class 'ModSongButtonPatchAssignment'
-
-function ModSongButtonPatchAssignment:__init(config, mapping, song, raw)
-	self.config = config
-	self.raw = raw
-	self.mapping = mapping
-	self.song = song
-
-	self.outputDeviceName = config:substituteAliases(raw.OutputDevice)
-
-	if type(raw.Patch) == "string" then
-		self.patchName = config:substituteAliases(raw.Patch)
-	else
-		local patch = ModPatch(config, raw.Patch)
-		table.insert(config.patches, patch)
-		self.patchName = patch.name
-	end
-end
-
 
