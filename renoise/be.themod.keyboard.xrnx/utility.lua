@@ -32,6 +32,7 @@ end
 -- adapted from https://code.google.com/p/lua-files/source/browse/color.lua
 -- returns in range of 0-1
 function string_to_rgb(s)
+	if s == nil then return nil end
 	if s:sub(1,1) ~= '#' then return end
 	if #s < 4 then return end
 	if #s == 4 then
@@ -167,7 +168,7 @@ end
 function StringStartsWith(str, i, find)
 	local ret = str:sub(i, i + #find - 1) == find
 	--print("StringStartsWith(" .. i .. ", " .. find .. ") => " .. tostring(ret))
-	return ret;
+	return ret
 end
 
 function SkipStringLiteral(str, i, quote)

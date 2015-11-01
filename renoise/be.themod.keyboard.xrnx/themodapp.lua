@@ -248,7 +248,7 @@ function TheMODApp:ReloadConfiguration(why)
   	tonumber(config:findSetting("OscPort", "8000")),
   	config:findSetting("OscProtocol", "UDP"))
 
- 	self:selectSong(oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
+ 	self:selectSong(config, oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
 end
 
 
@@ -525,12 +525,14 @@ end
 
 ------------------------------------------------------------------------------
 function TheMODApp:selectSong(config, songIndex, why)
+	print(type(config))
 	assert(type(config) == "ModConfig")
 	assert(type(why) == "string")
 
 	-- clamp / wrap
 	if table.count(config.songs) == 0 then
 		songIndex = nil
+	end
 	if songIndex ~= nil then
 		return ((songIndex - 1) % table.count(config.songs)) + 1
 	end
