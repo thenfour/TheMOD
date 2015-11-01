@@ -52,7 +52,7 @@ function LaunchpadPro:shutdown()
 	end
 end
 
-function LaunchpadPro:__init(inputDeviceName, outputDeviceName)
+function LaunchpadPro:__init(deviceName)
 
 	-- member overview
 	self.inputDevice = nil-- renoise input device
@@ -64,16 +64,19 @@ function LaunchpadPro:__init(inputDeviceName, outputDeviceName)
 	self.LEDops = {}-- maps button index to color
 
 	---------------------
-
-	if inputDeviceName then
-		self.inputDevice = renoise.Midi.create_input_device(inputDeviceName,
-			{ self, LaunchpadPro.MidiCallback },
-			{ self, LaunchpadPro.SysexCallback }
-		)
+	for _, dn in ipairs(renoise.Midi.available_input_devices()) do
+		if string.lower(dn) == deviceName then
+			self.inputDevice = renoise.Midi.create_input_device(deviceName,
+				{ self, LaunchpadPro.MidiCallback },
+				{ self, LaunchpadPro.SysexCallback }
+			)
+		end
 	end
 
-	if outputDeviceName then
-		self.outputDevice = renoise.Midi.create_output_device(outputDeviceName)
+	for _, dn in ipairs(renoise.Midi.available_output_devices()) do
+		if string.lower(dn) == deviceName then
+			self.outputDevice = renoise.Midi.create_output_device(deviceName)
+		end
 	end
 
 	self.keyBindings = { }

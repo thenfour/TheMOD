@@ -51,8 +51,7 @@ function TheMODApp:ReloadConfiguration(why)
 
 	-- required to stabilize object state here.
 	self.rawConfig = nil
-  self.selectedInputDeviceMap = nil-- maps user device name to live device name
-  self.selectedOutputDeviceMap = nil-- maps user device name to live device name
+  self.selectedDeviceMap = nil-- maps user device name to live device name
 	self.lppMap = nil-- maps user device name to LaunchpadPro object
 
 	self.selectedSongIndex = nil-- index into config.songs
@@ -60,8 +59,7 @@ function TheMODApp:ReloadConfiguration(why)
 
 	self.txtStatus = nil-- UI element
 	self.songBitmap = nil-- UI element
-  --self.inputDevicePopups = nil-- maps user device name to input device popup UI element
-  self.outputDevicePopups = nil-- maps user device name to output device popup UI element
+  self.devicePopups = nil-- maps user device name to output device popup UI element
 	self.mainDialog = nil-- UI element
 	self.samplePlayer = nil-- ModSamplePlayer object for triggering samples directly from script
 
@@ -84,27 +82,28 @@ function TheMODApp:ReloadConfiguration(why)
   self.rawConfig = decodedJSON
   local config = ModConfig(self.rawConfig)
 
-  -- correct selected device names
-  self.selectedInputDeviceMap = {}-- maps user device name to live device name
-  self.selectedOutputDeviceMap = {}-- maps user device name to live device name
-  for _, dd in ipairs(config.deviceDefs) do
+	-- make an array of all available devices to select
+	local allAvailableDevices = {}
+	for _, dn in ipairs(renoise.Midi.available_output_devices()) do
+		table.insert(allAvailableDevices, dn)
+	end
+	for _, dn in ipairs(renoise.Midi.available_input_devices()) do
+		local found = false
+		for _, existing in ipairs(allAvailableDevices) do
+			if existing == dn then found = true end
+		end
+		if not found then
+			table.insert(allAvailableDevices, dn)
+		end
+	end
 
-  	-- input devices
-  	if dd.inputDeviceName then
-	  	for _, dn in ipairs(renoise.Midi.available_input_devices()) do
-	  		if string.lower(dn) == string.lower(dd.inputDeviceName) then
-	  			-- select it.
-	  			self.selectedInputDeviceMap[dd.name] = dn
-	  		end
-	  	end
-	  end
-
-  	-- output devices
-  	if dd.outputDeviceName then
-	  	for _, dn in ipairs(renoise.Midi.available_output_devices()) do
-	  		if string.lower(dn) == string.lower(dd.outputDeviceName) then
-	  			--log("setting output device mapping ["..dd.name.."] to ["..dn.."]")
-	  			self.selectedOutputDeviceMap[string.lower(dd.name)] = dn
+	-- correct selected device names
+	self.selectedDeviceMap = {}-- maps user device name to live device name
+	for _, dd in ipairs(config.deviceDefs) do
+		if dd.deviceName then
+	  	for _, dn in ipairs(allAvailableDevices) do
+	  		if string.lower(dn) == string.lower(dd.deviceName) then
+	  			self.selectedDeviceMap[string.lower(dd.name)] = dn
 	  		end
 	  	end
 	  end
@@ -115,8 +114,7 @@ function TheMODApp:ReloadConfiguration(why)
 	self.lppMap = { }
   for _, dd in pairs(config.deviceDefs) do
   	if dd.isLaunchpadPro then
-  		--log("launchpad pro detected...")
-  		self.lppMap[dd.name] = LaunchpadPro(self.selectedInputDeviceMap[dd.name], self.selectedOutputDeviceMap[string.lower(dd.name)])
+  		self.lppMap[dd.name] = LaunchpadPro(self.selectedDeviceMap[string.lower(dd.name)])
   	end
   end
 
@@ -145,8 +143,7 @@ function TheMODApp:ReloadConfiguration(why)
   --popupRow.margin = 0
   popupRow.spacing = 10
 
-  self.outputDevicePopups = {}
-  self.inputDevicePopups = {}
+  self.devicePopups = {}
   for k, deviceDef in pairs(config.deviceDefs) do
 
   	local iorow = vb:row { }
@@ -157,16 +154,16 @@ function TheMODApp:ReloadConfiguration(why)
 
   	mainCol.style = "group"
 
-	  -- INPUT device popups ----------------------------------------------
+	  -- device popups ----------------------------------------------
   	local choices = { "(disabled)" }
   	local selected = nil
-  	for i, d in ipairs(renoise.Midi.available_input_devices()) do
-  		table.insert(choices, d)
-  	end
+  	for i, d in ipairs(allAvailableDevices) do
+			table.insert(choices, d)
+		end
   	for i, choice in ipairs(choices) do
-  		if deviceDef.inputDeviceName and (string.upper(choice) == string.upper(deviceDef.inputDeviceName)) then
-  			selected = i
-  		end
+			if deviceDef.deviceName and (string.upper(choice) == string.upper(deviceDef.deviceName)) then
+				selected = i
+			end
   	end
   	if selected == nil then
   		selected = 1
@@ -176,44 +173,11 @@ function TheMODApp:ReloadConfiguration(why)
 			items = choices,
 			value = selected,
 			notifier = function(i)
-				self:selectInputDevice(deviceDef, i)
-			end
-		}
-  	self.inputDevicePopups[deviceDef.name] = popup
-
-  	local col = vb:column {
-			vb:text {
-				text = "input"
-			},
-			popup
-		}
-
-	  iorow:add_child(col)
-
-	  -- OUTPUT device popups ----------------------------------------------
-  	local choices = { "(disabled)" }
-  	local selected = nil
-  	for i, d in ipairs(renoise.Midi.available_output_devices()) do
-  		table.insert(choices, d)
-  	end
-  	for i, choice in ipairs(choices) do
-  		if deviceDef.outputDeviceName and (string.upper(choice) == string.upper(deviceDef.outputDeviceName)) then
-  			selected = i
-  		end
-  	end
-  	if selected == nil then
-  		selected = 1
-  	end
-
-  	local popup = vb:popup {
-			items = choices,
-			value = selected,
-			notifier = function(i)
-				self:selectOutputDevice(deviceDef, i)
+				self:selectDevice(deviceDef, i)
 			end
 		}
 
-  	local col = vb:column {
+		local col = vb:column {
 			vb:text {
 				text = "output"
 			},
@@ -222,7 +186,7 @@ function TheMODApp:ReloadConfiguration(why)
 
 	  iorow:add_child(col)
 
-  	self.outputDevicePopups[deviceDef.name] = popup
+  	self.devicePopups[deviceDef.name] = popup
 
 	  popupRow:add_child(mainCol)
   end
@@ -260,35 +224,19 @@ function TheMODApp:__init()
 end
 
 
-function TheMODApp:selectInputDevice(deviceDef, selectedIndex)
+function TheMODApp:selectDevice(deviceDef, selectedIndex)
 	local dn = nil
 	if selectedIndex ~= 1 then
-		dn = self.inputDevicePopups[deviceDef.name].items[selectedIndex]
+		dn = self.devicePopups[deviceDef.name].items[selectedIndex]
 	end
 
-	self.selectedInputDeviceMap[deviceDef.name] = dn
-
-	-- if it's a launchpad, re-initialize
-	local lp = self.lppMap[deviceDef.name]
-	if lp then
-		lp:shutdown()
- 		self.lppMap[deviceDef.name] = LaunchpadPro(self.selectedInputDeviceMap[deviceDef.name], self.selectedOutputDeviceMap[string.lower(deviceDef.name)])
-	end
-end
-
-function TheMODApp:selectOutputDevice(deviceDef, selectedIndex)
-	local dn = nil
-	if selectedIndex ~= 1 then
-		dn = self.outputDevicePopups[deviceDef.name].items[selectedIndex]
-	end
-
-	self.selectedOutputDeviceMap[deviceDef.name] = dn
+	self.selectedDeviceMap[deviceDef.name] = dn
 	
 	-- if it's a launchpad, re-initialize
 	local lp = self.lppMap[deviceDef.name]
 	if lp then
 		lp:shutdown()
- 		self.lppMap[deviceDef.name] = LaunchpadPro(self.selectedInputDeviceMap[deviceDef.name], self.selectedOutputDeviceMap[string.lower(deviceDef.name)])
+ 		self.lppMap[deviceDef.name] = LaunchpadPro(self.selectedDeviceMap[string.lower(deviceDef.name)])
 	end
 end
 
@@ -431,7 +379,7 @@ function TheMODApp:applyCurrentState(config, why)
 	local instrumentIdeals = {}-- maps renoise instrument name to { realDeviceName=(string), layer=ModPatchLayer }
 	for deviceUserName, patch in pairs(self.devicePatchMap) do
 		--log("Analyzing; device "..deviceUserName.." is assigned to patch " .. patch.name)
-		local realDeviceName = self.selectedOutputDeviceMap[string.lower(deviceUserName)]
+		local realDeviceName = self.selectedDeviceMap[string.lower(deviceUserName)]
 		if not realDeviceName then
 			-- maybe device is disabled ? anyway ignore.
 			--log("couldn't find the device ["..deviceUserName.."] to assign to, so ignore this patch change.")
@@ -475,8 +423,8 @@ function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 		if patch == nil then
 			--log("Patch not found: "..patchAssignment.patchName)
 		else
-			self.devicePatchMap[patchAssignment.outputDeviceName] = patch
-			log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.outputDeviceName)
+			self.devicePatchMap[patchAssignment.deviceName] = patch
+			log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
 			didPatchChange = true
 		end
 	end
@@ -512,7 +460,7 @@ function TheMODApp:findFirstPatchChangeForDevice(config, deviceUserName, song)
 	-- just iterate over all patch changes in sequence until you find the device name in question.
 	for _,buttonMapItem in pairs(song.buttonMap) do
 		for _,patchAssignment in pairs(buttonMapItem.patchAssignments) do
-			if string.lower(patchAssignment.outputDeviceName) == string.lower(deviceUserName) then
+			if string.lower(patchAssignment.deviceName) == string.lower(deviceUserName) then
 				local patch = config.patches[patchAssignment.patchName]
 				return patch
 			end

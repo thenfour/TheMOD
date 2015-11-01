@@ -36,8 +36,7 @@
 	"DeviceDefs" :
 	[
 		{ "Name" : "Launchpad",
-			"InputDeviceName" : "Launchpad Pro (Standalone Port)",// optional
-			"OutputDeviceName" : "Launchpad Pro (Standalone Port)",// optional
+			"DeviceName" : "Launchpad Pro (Standalone Port)",
 			"IsLaunchpadPro" : "1",// optional
 			"ButtonDefs" :
 			[
@@ -48,8 +47,7 @@
 			]
 		},
 		{ "Name" : "Key1",
-			"InputDeviceName" : "QX49",
-			"OutputDeviceName" : "QX49"
+			"DeviceName" : "QX49"
 		}
 	],
 	"HotkeyAssignments" :
