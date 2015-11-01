@@ -2,11 +2,9 @@
 -- 2015-10-22
 
 -- TODO:
--- - get rid of two separate dropdowns
--- - support song inheritance
 -- - play samples (just get reload config to play that sample)
 --   - support keyup event
---   - launchpad support keyup + velocity
+-- - support song inheritance
 -- - support "active" patch state.
 -- - support pressed state
 -- - support animations (fade in?)
@@ -241,23 +239,6 @@ function TheMODApp:selectDevice(deviceDef, selectedIndex)
 end
 
 
-
-------------------------------------------------------------------------------
--- always return a valid color scheme
-function TheMODApp:getColorScheme(config, name)
-	local defaultColorScheme = ModColorScheme(config, {
-		Name = "(default)",
-		Normal = "#ff0",
-		Pressed = "#0f0",
-		Active = "#00f"
-	})
-
-	if not name then return defaultColorScheme end
-	local ret = config:findColorScheme(name)
-	if not ret then return defaultColorScheme end
-	return ret
-end
-
 ------------------------------------------------------------------------------
 function TheMODApp:BindHotkey(config, hotkeyName, func)
 	--log("you are binding a hotkey: ".. hotkeyName)
@@ -277,13 +258,20 @@ function TheMODApp:BindHotkey(config, hotkeyName, func)
 		return
 	end
 
-	lp:addKeyBinding(b.LPPKey, func)
-	lp:updateLED(b.LPPKey, self:getColorScheme(config, hk.colorScheme).normal)
+	lp:addKeyBinding(b.LPPKey,
+		function(vel)
+			-- todo: pressed
+			func()
+		end,
+		function()
+			-- note off; color scheme
+		end
+		)
+	lp:updateLED(b.LPPKey, config:findColorScheme(hk.colorScheme).normal)
 end
 
 ------------------------------------------------------------------------------
 function TheMODApp:applyCurrentState(config, why)
-	--log("applying status {"..why)
   for _, lp in pairs(self.lppMap) do
   	lp:beginFrame(why.."->applyCurrentState")
   end
@@ -292,41 +280,41 @@ function TheMODApp:applyCurrentState(config, why)
 
   for _, lp in pairs(self.lppMap) do
   	lp:clearKeyBindings()
-  	lp:clearAllLEDs(string_to_rgb("#000"))
+  	lp:clearAllLEDs(ModColor("#000"))
   end
 
   -- register listeners for hotkeys and song-buttons
 	self:BindHotkey(config, "SelectNextSong", function()
-		--log("Select Next Song hotkey pressed...")
-		self:selectSong(config, self.selectedSongIndex + 1, "handleHotkey")
+		local i = 1
+		if self.selectedSongIndex then i = self.selectedSongIndex + 1 end
+		self:selectSong(config, i, "handleHotkey")
 	end)
 
 	self:BindHotkey(config, "SelectPreviousSong", function()
-		--log("Previous song hotkey pressed ...")
-		self:selectSong(config, self.selectedSongIndex - 1, "handleHotkey")
+		local i = 0
+		if self.selectedSongIndex then i = self.selectedSongIndex - 1 end
+		self:selectSong(config, i, "handleHotkey")
 	end)
 
 	self:BindHotkey(config, "SelectNoSong", function()
-		--log("No song hotkey pressed ...")
 		self:selectSong(config, nil, "handleHotkey")
 	end)
 
 	self:BindHotkey(config, "ReloadConfiguration", function()
-		--log("Reload config hotkey pressed ...")
 		self:ReloadConfiguration("handleHotkey")
 	end)
 
 	self:BindHotkey(config, "ReapplyStatus", function()
-		--log("Reapply status hotkey pressed ...")
 		self:applyCurrentState(config, "handleHotkey")
 	end)
 
   -- set up key bindings for song
   if song then
   	for _, songButtonMapItem in pairs(song.buttonMap) do
+  		--log("processing song button")
 			local buttonDef = config:findButtonDef(songButtonMapItem.buttonName)
 			if not buttonDef then
-				error("You assigned a song mapping to a nonexistent button def")
+				error("You assigned a song mapping to a nonexistent button def / " .. songButtonMapItem.buttonName)
 				return
 			end
 
@@ -340,14 +328,15 @@ function TheMODApp:applyCurrentState(config, why)
 			lp:addKeyBinding(
 				buttonDef.LPPKey,
 				function(vel)
-					--log("key binding activated")
+					--log("launchpad button down with velocity "..vel)
 					self:executeButtonDown(config, vel, songButtonMapItem, "handle_launchpad_button_down")
 				end,
 				function()
-					-- log("key up")
 					self:executeButtonUp(config, songButtonMapItem, "handle_launchpad_button_up")
 				end)
-			lp:updateLED(buttonDef.LPPKey, self:getColorScheme(config, songButtonMapItem.colorScheme).normal)
+
+			lp:updateLED(buttonDef.LPPKey, config:findColorScheme(songButtonMapItem.colorScheme).normal)
+
   	end
   end
 
@@ -378,15 +367,11 @@ function TheMODApp:applyCurrentState(config, why)
   -- instrument assignments
 	local instrumentIdeals = {}-- maps renoise instrument name to { realDeviceName=(string), layer=ModPatchLayer }
 	for deviceUserName, patch in pairs(self.devicePatchMap) do
-		--log("Analyzing; device "..deviceUserName.." is assigned to patch " .. patch.name)
 		local realDeviceName = self.selectedDeviceMap[string.lower(deviceUserName)]
 		if not realDeviceName then
 			-- maybe device is disabled ? anyway ignore.
-			--log("couldn't find the device ["..deviceUserName.."] to assign to, so ignore this patch change.")
-			--rprint(self.selectedOutputDeviceMap)
 		else
 			for _, layer in pairs(patch.layers) do
-				--log("ideally set instrument "..layer.instrumentName.." to device "..realDeviceName)
 				instrumentIdeals[layer.instrumentName] = { realDeviceName = realDeviceName, layer = layer }
 			end
 		end
@@ -396,7 +381,6 @@ function TheMODApp:applyCurrentState(config, why)
   	local idealData = instrumentIdeals[ri.name]
   	if idealData == nil then
   		-- unassign.
-  		--log("Unassigning instrument " ..ri.name)
       if ri.midi_input_properties.device_name ~= "" then ri.midi_input_properties.device_name = "" end
       if ri.midi_input_properties.channel ~= 0 then ri.midi_input_properties.channel = 0 end
   	else
@@ -408,8 +392,6 @@ function TheMODApp:applyCurrentState(config, why)
 			if ri.midi_input_properties.note_range ~= idealData.layer.keyRange then ri.midi_input_properties.note_range = idealData.layer.keyRange end
   	end
   end
-
-	--log("} applying statu"..why)
 end
 
 ------------------------------------------------------------------------------
@@ -437,7 +419,7 @@ function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 			for k,layer in pairs(sample.layers) do
 				local velocity = vel
 				if layer.velocity then velocity = layer.velocity end
-				self.samplePlayer.noteOn(layer.instrumentName, layer.note, velocity)
+				self.samplePlayer:noteOn(layer.instrumentName, layer.note, velocity)
 			end
 		end
 	end
@@ -452,11 +434,25 @@ end
 
 ------------------------------------------------------------------------------
 function TheMODApp:executeButtonUp(config, songButtonMapItem, why)
-	-- listen for note-off for samples
+	for k,sampleName in pairs(songButtonMapItem.sampleTriggers) do
+		local sample = config:findSample(sampleName)
+		if not sample then
+			error("sample not found: "..sampleName)
+		else
+			for k,layer in pairs(sample.layers) do
+				self.samplePlayer:noteOff(layer.instrumentName, layer.note)
+			end
+		end
+	end
+
 end
 
 ------------------------------------------------------------------------------
 function TheMODApp:findFirstPatchChangeForDevice(config, deviceUserName, song)
+	assert(type(config) == "ModConfig")
+	assert(song)
+	assert(deviceUserName)
+
 	-- just iterate over all patch changes in sequence until you find the device name in question.
 	for _,buttonMapItem in pairs(song.buttonMap) do
 		for _,patchAssignment in pairs(buttonMapItem.patchAssignments) do
@@ -473,7 +469,6 @@ end
 
 ------------------------------------------------------------------------------
 function TheMODApp:selectSong(config, songIndex, why)
-	print(type(config))
 	assert(type(config) == "ModConfig")
 	assert(type(why) == "string")
 
@@ -482,7 +477,7 @@ function TheMODApp:selectSong(config, songIndex, why)
 		songIndex = nil
 	end
 	if songIndex ~= nil then
-		return ((songIndex - 1) % table.count(config.songs)) + 1
+		songIndex = ((songIndex - 1) % table.count(config.songs)) + 1
 	end
 
 	self.selectedSongIndex = songIndex

@@ -28,29 +28,6 @@ end
 -- print(getDirectoryName("/usr/this/omg"))
 -- print(getDirectoryName("/usr/this/omg/"))-- last slash ignored
 	
-	
--- adapted from https://code.google.com/p/lua-files/source/browse/color.lua
--- returns in range of 0-1
-function string_to_rgb(s)
-	if s == nil then return nil end
-	if s:sub(1,1) ~= '#' then return end
-	if #s < 4 then return end
-	if #s == 4 then
-		local r = tonumber(s:sub(2, 2), 16)
-		local g = tonumber(s:sub(3, 3), 16)
-		local b = tonumber(s:sub(4, 4), 16)
-		if not r or not g or not b then return end
-		r = (r * 16) + r
-		g = (g * 16) + g
-		b = (b * 16) + b
-		return {r/255.0, g/255.0, b/255.0}
-	end
-	local r = tonumber(s:sub(2, 3), 16)
-	local g = tonumber(s:sub(4, 5), 16)
-	local b = tonumber(s:sub(6, 7), 16)
-	if not r or not g or not b then return end
-	return { r/255.0, g/255.0, b/255.0 }
-end
 
 
 
@@ -249,5 +226,40 @@ function readTextFile(file)
     local content = f:read("*all")
     f:close()
     return content
+end
+
+--------------------------------------------------------------------------------------------
+class "ModColor"
+
+function ModColor:__init(s)
+	self.name = s
+	self.rgb = self:fromCSS(s)
+	self.r = self.rgb[1]
+	self.g = self.rgb[2]
+	self.b = self.rgb[3]
+end
+
+
+-- adapted from https://code.google.com/p/lua-files/source/browse/color.lua
+-- returns in range of 0-1
+function ModColor:fromCSS(s)
+	if s == nil then return nil end
+	if s:sub(1,1) ~= '#' then return end
+	if #s < 4 then return end
+	if #s == 4 then
+		local r = tonumber(s:sub(2, 2), 16)
+		local g = tonumber(s:sub(3, 3), 16)
+		local b = tonumber(s:sub(4, 4), 16)
+		if not r or not g or not b then return end
+		r = (r * 16) + r
+		g = (g * 16) + g
+		b = (b * 16) + b
+		return {r/255.0, g/255.0, b/255.0}
+	end
+	local r = tonumber(s:sub(2, 3), 16)
+	local g = tonumber(s:sub(4, 5), 16)
+	local b = tonumber(s:sub(6, 7), 16)
+	if not r or not g or not b then return end
+	return { r/255.0, g/255.0, b/255.0 }
 end
 

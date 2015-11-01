@@ -19,7 +19,7 @@
 	},
 	"ColorSchemes" :
 	[
-		{ "Name" : "__base" }
+		{ "Name" : "__base" }// and base in turn inherits the default color scheme.
 		// color schemes can be defined inline later too.
 		// so instead of "ColorScheme" = "__base"
 		// do: "ColorScheme" = { "Normal" : "#f0f", "Active" : "#82C" }
@@ -89,7 +89,7 @@
 		{ "Name" : "Rhodes",
 			"Instrument" : "Rhodes2"
 			// leave out velocity to use the velocity of the user's key trigger
-			// leave out note; it can be set by a child sample
+			// leave out note; it can be set by a child sample. if eventually null, also uses user's key trigger
 		}
 	],
 	"Songs" :
@@ -99,20 +99,20 @@
 			"ButtonMap" : [
 				// assign triggers to device + patches or samples
 				// "Button" is the primary key, so inheritance will overwrite.
-				{ "Button" : "B8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "Bells" }]},// patch change
-				{ "Button" : "C8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "Bells" }]}// patch change with default device
+				{ "Button" : "B8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "Device" : "key1", "Patch" : "Bells" }]},// patch change
+				{ "Button" : "C8", "ColorScheme" : "PatchChange", "PatchAssignments" : [{ "Device" : "key1", "Patch" : "Bells" }]}// patch change with default device
 				// this assignment triggers sample directly
 				// "@lpsample" is a variable, indicating the name of the sample to override
 				// TODO: support note value like {"C", "5"}, where 5 can be a variable,
 				// TODO: support an octave up / down method
 				// TODO: don't preprocess anything; do it at runtime to support changing variables
-				{ "Button" : "B1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "C5" } ] },
-				{ "Button" : "C1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "D5" } ] },
-				{ "Button" : "D1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "E5" } ] },
-				{ "Button" : "E1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "F5" } ] },
-				{ "Button" : "F1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "G5" } ] },
-				{ "Button" : "G1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "A5" } ] },
-				{ "Button" : "H1", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "B5" } ] }
+				{ "Button" : "B4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "C5" } ] },
+				{ "Button" : "C4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "D5" } ] },
+				{ "Button" : "D4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "E5" } ] },
+				{ "Button" : "E4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "F5" } ] },
+				{ "Button" : "F4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "G5" } ] },
+				{ "Button" : "G4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "A5" } ] },
+				{ "Button" : "H4", "SampleTriggers" : [ { "Inherits" : "@lpsample", "Note" : "B5" } ] }
 			]
 		},
 		{ "Name" : "song1",
@@ -120,18 +120,23 @@
 			"Image" : "song1.png",
 			"Variables" : [ { "@lpsample" : "Rhodes" } ],
 			"ButtonMap" : [
-				{ "Button" : "D8", "ColorScheme" : "Red", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "snare" }]},
-				{ "Button" : "E8", "ColorScheme" : "Blue", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "kick" }]},
-				{ "Button" : "F8", "ColorScheme" : "Green", "PatchAssignments" : [{ "OutputDevice" : "key1", "Patch" : "kick+snare" }]}
+				{ "Button" : "D8", "ColorScheme" : "Red", "PatchAssignments" : [{ "Device" : "key1", "Patch" : "snare" }]},
+				{ "Button" : "E8", "ColorScheme" : "Blue", "PatchAssignments" : [{ "Device" : "key1", "Patch" : "kick" }]},
+				{ "Button" : "F8", "ColorScheme" : "Green", "PatchAssignments" : [{ "Device" : "key1", "Patch" : "kick+snare" }]}
 				{ "Button" : "G6",
-					"ColorScheme" : "Green",
+					"ColorScheme" : { "Normal" : "#fff", "Active" : "#fff" },
 					"SampleTriggers" :
 					[
-						"Snare",
-						{ "Layers" : [ { "Instrument" : "snare", "Note" : "C5", "Velocity" : "120" } ] },
-						{ "Instrument" : "snare", "Note" : "C3", "Velocity" : "120" }
+						"Snare"
+						//{ "Layers" : [ { "Instrument" : "snare", "Note" : "C5", "Velocity" : "120" } ] },
+						//{ "Instrument" : "snare", "Note" : "C3", "Velocity" : "120" }
 					]
-				}
+				},
+				{ "Button" : "C5", "SampleTriggers" : [ { "Instrument" : "kick", "Note" : "C5" }] }
+				{ "Button" : "D5", "SampleTriggers" : [ { "Instrument" : "snare", "Note" : "C5" }] }
+				{ "Button" : "C4", "SampleTriggers" : [ { "Instrument" : "cello", "Note" : "c4" } ] },
+				{ "Button" : "d4", "SampleTriggers" : [ { "Instrument" : "cello", "Note" : "C5" } ] },
+				{ "Button" : "e4", "SampleTriggers" : [ { "Instrument" : "cello", "Note" : "C6" } ] }
 			]
 		}
 		{ "Name" : "song2",

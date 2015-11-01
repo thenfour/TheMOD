@@ -36,8 +36,7 @@ end
 function ModSamplePlayer:findInstrumentIndex(name)
   for i,inst in ipairs(renoise.song().instruments) do
   	if string.lower(name) == string.lower(inst.name) then
-  		log("found instrument " .. name.."; index "..tostring(i))
-  		return i - 1-- needs to be 0-based for OSC
+  		return i, inst-- needs to be 0-based for OSC
   	end
   end
   return nil
@@ -54,17 +53,23 @@ function ModSamplePlayer:noteOn(instrumentName, note, velocity)
 	-- * note(int32/64)
 	-- * velocity(int32/64))
 
-	local instrumentIndex = self:findInstrumentIndex(instrumentName)
+	local instrumentIndex, instrument = self:findInstrumentIndex(instrumentName)
 	if not instrumentIndex then
 		error("samplePlayer:instrument not found:"..instrumentName)
 	end
 
-	--log("played a sample #"..tostring(instrumentIndex))
+	local track = -1
+
+	if instrument.midi_input_properties.assigned_track > 0 then
+		track = instrument.midi_input_properties.assigned_track
+	end
+
+	--log("playing sample. Instrument #"..instrumentIndex.." ("..instrumentName.."), note "..note..", velocity "..velocity)
 	local msg = renoise.Osc.Message("/renoise/trigger/note_on", {
-		{ tag = "i", value = 1 },
-		{ tag = "i", value = 1 },
-		{ tag = "i", value = 65 },
-		{ tag = "i", value = 119 }
+		{ tag = "i", value = instrumentIndex },
+		{ tag = "i", value = track },
+		{ tag = "i", value = note },
+		{ tag = "i", value = velocity }
 		})
 
 	self.client:send(msg)
@@ -83,6 +88,7 @@ function ModSamplePlayer:noteOff(instrumentName, note)
 	-- * track(int32/64)
 	-- * note(int32/64))
 
+	log("sending note off.")
 	local msg = renoise.Osc.Message("/renoise/trigger/note_off", {
 		{ tag = "i", value = instrumentIndex },
 		{ tag = "i", value = -1 },

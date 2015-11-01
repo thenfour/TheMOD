@@ -36,7 +36,11 @@ function LaunchpadProButton:__init(x, y)
 		self.index = self.y * 10 + self.x
 	end
 
-	self.name = string.char(self.x + string.byte("A")) .. tostring(self.y)
+	self.name = string.char(self.x + string.byte("A")) .. tostring(9 - self.y)
+end
+
+function LaunchpadProButton:tostring()
+	return self.name
 end
 
 
@@ -61,11 +65,11 @@ function LaunchpadPro:__init(deviceName)
 	self.frameBufferRefs = 0-- frame ref count 0 means no frame is being drawn. each beginFrame() increases ref count; presentFrame decreases.
 
 	-- ops per frame
-	self.LEDops = {}-- maps button index to color
+	self.LEDops = {}-- maps button index to color (ModColor)
 
 	---------------------
 	for _, dn in ipairs(renoise.Midi.available_input_devices()) do
-		if string.lower(dn) == deviceName then
+		if string.lower(dn) == string.lower(deviceName) then
 			self.inputDevice = renoise.Midi.create_input_device(deviceName,
 				{ self, LaunchpadPro.MidiCallback },
 				{ self, LaunchpadPro.SysexCallback }
@@ -74,7 +78,7 @@ function LaunchpadPro:__init(deviceName)
 	end
 
 	for _, dn in ipairs(renoise.Midi.available_output_devices()) do
-		if string.lower(dn) == deviceName then
+		if string.lower(dn) == string.lower(deviceName) then
 			self.outputDevice = renoise.Midi.create_output_device(deviceName)
 		end
 	end
@@ -83,7 +87,7 @@ function LaunchpadPro:__init(deviceName)
 
 	self:setProgrammerLayout()
 	local sideButton = LaunchpadProButton(99)
-	self:adHocUpdateLEDs({{sideButton, string_to_rgb("#303")}})
+	self:adHocUpdateLEDs({{sideButton, ModColor("#303")}})
 end
 
 
@@ -93,12 +97,7 @@ function LaunchpadPro:MidiCallback(message)
   -- #1: message type. 0xB0 = CC, 0x90 with non-zero #3 = note on (note off is 0 velocity)
   -- #2: note or CC (button). same as setting LEDs; this is #0 at the bottom-left, then goes to the right, then next row up.
   -- #3: data (velocity / CC value). this behaves the same as note on (non-zero = button down, zero = button up)
-  if message[1] == 0xb0 or message[1] == 0x90 then
-  	if message[3] == 0 then
-  		-- note off; for now since i don't support "pressed" state, just ignore.
-  		return
-  	end
-  else
+  if not (message[1] == 0xb0 or message[1] == 0x90) then
   	-- don't care about any other messages.
   	return
   end
@@ -111,15 +110,18 @@ function LaunchpadPro:MidiCallback(message)
   -- now check if this key is bound.
   local binding = self.keyBindings[pressedButton.index]
   if not binding then
-  	log("button ("..pressedButton.x..","..pressedButton.y..") is not bound; ignoring.")
+  	--log("button ("..pressedButton.x..","..pressedButton.y..") is not bound; ignoring.")
   	return
   end
 
-  -- call the binding
-  local velocity = 65-- TODO
-  binding[1](velocity)-- key down
-  -- binding[2]() -- key up
+	if message[3] == 0 then
+		if binding[2] then
+			binding[2]() -- key up
+		end
+		return
+	end
 
+  binding[1](message[3])
 end
 
 function LaunchpadPro:SysexCallback(message)
@@ -166,9 +168,9 @@ function LaunchpadPro:presentFrame(why)
 			local btn = LaunchpadProButton(x, y)
 			local c = self.LEDops[btn.index]
 			if c then
-				table.insert(bytes, c[1] * 63.0)
-				table.insert(bytes, c[2] * 63.0)
-				table.insert(bytes, c[3] * 63.0)
+				table.insert(bytes, c.r * 63.0)
+				table.insert(bytes, c.g * 63.0)
+				table.insert(bytes, c.b * 63.0)
 			else
 				table.insert(bytes, 0)
 				table.insert(bytes, 0)
@@ -182,7 +184,7 @@ function LaunchpadPro:presentFrame(why)
 end
 
 
--- color is {r,g,b}
+-- color is ModColor
 function LaunchpadPro:clearAllLEDs(color)
 	if not self.outputDevice then return end
 	if self.frameBufferRefs < 1 then
@@ -200,13 +202,16 @@ function LaunchpadPro:clearAllLEDs(color)
 end
 
 -- button is {row,col}
--- color is {r,g,b}
+-- color is ModColor
 function LaunchpadPro:updateLED(button, color)
 	if not self.outputDevice then return end
 	if self.frameBufferRefs < 1 then
 		error("attempt to set a LED outside of a frame")
 		return
 	end
+
+	--log("Setting LED color: ".. button.name.. " to " .. color.name)
+
 	self.LEDops[button.index] = color
 end
 
@@ -219,13 +224,12 @@ function LaunchpadPro:adHocUpdateLEDs(assignments)
 	local bytes = { 240,0,32,41,2,16,11 }
 
 	for _, v in ipairs(assignments) do
-		--print(v[1])
 		local button = v[1]-- of type LaunchpadProButton
 		local color = v[2]
 		table.insert(bytes, button.index)
-		table.insert(bytes, color[1] * 63.0)
-		table.insert(bytes, color[2] * 63.0)
-		table.insert(bytes, color[3] * 63.0)
+		table.insert(bytes, color.r * 63.0)
+		table.insert(bytes, color.g * 63.0)
+		table.insert(bytes, color.b * 63.0)
 	end
 
 	table.insert(bytes, 247)
