@@ -39,10 +39,10 @@ function ModSample:__init(config, raw, nameContext)
 		-- the sample object also IS a layer.
 		local selfLayer = ModSampleLayer(config, self, raw, self.nameContext)
 		if selfLayer.instrumentName or selfLayer.note or selfLayer.velocity then
-			log("self sample layer registered for " .. self.nameContext)
+			--log("self sample layer registered for " .. self.nameContext)
 			table.insert(self.layers, selfLayer)
 		else
-			log("self sample layer not viable for " .. self.nameContext)
+			--log("self sample layer not viable for " .. self.nameContext)
 		end
 	end
 end
@@ -124,7 +124,7 @@ function ModSampleLayer:__init(config, sample, raw, nameContext)
 		self.raw = raw
 
 		self.instrumentName = config:substituteAliases(raw.Instrument)
-		log("sample layer parsed instrument name: "..coalesceToString(self.instrumentName).." for "..nameContext)
+		--log("sample layer parsed instrument name: "..coalesceToString(self.instrumentName).." for "..nameContext)
 		self.note = KeyRangeStringToValue(config:substituteAliases(raw.Note))
 		self.velocity = tonumber(config:substituteAliases(raw.Velocity))
 		-- track?

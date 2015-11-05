@@ -5,6 +5,9 @@
 logOutput = nil
 
 local serialNumber = 0
+function resetObjectIDs()
+	serialNumber = 0
+end
 
 function getUniqueObjectID()
 	serialNumber = serialNumber + 1
@@ -279,7 +282,7 @@ end
 
 
 function printWithDepth(depth, msg)
-	print(string.rep("  ", depth)..msg)
+	log(string.rep("  ", depth)..msg)
 end
 
 function coalesce(o, ifnull)

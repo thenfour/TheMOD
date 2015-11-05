@@ -2,15 +2,18 @@
 -- 2015-10-22
 require('../utility')
 require('config/ModSong')
+require('config/ModPatch')
 require('config/ModSample')
 
--- patch inheritance
--- make songs un-selectable like base songs
+
+-- make songs un-selectable like base songs, then don't validate un-selectable songs
 
 --------------------------------------------------------------------------------------------
 class 'ModConfig'
 
 function ModConfig:__init(raw, selectedSongName)
+	resetObjectIDs()
+	
 	self.raw = raw
 
 	self.aliases = self:parseAliases(raw.Aliases)
@@ -23,7 +26,7 @@ function ModConfig:__init(raw, selectedSongName)
 					local songAliases = self:parseAliases(rawSong.Aliases)
 					-- now override self.aliases with songAliases
 					for songAliasName,songAliasValue in pairs(songAliases) do
-						log("overriding with song alias. "..songAliasName.."="..songAliasValue)
+						--log("overriding with song alias. "..songAliasName.."="..songAliasValue)
 						self.aliases[songAliasName] = songAliasValue
 					end
 				end
@@ -83,7 +86,7 @@ function ModConfig:__init(raw, selectedSongName)
 	if raw.Samples then
 		for k, v in pairs(raw.Samples) do
 			self.samples[k] = ModSample(self, v, "root")
-			log("inserted sample "..self.samples[k].name.." / nameContext:"..self.samples[k].nameContext)
+			--log("inserted sample "..self.samples[k].name.." / nameContext:"..self.samples[k].nameContext)
 		end
 	end
 
@@ -104,7 +107,7 @@ function ModConfig:__init(raw, selectedSongName)
 	-- fix up inheritance of songs
 	local newSongs = { }
 	for k,song in pairs(self.songs) do
-		log("performing song inheritance for song "..song.name)
+		--log("performing song inheritance for song "..song.name)
 		newSongs[k] = self:performSongInheritance(self.songs, song.name, 0)
 	end
 	self.songs = newSongs
@@ -112,15 +115,17 @@ function ModConfig:__init(raw, selectedSongName)
 
 	-- fix up inheritance of samples
 	local newSamples = { }
-	log("CLEARING ALL SAMPLES")
+	--log("CLEARING ALL SAMPLES")
 	for k,sample in pairs(self.samples) do
 		--log("performing sample inheritance for "..sample.name)
 		newSamples[k] = self:performSampleInheritance(self.samples, sample.name, 0)
-		log("inserted sample "..newSamples[k].name.." / nameContext:"..newSamples[k].nameContext)
+		--log("inserted sample "..newSamples[k].name.." / nameContext:"..newSamples[k].nameContext)
 	end
 	self.samples = newSamples
 
+end
 
+function ModConfig:validate()
 	-- validate everything.
 	log("{ performing validation")
 	for k, v in pairs(self.colorSchemes) do
@@ -147,7 +152,6 @@ function ModConfig:__init(raw, selectedSongName)
 		v:validate()
 	end
 	log("} performing validation")
-
 end
 
 function ModConfig:dump(depth)
@@ -249,10 +253,10 @@ end
 
 
 function ModConfig:performSongInheritance(rawSongs, songName, depth)
-	log("performSongInheritance("..songName..")")
+	--log("performSongInheritance("..songName..")")
 	local song = nil
 	for k,v in pairs(rawSongs) do
-		log("  ? "..songName.." == "..v.name)
+		--log("  ? "..songName.." == "..v.name)
 		if string.lower(v.name) == string.lower(songName) then
 			song = v
 			break
@@ -268,7 +272,7 @@ function ModConfig:performSongInheritance(rawSongs, songName, depth)
 	if not song.inherits then
 		return song:cloneWithParent(nil)
 	end
-	log("  looking for parent: " .. song.inherits)
+	--log("  looking for parent: " .. song.inherits)
 	local parent = self:performSongInheritance(rawSongs, song.inherits, depth + 1)
 	if not parent then
 		error("  unable to find parent song "..song.inherits)
@@ -302,7 +306,7 @@ function ModConfig:performSampleInheritance(rawSamples, sampleName, depth)
 	if not sample.inherits then
 		return sample:cloneWithParent(nil)
 	end
-	log("  looking for parent sample: " .. sample.inherits)
+	--log("  looking for parent sample: " .. sample.inherits)
 	local parent = self:performSampleInheritance(rawSamples, sample.inherits, depth + 1)
 	if not parent then
 		--error("  unable to find parent sample "..sample.inherits)
@@ -336,7 +340,7 @@ function ModConfig:substituteAliases(s)
 	local requestedKey = string.sub(s, 2)
 	for k,v in pairs(self.aliases) do
 		if string.lower(k) == string.lower(requestedKey) then
-			log(" substituteAliases replacing "..s.."->"..v)
+			--log(" substituteAliases replacing "..s.."->"..v)
 			return v
 		end
 	end
@@ -423,6 +427,7 @@ end
 
 
 function ModConfig:findPatch(patchName)
+	if not patchName then return nil end-- nil patches are the same as silence; no error
 	for _,p in pairs(self.patches) do
 		if string.lower(p.name) == string.lower(patchName) then
 			return p
@@ -462,9 +467,9 @@ function ModColorScheme:__init(config, raw, nameContext)
 		self.isInternalDefault = true
 		self.name = "defaultColorScheme"
 		self.nameContext = ":DefaultColorScheme"
-		self.normal = ModColor("#003")
-		self.active = ModColor("#505")
-		self.pressed = ModColor("#888")
+		self.normal = ModColor("#011")
+		self.active = ModColor("#05F")
+		self.pressed = ModColor("#FF0")
 		return
 	elseif type(raw) == 'ModColorScheme' then
 		-- copy constructor
@@ -666,81 +671,12 @@ function ModButtonDef:dump(depth)
 end
 
 
-
---------------------------------------------------------------------------------------------
-class 'ModPatch'
-
-function ModPatch:__init(config, raw, nameContext)
-	self.config = config
-	self.raw = raw
-	assert(nameContext)
-	self.name, self.nameContext = config:parseObjectName(raw.Name, nameContext, "Patch")
-
-	self.layers = {}
-	if raw.Layers then
-		for k, v in pairs(raw.Layers) do
-			self.layers[k] = ModPatchLayer(config, self, v, self.nameContext)
-		end
-	end
-
-end
-
-function ModPatch:validate()
-	if table.count(self.layers) < 1 then log("! no layers defined for "..self.nameContext) end
-	for k, v in pairs(self.layers) do
-		v:validate()
-	end
-end
-
-
-function ModPatch:dump(depth)
-	printWithDepth(depth, "name: "..self.name)
-	printWithDepth(depth+1, "layers: {")
-	for k,v in pairs(self.layers) do
-		v:dump(depth+2)
-	end
-	printWithDepth(depth+1, "}")
-end
-
-
-
-class 'ModPatchLayer'
-
-function ModPatchLayer:__init(config, patch, raw, nameContext)
-	self.config = config
-	self.raw = raw
-	self.patch = patch
-
-	self.instrumentName = config:substituteAliases(raw.Instrument)
-	self.channel = tonumber(config:substituteAliases(raw.Channel))
-	if not self.channel then self.channel = 0 end
-	self.transpose = tonumber(config:substituteAliases(raw.Transpose))
-	if not self.transpose then self.transpose = 0 end
-	self.keyRange = ParseKeyRange(config:substituteAliases(raw.KeyRange)) or { 0, 119 }
-
-	assert(nameContext)
-	self.nameContext = nameContext..":PatchLayer[inst="..self.instrumentName.."]"
-
-	self.gain = tonumber(config:substituteAliases(raw.Gain))
-	if not self.gain then self.gain = 0.0 end
-end
-
-
-function ModPatchLayer:validate()
-	if not self.instrumentName then log("! no instrument name for "..self.nameContext) end
-	if self.gain > 6.0 then log("! gain cannot be greater than 6db for "..self.nameContext) end
-end
-
-
-
-function ModPatchLayer:dump(depth)
-	printWithDepth(depth, "(layers don't have names)")
-	printWithDepth(depth+1, "instrumentName: "..coalesceToString(self.instrumentName))
-	printWithDepth(depth+1, "channel: "..coalesceToString(self.channel))
-	printWithDepth(depth+1, "transpose: "..coalesceToString(self.transpose))
-	printWithDepth(depth+1, "gain: "..coalesceToString(self.gain))
-	printWithDepth(depth+1, "keyRange[1]: "..coalesceToString(self.keyRange[1]))
-	printWithDepth(depth+1, "keyRange[2]: "..coalesceToString(self.keyRange[2]))
+function ModButtonDef:isEqualTo(rhs)
+	assert(rhs)
+	assert(rhs.LPPKey, "only launchpad buttons currently supported.")
+	assert(self.LPPKey, "only launchpad buttons currently supported.")
+	if self.LPPKey and rhs.LPPKey and string.lower(self.LPPKey.name) == string.lower(rhs.LPPKey.name) then return true end
+	return false
 end
 
 

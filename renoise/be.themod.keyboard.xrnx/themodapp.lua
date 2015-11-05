@@ -2,10 +2,6 @@
 -- 2015-10-22
 
 -- TODO:
--- - selected song ID binary lights or so.
--- - song inheritance, inlining, tolerance
--- - pressed state
--- - "active" patch state.
 -- - animations (fade in?)
 
 require("renoise/http/json")
@@ -48,15 +44,18 @@ function TheMODApp:ReloadConfiguration(why)
 
 	-- required to stabilize object state here.
 	self.rawConfig = nil
+	self.pressedButtons = { }-- array of ModButtonDef objects that are currently pressed.
+	self.pressedButtonRefCount = 0-- number of keys pressed. when this hits 0, we virtually release all mapped keys. while it's > 0 though, keys are "sticky"
 	--self.brightness = 1.0
   self.selectedDeviceMap = nil-- maps user device name to live device name
 	self.lppMap = nil-- maps user device name to LaunchpadPro object
 
 	self.selectedSongIndex = nil-- index into config.songs
 	self.selectedSongName = nil-- convenience.
-	self.devicePatchMap = nil-- maps user device name to patch object (ModPatch)
+	self.devicePatchMap = nil-- maps user device name to array of patch objects (ModPatch)
 
-	self.txtStatus = nil-- UI element
+	self.txtLog = nil-- UI element
+	self.txtStatus = nil--UI element
 	self.songBitmap = nil-- UI element
   self.devicePopups = nil-- maps user device name to output device popup UI element
 	self.mainDialog = nil-- UI element
@@ -124,9 +123,20 @@ function TheMODApp:ReloadConfiguration(why)
   if not textWidth then textWidth = 400 end
 
   local textHeight = tonumber(config.settings["LogWindowHeight"])
-  if not textHeight then textHeight = 400 end
+  if not textHeight then textHeight = 300 end
+
+  local statusHeight = tonumber(config.settings["StatusWindowHeight"])
+  if not statusHeight then statusHeight = 200 end
 
   self.txtStatus = vb:multiline_textfield {
+    edit_mode = false,
+    width = textWidth,
+    height = statusHeight,
+    font = "big",-- "normal", "big", "bold, "italic", "mono"
+    text = "The MOD live keyboard app"
+  }
+
+  self.txtLog = vb:multiline_textfield {
     edit_mode = false,
     width = textWidth,
     height = textHeight,
@@ -170,6 +180,7 @@ function TheMODApp:ReloadConfiguration(why)
 
   	local popup = vb:popup {
 			items = choices,
+			width = 180,
 			value = selected,
 			notifier = function(i)
 				self:selectDevice(deviceDef, i)
@@ -198,22 +209,26 @@ function TheMODApp:ReloadConfiguration(why)
 		vb:row {
 			self.songBitmap
 		},
-		vb:row {
-			self.txtStatus
-		}
+		vb:row { self.txtStatus},
+		vb:row { self.txtLog }
 	}
 
   self.mainDialog = renoise.app():show_custom_dialog("The MOD info", dialogContent)
-  logOutput = self.txtStatus
+  logOutput = self.txtLog
 
   self.samplePlayer = ModSamplePlayer(
   	config:findSetting("OscHost", "localhost"),
   	tonumber(config:findSetting("OscPort", "8000")),
   	config:findSetting("OscProtocol", "UDP"))
 
- 	self:selectSong(config, oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
+  if not oldSelectedSongIndex and table.count(config.songs) > 0 then
+	 	self:selectSong(config, 1, why.."->ReloadConfiguration selecting song #1")
+  else
+	 	self:selectSong(config, oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
+  end
 
-  config:dump()
+  --config:dump()
+  config:validate()
 
 end
 
@@ -290,6 +305,61 @@ function TheMODApp:applyCurrentState(why)
 
 	local song = config.songs[self.selectedSongIndex]
 
+	if song and table.count(self.pressedButtons) > 0 then
+		-- for all pressed buttons, select patches
+		local allPatchAssignments = { }
+		for k,v in pairs(self.pressedButtons) do
+			-- figure out which song button this corresponds to.
+			local mapping = song:findButtonMapping(v.name)
+			for k2,v2 in pairs(mapping.patchAssignments) do
+				table.insert(allPatchAssignments, v2)
+			end
+		end
+
+		-- now we have all the patch assignments for all pressed buttons.
+		-- behavior is different when pressing just 1 or pressing >1.
+		if table.count(self.pressedButtons) == 1 then
+			for _, patchAssignment in pairs(allPatchAssignments) do
+				if patchAssignment.isNullPatch then
+					self.devicePatchMap[patchAssignment.deviceName] = { }
+					log("Selecting NULL patch for device "..patchAssignment.deviceName)
+				else
+					local patch = config:findPatch(patchAssignment.patchName)
+					if patch == nil then
+						log("Patch not found: "..patchAssignment.patchName)
+					else
+						self.devicePatchMap[patchAssignment.deviceName] = { patch }
+						log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
+						--didPatchChange = true
+					end
+				end
+			end
+		else
+			-- pressing 2 or more
+			for _, patchAssignment in pairs(allPatchAssignments) do
+				if patchAssignment.isNullPatch then
+					-- do nothing when pressing multiple keys
+					--self.devicePatchMap[patchAssignment.deviceName] = { }
+					--log("Selecting NULL patch for device "..patchAssignment.deviceName)
+				else
+					local patch = config:findPatch(patchAssignment.patchName)
+					if patch == nil then
+						log("Patch not found: "..patchAssignment.patchName)
+					else
+						-- only add if it's not already there.
+						local map = self.devicePatchMap[patchAssignment.deviceName]
+						local found = false
+						for _,p in pairs(map) do
+							if string.lower(p.name) == string.lower(patch.name) then found = true end
+						end
+						if not found then table.insert(map, patch) end
+						log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
+					end
+				end
+			end
+		end
+	end
+
 	-- apply song aliases
 	--config:resetAliases()
 
@@ -335,6 +405,30 @@ function TheMODApp:applyCurrentState(why)
 		self:decreaseBrightness("handleHotkey")
 	end)
 
+	self:BindHotkey(config, "DumpConfig", function()
+		config:dump()
+	end)
+
+	self:BindHotkey(config, "RenoiseSelectPrevInstrument", function()
+		if renoise.song().selected_instrument_index > 1 then
+			renoise.song().selected_instrument_index = renoise.song().selected_instrument_index - 1
+		end
+	end)
+
+	self:BindHotkey(config, "RenoiseSelectNextInstrument", function()
+		if renoise.song().selected_instrument_index < table.count(renoise.song().instruments) then
+			renoise.song().selected_instrument_index = renoise.song().selected_instrument_index + 1
+		end
+	end)
+
+	self:BindHotkey(config, "RenoiseSelectInstrument0", function()
+		renoise.song().selected_instrument_index = 1
+	end)
+
+	self:BindHotkey(config, "Panic", function()
+		renoise.song().transport:panic()
+	end)
+
   -- set up key bindings for song
   if song then
   	for _, songButtonMapItem in pairs(song.buttonMap) do
@@ -362,7 +456,17 @@ function TheMODApp:applyCurrentState(why)
 					self:executeButtonUp(config, songButtonMapItem, "handle_launchpad_button_up")
 				end)
 
-			lp:updateLED(buttonDef.LPPKey, config:findColorScheme(songButtonMapItem.colorScheme).normal)
+			-- if this is a selected button, use active color.
+			local colorScheme = config:findColorScheme(songButtonMapItem.colorScheme)
+			local buttonColor = colorScheme.normal
+			if self:isActiveButton(songButtonMapItem, buttonDef) then
+				buttonColor = colorScheme.active
+			end
+			if self:isButtonPressed(buttonDef) then
+				buttonColor = colorScheme.pressed
+			end
+
+			lp:updateLED(buttonDef.LPPKey, buttonColor)
 
   	end
   end
@@ -393,10 +497,12 @@ function TheMODApp:applyCurrentState(why)
 	end
 
   -- instrument assignments
+
 	local instrumentIdeals = {}-- maps renoise instrument name to { realDeviceName=(string), layer=ModPatchLayer }
-	for deviceUserName, patch in pairs(self.devicePatchMap) do
+	for deviceUserName, patchList in pairs(self.devicePatchMap) do
+		local patch = self:mergePatches(config, patchList)
 		local realDeviceName = self.selectedDeviceMap[string.lower(deviceUserName)]
-		if not realDeviceName then
+		if not realDeviceName or not patch then
 			-- maybe device is disabled ? anyway ignore.
 		else
 			for _, layer in pairs(patch.layers) do
@@ -421,31 +527,118 @@ function TheMODApp:applyCurrentState(why)
   	end
   end
 
+  -- update the text status
+  if not song then
+  	self.txtStatus.text = "no song selected."
+  else
+  	self.txtStatus.text = song.name
+  	for k,deviceDef in pairs(config.deviceDefs) do
+	  	self.txtStatus:add_line("  "..deviceDef.name.." (mapped to real device: "..coalesceToString(self.selectedDeviceMap[string.lower(deviceDef.name)])..")")
+	  	-- show currently selected patches
+			local currentPatchList = self.devicePatchMap[deviceDef.name]
+			if not currentPatchList or table.count(currentPatchList) == 0 then
+				self.txtStatus:add_line("    -")
+			else
+				for k,patch in pairs(currentPatchList) do
+					self.txtStatus:add_line("    "..patch.name)
+				end
+			end
+  	end
+  end
+
 	return config
+end
+
+
+function TheMODApp:isActiveButton(buttonMapping, buttonDef)
+	-- there are a bunch of patch changes in the given button mapping
+	--log("isActiveButton("..buttonMapping.buttonName..") {")
+	local hitCount = 0
+	for _,assignment in pairs(buttonMapping.patchAssignments) do
+		assert(assignment.deviceName)
+		local currentPatchList = self.devicePatchMap[assignment.deviceName]
+		local anyCurrent = table.count(currentPatchList) > 0
+		if assignment.isNullPatch and anyCurrent then
+			--log("  expected nil but got a patch (). return false")
+			--log("}")
+			return false
+		end
+		if not assignment.isNullPatch and not anyCurrent then
+			--log("  expected patch but got null. return false")
+			--log("}")
+			return false
+		end
+		if assignment.isNullPatch and not anyCurrent then
+			--log("  null patch = null patch. good for this device ["..assignment.deviceName.."].")
+		else
+			local found = false
+			for _,currentPatch in pairs(currentPatchList) do
+				--log("  comparing button patch ["..coalesceToString(assignment.patchName).."] with currently-selected patch ["..coalesceToString(currentPatch.name).."] on device ["..assignment.deviceName.."]")
+				if currentPatch.name == assignment.patchName then
+					found = true
+					--log("  -> found it.")
+				end
+			end
+			if not found then
+				--log("  -> failed test; it's not active. return false")
+				--log("}")
+				return false
+			end
+		end
+	end
+
+	--log("  return true")
+	--log("}")
+	return true
+end
+
+function TheMODApp:isButtonPressed(buttonDef)
+	for _,btn in ipairs(self.pressedButtons) do
+		if buttonDef:isEqualTo(btn) then return true end
+	end
+	return false
+end
+
+
+function TheMODApp:mergePatches(config, patchList)
+	-- return a patch that contains all the given patches
+	local count = table.count(patchList)
+	if count < 1 then return nil end
+	local ret = ModPatch(config, patchList[1])
+	if count < 2 then return ret end
+	for i = 2, count do
+		ret:mergeWithPatch(patchList[i])
+	end
+	return ret
 end
 
 ------------------------------------------------------------------------------
 -- user pushed a button; do stuff stuff
 function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 
-	local didPatchChange = false
-
-	for _, patchAssignment in pairs(songButtonMapItem.patchAssignments) do
-		local patch = config:findPatch(patchAssignment.patchName)
-		if patch == nil then
-			--log("Patch not found: "..patchAssignment.patchName)
-		else
-			self.devicePatchMap[patchAssignment.deviceName] = patch
-			log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
-			didPatchChange = true
+	-- register that the button is pressed.
+	if songButtonMapItem.buttonName then
+		local songButton = config:findButtonDef(songButtonMapItem.buttonName)
+		assert(songButton)
+		local found = false
+		for k,v in pairs(self.pressedButtons) do
+			if v:isEqualTo(songButton) then
+				found = true
+			end
+		end
+		if not found then	
+			table.insert(self.pressedButtons, songButton)
+			self.pressedButtonRefCount = self.pressedButtonRefCount + 1
 		end
 	end
 
+	-- play samples
 	for k,sampleName in pairs(songButtonMapItem.sampleTriggers) do
 		local sample = config:findSample(sampleName)
 		log("playing sample: " .. sampleName)
 		if not sample then
 			log("sample not found: "..sampleName)
+			-- no biggie. just ignore it.
 		else
 			log("->sample found.")
 			for k,layer in pairs(sample.layers) do
@@ -456,9 +649,8 @@ function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 		end
 	end
 
-	if didPatchChange then
-		self:applyCurrentState(why)
-	end
+	-- selecting patches happens here:
+	self:applyCurrentState(why)
 
 end
 
@@ -466,6 +658,25 @@ end
 
 ------------------------------------------------------------------------------
 function TheMODApp:executeButtonUp(config, songButtonMapItem, why)
+
+	if songButtonMapItem.buttonName then
+		--log("button up for button "..songButtonMapItem.buttonName)
+		local songButton = config:findButtonDef(songButtonMapItem.buttonName)
+		assert(songButton)
+		local keyToRemove = nil
+		for k,v in pairs(self.pressedButtons) do
+			if v:isEqualTo(songButton) then
+				keyToRemove = k
+				--log("removing  item "..k)
+			end
+		end
+		--if keyToRemove then self.pressedButtons[keyToRemove] = nil end
+		if keyToRemove then self.pressedButtonRefCount = self.pressedButtonRefCount - 1 end
+		if self.pressedButtonRefCount == 0 then
+			self.pressedButtons = {}
+		end
+	end
+
 	for k,sampleName in pairs(songButtonMapItem.sampleTriggers) do
 		local sample = config:findSample(sampleName)
 		if not sample then
@@ -477,6 +688,7 @@ function TheMODApp:executeButtonUp(config, songButtonMapItem, why)
 		end
 	end
 
+	self:applyCurrentState("executeButtonUp")
 end
 
 
@@ -488,21 +700,22 @@ end
 
 
 function TheMODApp:increaseBrightness(why)
-	self.brightness = self.brightness + 0.1
-	if self.brightness > 2.0 then self.brightness = 2.0 end
+	self.brightness = self.brightness + 0.5
+	if self.brightness > 4.0 then self.brightness = 4.0 end
 	log("set brightness to "..self.brightness)
 	self:applyCurrentState(why)
 end
 
 
 function TheMODApp:decreaseBrightness(why)
-	self.brightness = self.brightness - 0.1
+	self.brightness = self.brightness - 0.5
 	if self.brightness < 0.0 then self.brightness = 0.0 end
 	log("set brightness to "..self.brightness)
 	self:applyCurrentState(why)
 end
 
 ------------------------------------------------------------------------------
+-- finds the first NON-SILENT patch
 function TheMODApp:findFirstPatchChangeForDevice(config, deviceUserName, song)
 	assert(type(config) == "ModConfig")
 	assert(song)
@@ -512,8 +725,10 @@ function TheMODApp:findFirstPatchChangeForDevice(config, deviceUserName, song)
 	for _,buttonMapItem in pairs(song.buttonMap) do
 		for _,patchAssignment in pairs(buttonMapItem.patchAssignments) do
 			if string.lower(patchAssignment.deviceName) == string.lower(deviceUserName) then
-				local patch = config.patches[patchAssignment.patchName]
-				return patch
+				local patch = config:findPatch(patchAssignment.patchName)--patches[patchAssignment.patchName]
+				if patch and table.count(patch.layers) > 0 then
+					return patch
+				end
 			end
 		end
 	end
@@ -552,7 +767,7 @@ function TheMODApp:selectSong(config, songIndex, why)
 			for _, deviceDef in pairs(config.deviceDefs) do
 				local patch = self:findFirstPatchChangeForDevice(config, deviceDef.name, song)
 				if patch ~= nil then
-					self.devicePatchMap[deviceDef.name] = patch
+					self.devicePatchMap[deviceDef.name] = { patch }
 				end
 			end
 		end

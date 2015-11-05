@@ -196,6 +196,7 @@ function ModSongButtonPatchAssignment:__init(config, mapping, song, raw, nameCon
 		self.deviceName = raw.deviceName
 		self.nameContext = raw.nameContext
 		self.patchName = raw.patchName
+		self.isNullPatch = raw.isNullPatch
 	else
 		-- from json
 		assert(nameContext)
@@ -204,7 +205,12 @@ function ModSongButtonPatchAssignment:__init(config, mapping, song, raw, nameCon
 		self.deviceName = config:substituteAliases(raw.Device)
 		assert(self.deviceName)
 
-		if type(raw.Patch) == "string" then
+		self.isNullPatch = false
+		if raw.Patch == nil then
+			-- no patch specified; silence it.
+			self.isNullPatch = true
+			self.patchName = nil
+		elseif type(raw.Patch) == "string" then
 			self.patchName = config:substituteAliases(raw.Patch)
 		else
 			local patch = ModPatch(config, raw.Patch, self.nameContext)
@@ -218,7 +224,7 @@ end
 
 function ModSongButtonPatchAssignment:validate()
 	if not self.deviceName then log("! deviceName not set for "..self.nameContext) end
-	if not self.patchName then log("! patchName not set for "..self.nameContext) end
+	--if not self.patchName then log("! patchName not set for "..self.nameContext) end
 end
 
 
