@@ -2,13 +2,11 @@
 -- 2015-10-22
 
 -- TODO:
--- - play samples (just get reload config to play that sample)
---   - support keyup event
--- - support song inheritance
--- - support "active" patch state.
--- - support pressed state
--- - support animations (fade in?)
--- - support default song-button-assignment device
+-- - selected song ID binary lights or so.
+-- - song inheritance, inlining, tolerance
+-- - pressed state
+-- - "active" patch state.
+-- - animations (fade in?)
 
 require("renoise/http/json")
 require("utility")
@@ -44,15 +42,18 @@ end
 -- re-creates UI and initializes state based on config.
 function TheMODApp:ReloadConfiguration(why)
 	local oldSelectedSongIndex = self.selectedSongIndex
+	local oldSelectedSongName = self.selectedSongName
 
 	self:shutdown()
 
 	-- required to stabilize object state here.
 	self.rawConfig = nil
+	--self.brightness = 1.0
   self.selectedDeviceMap = nil-- maps user device name to live device name
 	self.lppMap = nil-- maps user device name to LaunchpadPro object
 
 	self.selectedSongIndex = nil-- index into config.songs
+	self.selectedSongName = nil-- convenience.
 	self.devicePatchMap = nil-- maps user device name to patch object (ModPatch)
 
 	self.txtStatus = nil-- UI element
@@ -78,7 +79,7 @@ function TheMODApp:ReloadConfiguration(why)
 
   -- parse all config objects
   self.rawConfig = decodedJSON
-  local config = ModConfig(self.rawConfig)
+  local config = ModConfig(self.rawConfig, oldSelectedSongName)
 
 	-- make an array of all available devices to select
 	local allAvailableDevices = {}
@@ -211,6 +212,9 @@ function TheMODApp:ReloadConfiguration(why)
   	config:findSetting("OscProtocol", "UDP"))
 
  	self:selectSong(config, oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
+
+  config:dump()
+
 end
 
 
@@ -218,6 +222,7 @@ end
 function TheMODApp:__init()
 	log("---------------------------------------------------------")
 	log("TheMODApp:__init")
+	self.brightness = 1.0
 	self:ReloadConfiguration("__init")
 end
 
@@ -271,12 +276,22 @@ function TheMODApp:BindHotkey(config, hotkeyName, func)
 end
 
 ------------------------------------------------------------------------------
-function TheMODApp:applyCurrentState(config, why)
+-- this song will load its own config, so assume that any config you have before this function is now invalid.
+-- returns the newly loaded config.
+function TheMODApp:applyCurrentState(why)
   for _, lp in pairs(self.lppMap) do
+  	lp:setBrightness(self.brightness)-- TODO: brightness is currently just for 1 device. it should be per device. but i only have 1 device so...
   	lp:beginFrame(why.."->applyCurrentState")
   end
 
+	--local selectedSongName = nil
+	--if song and song.name then selectedSongName = song.name end
+  local config = ModConfig(self.rawConfig, self.selectedSongName)
+
 	local song = config.songs[self.selectedSongIndex]
+
+	-- apply song aliases
+	--config:resetAliases()
 
   for _, lp in pairs(self.lppMap) do
   	lp:clearKeyBindings()
@@ -305,7 +320,19 @@ function TheMODApp:applyCurrentState(config, why)
 	end)
 
 	self:BindHotkey(config, "ReapplyStatus", function()
-		self:applyCurrentState(config, "handleHotkey")
+		self:applyCurrentState("handleHotkey")
+	end)
+
+	self:BindHotkey(config, "ShowSongID", function()
+		self:showSongID(config, "handleHotkey")
+	end)
+
+	self:BindHotkey(config, "IncreaseBrightness", function()
+		self:increaseBrightness("handleHotkey")
+	end)
+
+	self:BindHotkey(config, "DecreaseBrightness", function()
+		self:decreaseBrightness("handleHotkey")
 	end)
 
   -- set up key bindings for song
@@ -315,14 +342,14 @@ function TheMODApp:applyCurrentState(config, why)
 			local buttonDef = config:findButtonDef(songButtonMapItem.buttonName)
 			if not buttonDef then
 				error("You assigned a song mapping to a nonexistent button def / " .. songButtonMapItem.buttonName)
-				return
+				return config
 			end
 
 			-- find the launchpad obj
 			local lp = self.lppMap[buttonDef.deviceDef.name]
 			if not lp then
 				error("Only Launchpad Pro is supported for button mappings")
-				return
+				return config
 			end
 
 			lp:addKeyBinding(
@@ -342,6 +369,8 @@ function TheMODApp:applyCurrentState(config, why)
 
   for _, lp in pairs(self.lppMap) do
   	lp:presentFrame(why.."->applyCurrentState")
+ 		--lp:scrollText()
+		-- binary lights?
   end
 
   if song and song.image then
@@ -361,7 +390,6 @@ function TheMODApp:applyCurrentState(config, why)
 	  else
 		  self.songBitmap.bitmap = "emptySong.png"
 	  end
-
 	end
 
   -- instrument assignments
@@ -392,6 +420,8 @@ function TheMODApp:applyCurrentState(config, why)
 			if ri.midi_input_properties.note_range ~= idealData.layer.keyRange then ri.midi_input_properties.note_range = idealData.layer.keyRange end
   	end
   end
+
+	return config
 end
 
 ------------------------------------------------------------------------------
@@ -413,9 +443,11 @@ function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 
 	for k,sampleName in pairs(songButtonMapItem.sampleTriggers) do
 		local sample = config:findSample(sampleName)
+		log("playing sample: " .. sampleName)
 		if not sample then
-			error("sample not found: "..sampleName)
+			log("sample not found: "..sampleName)
 		else
+			log("->sample found.")
 			for k,layer in pairs(sample.layers) do
 				local velocity = vel
 				if layer.velocity then velocity = layer.velocity end
@@ -425,7 +457,7 @@ function TheMODApp:executeButtonDown(config, vel, songButtonMapItem, why)
 	end
 
 	if didPatchChange then
-		self:applyCurrentState(config, why)
+		self:applyCurrentState(why)
 	end
 
 end
@@ -445,6 +477,29 @@ function TheMODApp:executeButtonUp(config, songButtonMapItem, why)
 		end
 	end
 
+end
+
+
+------------------------------------------------------------------------------
+function TheMODApp:showSongID(config, why)
+	-- scrolling text?
+	error("TODO")
+end
+
+
+function TheMODApp:increaseBrightness(why)
+	self.brightness = self.brightness + 0.1
+	if self.brightness > 2.0 then self.brightness = 2.0 end
+	log("set brightness to "..self.brightness)
+	self:applyCurrentState(why)
+end
+
+
+function TheMODApp:decreaseBrightness(why)
+	self.brightness = self.brightness - 0.1
+	if self.brightness < 0.0 then self.brightness = 0.0 end
+	log("set brightness to "..self.brightness)
+	self:applyCurrentState(why)
 end
 
 ------------------------------------------------------------------------------
@@ -481,6 +536,7 @@ function TheMODApp:selectSong(config, songIndex, why)
 	end
 
 	self.selectedSongIndex = songIndex
+	self.selectedSongName = nil-- we'll set this in a bit.
 	self.devicePatchMap = { }
 
 	-- attempt to set all devices to the first patch the song maps to.
@@ -492,6 +548,7 @@ function TheMODApp:selectSong(config, songIndex, why)
 			log("Couldn't find song song index " .. tostring(songIndex) .. " because: "..why)
 		else
 			log("Selecting song "..song.name..", index " .. tostring(songIndex) .. " because: "..why)
+			self.selectedSongName = song.name
 			for _, deviceDef in pairs(config.deviceDefs) do
 				local patch = self:findFirstPatchChangeForDevice(config, deviceDef.name, song)
 				if patch ~= nil then
@@ -501,5 +558,6 @@ function TheMODApp:selectSong(config, songIndex, why)
 		end
 	end
 
-	self:applyCurrentState(config, why.."->selectSong")
+	self:applyCurrentState(why.."->selectSong")
 end
+

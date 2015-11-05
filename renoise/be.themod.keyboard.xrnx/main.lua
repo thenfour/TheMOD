@@ -2,12 +2,8 @@
 -- 2015-10-22
 --local CC = require('namespace')
 require("themodapp")
---require("samplePlayer")
-
---local omg = nil
 
 local TheMODAppSingleton = nil
---local TheMODSamplePlayer = nil
 
 local function Shutdown()
 	if TheMODAppSingleton then 
@@ -16,20 +12,13 @@ local function Shutdown()
 	TheMODAppSingleton = nil
 end
 
+
+
+
 local function ModInit()
   Shutdown()
   TheMODAppSingleton = TheMODApp()
 end
-
-
--- local function PlaySample()
--- 	if not TheMODSamplePlayer then
--- 	  TheMODSamplePlayer = ModSamplePlayer("localhost", "8000", "UDP")
--- 	end
-
---   TheMODSamplePlayer:noteOn("snare", 65, 120)
-
--- end
 
 -- create a midimapping that loads config and everything
 renoise.tool():add_midi_mapping {

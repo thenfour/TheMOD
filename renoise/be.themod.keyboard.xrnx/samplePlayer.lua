@@ -7,7 +7,6 @@ class("ModSamplePlayer")
 
 -- protocol is a string "UDP" or "TCP"
 function ModSamplePlayer:__init(host, port, protocol)
-
 	self:shutdown()
 
 	local socket_error
@@ -21,9 +20,6 @@ function ModSamplePlayer:__init(host, port, protocol)
 		error("Couldn't start sample player OSC client. Connection issue or some shit.")
 	  return
 	end
-
-	--alert("connected fine."..tostring(self.client.is_open))
-
 end
 
 
@@ -46,7 +42,6 @@ function ModSamplePlayer:noteOn(instrumentName, note, velocity)
 
 	-- https://github.com/renoise/xrnx/blob/master/GlobalOscActions.lua#L21
 	-- http://forum.renoise.com/index.php/topic/45404-solved-osc-renoisetriggernote-on/
-
 	-- /renoise/trigger/note_on(
 	-- * instr(int32/64)
 	-- * track(int32/64) -- -1 for current track (default)
@@ -64,7 +59,7 @@ function ModSamplePlayer:noteOn(instrumentName, note, velocity)
 		track = instrument.midi_input_properties.assigned_track
 	end
 
-	--log("playing sample. Instrument #"..instrumentIndex.." ("..instrumentName.."), note "..note..", velocity "..velocity)
+	log("playing sample. Instrument #"..instrumentIndex.." ("..instrumentName.."), note "..note..", velocity "..velocity)
 	local msg = renoise.Osc.Message("/renoise/trigger/note_on", {
 		{ tag = "i", value = instrumentIndex },
 		{ tag = "i", value = track },
@@ -88,7 +83,7 @@ function ModSamplePlayer:noteOff(instrumentName, note)
 	-- * track(int32/64)
 	-- * note(int32/64))
 
-	log("sending note off.")
+	--log("sending note off.")
 	local msg = renoise.Osc.Message("/renoise/trigger/note_off", {
 		{ tag = "i", value = instrumentIndex },
 		{ tag = "i", value = -1 },

@@ -5,6 +5,9 @@
 
 
 
+-- todo: support brightness
+--   * keep a cache of LEDs. maybe even a layer system, later to be used for overlays or animations
+
 ---------------------------------------------------------------------------------------------------
 class 'LaunchpadProButton'
 
@@ -59,6 +62,8 @@ end
 function LaunchpadPro:__init(deviceName)
 
 	-- member overview
+	self.brightness = 1.0-- post-processing basically
+
 	self.inputDevice = nil-- renoise input device
 	self.outputDevice = nil-- renoise output device
 	self.keyBindings = nil-- maps button index to function
@@ -145,10 +150,43 @@ function LaunchpadPro:setProgrammerLayout()
   self.outputDevice:send { 240, 0, 32, 41, 2, 16, 44, 3, 247 }
 end
 
+function LaunchpadPro:setBrightness(b)
+	self.brightness = b
+	-- TODO: refresh now.
+end
+
 function LaunchpadPro:beginFrame(why)
 	if not self.outputDevice then return end
 	--log("begin frame because "..why)
 	self.frameBufferRefs = self.frameBufferRefs + 1
+end
+
+-- processes a color so LPP will accept it, and inserts the 3 color components into a table.
+function LaunchpadPro:shadePixel(t, button, color)
+	local c = ModColor(color)
+	if not c then c = ModColor("#000") end
+
+	-- brightness
+	c.r = c.r * self.brightness
+	c.g = c.g * self.brightness
+	c.b = c.b * self.brightness
+
+	-- LPP range
+	c.r = c.r * 63.0
+	c.g = c.g * 63.0
+	c.b = c.b * 63.0
+
+	-- clamp
+	if c.r < 0 then c.r = 0 end
+	if c.r > 63.0 then c.r = 63.0 end
+	if c.g < 0 then c.g = 0 end
+	if c.g > 63.0 then c.g = 63.0 end
+	if c.b < 0 then c.b = 0 end
+	if c.b > 63.0 then c.b = 63.0 end
+
+	table.insert(t, c.r)
+	table.insert(t, c.g)
+	table.insert(t, c.b)
 end
 
 function LaunchpadPro:presentFrame(why)
@@ -167,15 +205,7 @@ function LaunchpadPro:presentFrame(why)
 		for x = 0, 9 do
 			local btn = LaunchpadProButton(x, y)
 			local c = self.LEDops[btn.index]
-			if c then
-				table.insert(bytes, c.r * 63.0)
-				table.insert(bytes, c.g * 63.0)
-				table.insert(bytes, c.b * 63.0)
-			else
-				table.insert(bytes, 0)
-				table.insert(bytes, 0)
-				table.insert(bytes, 0)
-			end
+			self:shadePixel(bytes, btn, c)
 		end
 	end	
 
@@ -227,14 +257,45 @@ function LaunchpadPro:adHocUpdateLEDs(assignments)
 		local button = v[1]-- of type LaunchpadProButton
 		local color = v[2]
 		table.insert(bytes, button.index)
-		table.insert(bytes, color.r * 63.0)
-		table.insert(bytes, color.g * 63.0)
-		table.insert(bytes, color.b * 63.0)
+		self:shadePixel(bytes, button, color)
 	end
 
 	table.insert(bytes, 247)
 	self.outputDevice:send { unpack(bytes) }
 end
+
+
+function LaunchpadPro:scrollText(txt, speed)
+
+	-- local frame = 0
+
+	-- local proc = nil
+	-- proc = function()
+
+	-- 	local bytes = { 240,0,32,41,2,16,11 }
+
+	-- 	local button = LaunchpadProButton(frame)
+	-- 	--local color = ModColor("#444")
+	-- 	table.insert(bytes, button.index)
+	-- 	table.insert(bytes, frame / 99.0 * 63.0)
+	-- 	table.insert(bytes, frame / 99.0 * 63.0)
+	-- 	table.insert(bytes, 63.0)
+
+	-- 	table.insert(bytes, 247)
+	-- 	self.outputDevice:send { unpack(bytes) }
+
+	-- 	log("frame."..button.index)
+	-- 	frame = frame + 1
+
+	-- 	if frame == 99 then
+	-- 		renoise.tool():remove_timer(proc)
+	-- 	end
+	-- end
+
+	-- renoise.tool():add_timer(proc, 20)
+
+end
+
 
 
 

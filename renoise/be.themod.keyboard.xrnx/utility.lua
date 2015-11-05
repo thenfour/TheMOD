@@ -232,11 +232,21 @@ end
 class "ModColor"
 
 function ModColor:__init(s)
-	self.name = s
-	self.rgb = self:fromCSS(s)
-	self.r = self.rgb[1]
-	self.g = self.rgb[2]
-	self.b = self.rgb[3]
+	if type(s) == "string" then
+		self.name = s
+		self.rgb = self:fromCSS(s)
+		self.r = self.rgb[1]
+		self.g = self.rgb[2]
+		self.b = self.rgb[3]
+	elseif type(s) == "ModColor" then
+		self.name = s.name
+		self.rgb = s.rgb
+		self.r = s.r
+		self.g = s.g
+		self.b = s.b
+	else
+		assert(false, "unknown color format")
+	end
 end
 
 
@@ -262,4 +272,29 @@ function ModColor:fromCSS(s)
 	if not r or not g or not b then return end
 	return { r/255.0, g/255.0, b/255.0 }
 end
+
+function ModColor:tostring()
+	return self.name
+end
+
+
+function printWithDepth(depth, msg)
+	print(string.rep("  ", depth)..msg)
+end
+
+function coalesce(o, ifnull)
+	if o == nil then return ifnull end
+	return o
+end
+
+-- function to convert an object to string, and you provide a function if the object is not null to do the conversion
+function coalesceToString(obj, toStringFnIfNotNull)
+	if obj == nil then return "nil" end
+	if toStringFnIfNotNull then
+		return toStringFnIfNotNull(obj)
+	end
+	return tostring(obj)
+end
+
+
 
