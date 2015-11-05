@@ -19,13 +19,14 @@
 	],
 	"HotkeyAssignments" :
 	[
-		{ "Name" : "SelectPreviousSong", "ButtonName" : "B1", "ColorScheme" : { "Normal" : "#f0f" } },
-		{ "Name" : "SelectNoSong", "ButtonName" : "C1", "ColorScheme" : { "Normal" : "#101" } },
-		{ "Name" : "SelectNextSong", "ButtonName" : "D1", "ColorScheme" : { "Normal" : "#f0f" } },
-		{ "Name" : "ReapplyStatus", "ButtonName" : "H1", "ColorScheme" : { "Normal" : "#220" } },
-		{ "Name" : "ReloadConfiguration", "ButtonName" : "I1", "ColorScheme" : { "Normal" : "#f00" } },
-		{ "Name" : "IncreaseBrightness", "ButtonName" : "F1", "ColorScheme" : { "Normal" : "#6ff" } },
-		{ "Name" : "DecreaseBrightness", "ButtonName" : "g1", "ColorScheme" : { "Normal" : "#122" } }
+		{ "Name" : "SelectPreviousSong", "ButtonName" : "B5", "ColorScheme" : { "Normal" : "#f0f" } },
+		{ "Name" : "SelectNoSong",       "ButtonName" : "C5", "ColorScheme" : { "Normal" : "#101" } },
+		{ "Name" : "SelectNextSong",     "ButtonName" : "D5", "ColorScheme" : { "Normal" : "#f0f" } },
+		{ "Name" : "IncreaseBrightness", "ButtonName" : "f4", "ColorScheme" : { "Normal" : "#6ff" } },
+		{ "Name" : "DecreaseBrightness", "ButtonName" : "f5", "ColorScheme" : { "Normal" : "#122" } },
+		{ "Name" : "DumpConfig",         "ButtonName" : "h5", "ColorScheme" : { "Normal" : "#f00" } },
+		{ "Name" : "ReapplyStatus",      "ButtonName" : "i4", "ColorScheme" : { "Normal" : "#220" } },
+		{ "Name" : "ReloadConfiguration","ButtonName" : "I5", "ColorScheme" : { "Normal" : "#f00" } }
 	],
 	"Samples" :
 	[
@@ -37,11 +38,15 @@
 	[
 		{ "Name" : "Base",
 			"Image" : "base.png",
-			"Aliases" : { "@mySampleName" : "cello" },
 			"ButtonMap" : [
 				{ "Button" : "B4", "SampleTriggers" : [ { "Inherits" : "@mySampleName", "Note" : "C5" } ] },
 				{ "Button" : "C4", "SampleTriggers" : [ { "Inherits" : "@mySampleName", "Note" : "D5" } ] }
 			]
+		},
+		{ "Name" : "song1",
+			"Image" : "song1.png",
+			"Aliases" : { "@mySampleName" : "cello" },
+			"Inherits" : "Base"
 		}
 	]
 }
