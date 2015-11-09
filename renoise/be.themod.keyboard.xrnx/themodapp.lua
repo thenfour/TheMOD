@@ -40,6 +40,19 @@ function TheMODApp:ReloadConfiguration(why)
 	local oldSelectedSongIndex = self.selectedSongIndex
 	local oldSelectedSongName = self.selectedSongName
 
+	local masterTrack = self:getMasterTrack()
+
+	if not self.globalVolumeChanged then
+		self.globalVolumeChanged = function()
+			self:applyCurrentState("global volume changed by user via observer")
+		end
+	end
+
+	local masterVolumeObs = masterTrack.postfx_volume.value_observable
+	if masterVolumeObs:has_notifier(self.globalVolumeChanged) then
+		masterVolumeObs:remove_notifier(self.globalVolumeChanged)
+	end
+
 	self:shutdown()
 
 	-- required to stabilize object state here.
@@ -112,7 +125,10 @@ function TheMODApp:ReloadConfiguration(why)
 	self.lppMap = { }
   for _, dd in pairs(config.deviceDefs) do
   	if dd.isLaunchpadPro then
-  		self.lppMap[dd.name] = LaunchpadPro(self.selectedDeviceMap[string.lower(dd.name)])
+  		local realDeviceName = self.selectedDeviceMap[string.lower(dd.name)]
+  		if realDeviceName then
+	  		self.lppMap[dd.name] = LaunchpadPro(realDeviceName)
+	  	end
   	end
   end
 
@@ -221,14 +237,16 @@ function TheMODApp:ReloadConfiguration(why)
   	tonumber(config:findSetting("OscPort", "8000")),
   	config:findSetting("OscProtocol", "UDP"))
 
+  --config:dump()
+  config:validate()
+
+	masterVolumeObs:add_notifier(self.globalVolumeChanged)
+
   if not oldSelectedSongIndex and table.count(config.songs) > 0 then
 	 	self:selectSong(config, 1, why.."->ReloadConfiguration selecting song #1")
   else
 	 	self:selectSong(config, oldSelectedSongIndex, why.."->ReloadConfiguration selecting old song")
   end
-
-  --config:dump()
-  config:validate()
 
 end
 
@@ -274,7 +292,7 @@ function TheMODApp:BindHotkey(config, hotkeyName, func)
 	-- find the launchpad obj
 	local lp = self.lppMap[b.deviceDef.name]
 	if not lp then
-		error("Only Launchpad Pro is supported for hotkeys (while processing hotkey " .. hotkeyName)
+		log("Only Launchpad Pro is supported for hotkeys (while processing hotkey " .. hotkeyName)
 		return
 	end
 
@@ -290,10 +308,96 @@ function TheMODApp:BindHotkey(config, hotkeyName, func)
 	lp:updateLED(b.LPPKey, config:findColorScheme(hk.colorScheme).normal)
 end
 
+function TheMODApp:getMasterTrack()
+	local masterTrack = nil
+	for _,t in pairs(renoise.song().tracks) do
+		if t.type == renoise.Track.TRACK_TYPE_MASTER then
+			masterTrack = t
+		end
+	end
+
+	assert(masterTrack)
+	return masterTrack
+end
+
+function TheMODApp:BindGlobalVolumeHotkeys(config)
+	local hks = config:findAllHotkeyAssignments("GlobalVolume")
+
+	local masterTrack = self:getMasterTrack()
+
+	for _,hk in pairs(hks) do
+		--log("global volume hotkey.")
+		local b = config:findButtonDef(hk.buttonName)
+		if not b then
+			error("You assigned hotkey " .. hotkeyName .. " to missing button def")
+			return
+		end
+
+		local val = hk.raw.Value
+
+		-- convert val to db value
+		if not val then
+			--log("not val.")
+			val = 0
+		elseif string.lower(hk.raw.Value) == "-inf" then
+			val = math.infdb
+			--log("-inf!")
+		elseif type(val) == 'string' then
+			--log("val is a string: "..val)
+			val = string.lower(val)
+			if StringEndsWith2(val, "db") then val = string.sub(val, 1, #val-2) end-- strip trailing "DB"
+			val = tonumber(val)
+			if not val then
+				error("invalid global volume value: "..hk.raw.Value)
+				val = 0
+			end
+			--print(math.lin2db(renoise.song().tracks[42].postfx_volume.value))
+		elseif type(val) == 'number' then
+			--
+			--log("val is a number.")
+		else
+			error("unknown value type for global volume hotkey")
+		end
+
+		local valDB = val
+		val = math.db2lin(val)
+
+		-- clamping.
+		if val < masterTrack.postfx_volume.value_min then val = masterTrack.postfx_volume.value_min end
+		if val > masterTrack.postfx_volume.value_max then val = masterTrack.postfx_volume.value_max end
+
+		-- find the launchpad obj
+		local lp = self.lppMap[b.deviceDef.name]
+		if not lp then
+			log("Only Launchpad Pro is supported for hotkeys (while processing hotkey " .. hotkeyName)
+			return
+		end
+
+		lp:addKeyBinding(b.LPPKey,
+			function(vel)
+				masterTrack.postfx_volume.value = val
+				log("Set global volume to "..valDB.." db")
+				self:applyCurrentState("global volume set")
+			end,
+			function()
+				-- note off; color scheme
+			end
+			)
+
+		local cs = config:findColorScheme(hk.colorScheme)
+		local c = cs.normal
+		--log(" -> comparing val:"..(math.lin2db(masterTrack.postfx_volume.value)+0.001).." >= "..math.lin2db(val).."?")
+		if math.lin2db(masterTrack.postfx_volume.value)+0.001 >= valDB then c = cs.active end-- give a bit of tolerance because values aren't always stored as perfect floats; they're 
+
+		lp:updateLED(b.LPPKey, c)
+	end
+end
+
 ------------------------------------------------------------------------------
 -- this song will load its own config, so assume that any config you have before this function is now invalid.
 -- returns the newly loaded config.
 function TheMODApp:applyCurrentState(why)
+	local sw = Stopwatch()
   for _, lp in pairs(self.lppMap) do
   	lp:setBrightness(self.brightness)-- TODO: brightness is currently just for 1 device. it should be per device. but i only have 1 device so...
   	lp:beginFrame(why.."->applyCurrentState")
@@ -429,6 +533,8 @@ function TheMODApp:applyCurrentState(why)
 		renoise.song().transport:panic()
 	end)
 
+	self:BindGlobalVolumeHotkeys(config)
+
   -- set up key bindings for song
   if song then
   	for _, songButtonMapItem in pairs(song.buttonMap) do
@@ -442,7 +548,7 @@ function TheMODApp:applyCurrentState(why)
 			-- find the launchpad obj
 			local lp = self.lppMap[buttonDef.deviceDef.name]
 			if not lp then
-				error("Only Launchpad Pro is supported for button mappings")
+				log("Only Launchpad Pro is supported for button mappings")
 				return config
 			end
 
@@ -546,6 +652,7 @@ function TheMODApp:applyCurrentState(why)
   	end
   end
 
+  --log("applyCurrentState took "..sw:tostring().." seconds.")
 	return config
 end
 

@@ -205,6 +205,7 @@ function LaunchpadPro:presentFrame(why)
 		for x = 0, 9 do
 			local btn = LaunchpadProButton(x, y)
 			local c = self.LEDops[btn.index]
+			if not c then c = ModColor("#f00") end
 			self:shadePixel(bytes, btn, c)
 		end
 	end	

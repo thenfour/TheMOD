@@ -248,7 +248,7 @@ function ModColor:__init(s)
 		self.g = s.g
 		self.b = s.b
 	else
-		assert(false, "unknown color format")
+		assert(false, "unknown color format datatype: "..type(s))
 	end
 end
 
@@ -297,6 +297,29 @@ function coalesceToString(obj, toStringFnIfNotNull)
 		return toStringFnIfNotNull(obj)
 	end
 	return tostring(obj)
+end
+
+
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+class 'Stopwatch'
+-- local s = Stopwatch()
+-- s:tostring()
+
+function Stopwatch:__init()
+	self.startTime = os.clock()
+	--log("starting stopwatch @ "..self.startTime)
+end
+
+
+function Stopwatch:tostring()
+	local elapsed = os.clock() - self.startTime-- already in seconds.
+	--log("stopwatch reporting @ "..os.clock())
+	return string.format("%.1f", elapsed)
 end
 
 

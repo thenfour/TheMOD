@@ -12,6 +12,8 @@ require('config/ModSample')
 class 'ModConfig'
 
 function ModConfig:__init(raw, selectedSongName)
+	local sw = Stopwatch()
+
 	resetObjectIDs()
 	
 	self.raw = raw
@@ -97,12 +99,16 @@ function ModConfig:__init(raw, selectedSongName)
 		end
 	end
 
+  --log("ModConfig:__init currently @ "..sw:tostring().." seconds. (cs inh)")
+
 	-- fix up inheritance of color schemes
 	local newColorSchemes = { }
 	for k,cs in pairs(self.colorSchemes) do
 		newColorSchemes[k] = self:performColorSchemeInheritance(self.colorSchemes, cs.name, 0)
 	end
 	self.colorSchemes = newColorSchemes
+
+  --log("ModConfig:__init currently @ "..sw:tostring().." seconds. (song inh)")
 
 	-- fix up inheritance of songs
 	local newSongs = { }
@@ -112,6 +118,7 @@ function ModConfig:__init(raw, selectedSongName)
 	end
 	self.songs = newSongs
 
+  --log("ModConfig:__init currently @ "..sw:tostring().." seconds. (sample inh)")
 
 	-- fix up inheritance of samples
 	local newSamples = { }
@@ -122,6 +129,17 @@ function ModConfig:__init(raw, selectedSongName)
 		--log("inserted sample "..newSamples[k].name.." / nameContext:"..newSamples[k].nameContext)
 	end
 	self.samples = newSamples
+
+  --log("ModConfig:__init currently @ "..sw:tostring().." seconds.")
+
+-- 	local depth = 1
+-- 	printWithDepth(depth, "ColorSchemes {")
+-- 	for k,v in pairs(self.colorSchemes) do
+-- --		v:dump(depth + 1)
+-- 	end
+-- 	printWithDepth(depth, "} ColorSchemes")
+
+  --log("ModConfig:__init took "..sw:tostring().." seconds.")
 
 end
 
@@ -216,6 +234,7 @@ end
 
 
 function ModConfig:performColorSchemeInheritance(rawColorSchemes, colorSchemeName, depth)
+
 	local colorScheme = nil
 	for k,v in pairs(rawColorSchemes) do
 		if string.lower(v.name) == string.lower(colorSchemeName) then
@@ -225,28 +244,39 @@ function ModConfig:performColorSchemeInheritance(rawColorSchemes, colorSchemeNam
 	end
 
 	assert(colorScheme, "  color scheme not found: "..colorSchemeName)
+	--printWithDepth(depth, "{ fixing  inheritance for : "..colorScheme.name)
 
 	if depth > 10 then
 		error("  infinite loop in color scheme inheritance detected.")
+		--printWithDepth(depth, "}")
 		return colorScheme:cloneWithParent(nil)
 	end
-	if not colorScheme.inherits and colorScheme.isInternalDefault then
-		-- no inheritance, and this is the internal default. no further inheritance possible.
+	if colorScheme.isInternalDefault then
+		--printWithDepth(depth, "  this is the internal default color scheme...")
 		return colorScheme:cloneWithParent(nil)
 	end
 	local parent = nil
-	if not colorScheme.inherits and not colorScheme.isInternalDefault then
+	if colorScheme.inherits then
+		--printWithDepth(depth, "  finding parent.")
+		parent = self:performColorSchemeInheritance(rawColorSchemes, colorScheme.inherits, depth + 1)
+	else
+		--printWithDepth(depth, "  no inheritance specified; defaults being applied...")
 		-- inherit the interanl default color scheme
 		parent = ModColorScheme(self.config, nil, nil)
-	else
-		parent = self:performSongInheritance(rawColorSchemes, colorScheme.inherits, depth + 1)
 	end
+
 	if not parent then
 		error("  unable to find parent colorScheme "..colorScheme.inherits)
+		--printWithDepth(depth, "}")
 		return colorScheme:cloneWithParent(nil)
 	end
 	-- ok we have valid parent and this. merge them.
-	return colorScheme:cloneWithParent(parent)
+	--printWithDepth(depth, "  merging with parent: "..parent.name)
+	local ret = colorScheme:cloneWithParent(parent)
+	--printWithDepth(depth, "  dumping:")
+	--ret:dump(depth + 2)
+	--printWithDepth(depth, "}")
+	return ret
 end
 
 
@@ -392,6 +422,17 @@ function ModConfig:findHotkeyAssignment(hkName)
 	return nil
 end
 
+
+function ModConfig:findAllHotkeyAssignments(hkName)
+	local ret = {}
+	for _,hk in pairs(self.hotkeyAssignments) do
+		if string.lower(hk.name) == string.lower(hkName) then
+			table.insert(ret, hk)
+		end
+	end
+	return ret
+end
+
 -- guaranteed to return a valid object unless allowNil is true
 function ModConfig:findColorScheme(csName, allowNil)
 	for _,cs in pairs(self.colorSchemes) do
@@ -468,8 +509,8 @@ function ModColorScheme:__init(config, raw, nameContext)
 		self.name = "defaultColorScheme"
 		self.nameContext = ":DefaultColorScheme"
 		self.normal = ModColor("#011")
-		self.active = ModColor("#05F")
-		self.pressed = ModColor("#FF0")
+		self.active = ModColor("#0F0")
+		self.pressed = ModColor("#00f")
 		return
 	elseif type(raw) == 'ModColorScheme' then
 		-- copy constructor
@@ -488,45 +529,39 @@ function ModColorScheme:__init(config, raw, nameContext)
 		self.config = config
 		self.name, self.nameContext = config:parseObjectName(raw.Name, nameContext, "ColorScheme")
 		self.inherits = config:substituteAliases(raw.Inherits)
+		if not self.inherits then
+			local base = config:getBaseColorSchemeName()
+			if string.lower(self.name) ~= string.lower(base) then
+				self.inherits = base
+			end
+		end
 		if raw.Normal then self.normal = ModColor(config:substituteAliases(raw.Normal)) end
 		if raw.Active then self.active = ModColor(config:substituteAliases(raw.Active)) end
 		if raw.Pressed then self.pressed = ModColor(config:substituteAliases(raw.Pressed)) end
 	end
-
-	--if not self.inherits then self.inherits = config:getBaseColorSchemeName() end
-	--log("parsing color scheme "..self.name..", inherits "..self.inherits)
-
-	-- local parent = nil
-	-- if string.lower(self.name) == string.lower(config:getBaseColorSchemeName()) then
-	-- 	-- for the base color scheme, it should always inherit from our internal base default
-	-- 	parent = ModColorScheme(config, nil, "defaultColorScheme")
-	-- else
-	-- 	--log("finding parent " .. self.inherits)
-	-- 	parent = config:findColorScheme(self.inherits, true, "parent")
-	-- end
-
-	-- if parent then
-	-- 	if not self.normal then self.normal = parent.normal end
-	-- 	if not self.active then self.active = parent.active end
-	-- 	if not self.pressed then self.pressed = parent.pressed end
-	-- end
-
-	-- assert(self.normal)
-	-- assert(self.active)
-	-- assert(self.pressed)
 end
 
 
 function ModColorScheme:applyParent(parent)
-	if not self.normal then self.normal = parent.normal end
-	if not self.active then self.active = parent.active end
-	if not self.pressed then self.pressed = parent.pressed end
+	--log("applying parent. self.pressed = "..type(self.pressed))
+	--log("parent.pressed="..type(parent.pressed))
+	if not self.normal and parent.normal then self.normal = ModColor(parent.normal) end
+	if not self.active and parent.active then self.active = ModColor(parent.active) end
+	if not self.pressed and parent.pressed then
+		self.pressed = ModColor(parent.pressed)
+	--	log("self.pressed has been set.")
+	end
+	--log("applied parent. dumping: {")
+	--self:dump(1)
+	--log("}")
 end
 
 function ModColorScheme:cloneWithParent(parent)
 	local ret = ModColorScheme(self.config, self, nil)
+	--log("545 self.pressed = "..type(ret.pressed))
 	if parent then
 		ret:applyParent(parent)
+		--log("548 self.pressed = "..type(ret.pressed))
 	end
 	return ret
 end
@@ -536,10 +571,14 @@ function ModColorScheme:validate()
 end
 
 function ModColorScheme:dump(depth)
+	local t
 	printWithDepth(depth, "name: "..self.name)
-	printWithDepth(depth+1, "normal: "..self.normal:tostring())
-	printWithDepth(depth+1, "active: "..self.active:tostring())
-	printWithDepth(depth+1, "pressed: "..self.pressed:tostring())
+	if self.normal then t = self.normal:tostring() else t = "nil" end
+	printWithDepth(depth+1, "normal: "..t)
+	if self.active then t = self.active:tostring() else t = "nil" end
+	printWithDepth(depth+1, "active: "..t)
+	if self.pressed then t = self.pressed:tostring() else t = "nil" end
+	printWithDepth(depth+1, "pressed: "..t)
 end
 
 
