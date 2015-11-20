@@ -1,0 +1,14 @@
+*
+!.gitattributes
+!.gitignore
+!.gitkeep
+!*/
+
+
+
+
+
+# basically, any assets you need to track, put "TheMod" in the
+# name somewhere. otherwise you need to add it to here manually.
+
+!*TheMod*
