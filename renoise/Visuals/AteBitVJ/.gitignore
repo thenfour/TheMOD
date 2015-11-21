@@ -1,14 +1,15 @@
+# We ignore everything here because it's licensed, EXCEPT:
+# - files containing "TheMod"
+# - folders containing "TheMod" and everything underneath
+
 *
 !.gitattributes
 !.gitignore
 !.gitkeep
+
+# allow searching into subfolders. this is required to make git continue looking into subdirs. seems hacky.
 !*/
 
 
-
-
-
-# basically, any assets you need to track, put "TheMod" in the
-# name somewhere. otherwise you need to add it to here manually.
-
-!*TheMod*
+!**/*TheMod*/*
+!**/*TheMod*

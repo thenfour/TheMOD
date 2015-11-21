@@ -1,0 +1,513 @@
+<Audio>
+    <InputDevice name="System default" gain="1" responsivness="0.5" />
+    <OutputDevice name="System default" />
+    <FftDefs>
+        <FftDef name="All" gain="1" responsiveness="0.8">
+            <Band width="0.05" endContribution="0" />
+            <Band width="0.075" endContribution="1" />
+            <Band width="0.75" endContribution="1" />
+            <Band width="0.075" endContribution="0" />
+            <Band width="0.05" endContribution="0" />
+        </FftDef>
+        <FftDef name="Bass" gain="1" responsiveness="0.8">
+            <Band width="0.05" endContribution="0" />
+            <Band width="0.075" endContribution="1" />
+            <Band width="0.3" endContribution="1" />
+            <Band width="0.075" endContribution="0" />
+            <Band width="0.5" endContribution="0" />
+        </FftDef>
+        <FftDef name="Mid" gain="1" responsiveness="0.8">
+            <Band width="0.275" endContribution="0" />
+            <Band width="0.075" endContribution="1" />
+            <Band width="0.3" endContribution="1" />
+            <Band width="0.075" endContribution="0" />
+            <Band width="0.275" endContribution="0" />
+        </FftDef>
+        <FftDef name="Treble" gain="1" responsiveness="0.8">
+            <Band width="0.5" endContribution="0" />
+            <Band width="0.075" endContribution="1" />
+            <Band width="0.3" endContribution="1" />
+            <Band width="0.075" endContribution="0" />
+            <Band width="0.05" endContribution="0" />
+        </FftDef>
+    </FftDefs>
+</Audio>
+<MIDIManager>
+    <InDevice name="Launchpad Mini" active="false" />
+</MIDIManager>
+<VideoManager default="Default">
+    <Device name="USB2.0 UVC HD Webcam" enabled="false" flipImageX="false" flipImageY="false" flipRedAndBlue="false" />
+</VideoManager>
+<BpmAndSyncManager>
+    <Sync mode="0" />
+    <CurrentBpm automation="none" value="20" minvalue="1" maxvalue="999" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+    <BeatsPerBar automation="none" value="1" minvalue="1" maxvalue="99" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <BpmNudgeUp automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <BpmNudgeDown automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <ClockNudgeForward automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <ClockNudgeBackward automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <TapTempo automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <Snap automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <Zero automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <SkipTrack automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <TogglePlay automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <Play automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <Stop automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+    <Seek automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <MetronomeVolume automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <AudioFileVolume automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <AudioFileOffset automation="none" value="0" minvalue="-5" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <AudioFilename automation="none" value="" />
+</BpmAndSyncManager>
+<Routes>
+    <RouteGroup name="Function Keys" isActive="true" />
+    <RouteGroup name="Generic MIDI device" isActive="true" />
+    <RouteGroup name="Korg Nano Kontrol" isActive="false" />
+    <RouteGroup name="Launchpad" isActive="false" />
+    <RouteGroup name="Novation Launchkey Mini" isActive="false" />
+    <RouteGroup name="Playlist" isActive="true" />
+    <RouteGroup name="Steinberg CMC-TP" isActive="false" />
+    <RouteGroup name="TheMOD" isActive="true" />
+</Routes>
+<Channels>
+    <Channel>
+        <Layers>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Discs">
+                        <TextureFilename automation="none" value="Presets/Effects/mosaic_mask_tvpixel.png" />
+                        <TextureSeed automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <RenderMode automation="none" value="0" />
+                        <RenderAxis automation="none" value="0" />
+                        <NumSides automation="none" value="30" minvalue="3" maxvalue="40" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <StripDirection automation="none" value="0" />
+                        <RingSize automation="none" value="0.3" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <RingThickness automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <RingCount automation="none" value="6" minvalue="0" maxvalue="10" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <RingSeparation automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <YawSpeed automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <YawOffset automation="lfo" value="5.67986" minvalue="-8.53079" maxvalue="8.53079" invert="0" fftid="All" lfowavetype="1" lfosynctype="1" lfoperiod="10" lfophase="0" routeid="" script="" />
+                        <PitchSpeed automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PitchOffset automation="lfo" value="-7.07897" minvalue="-8.53079" maxvalue="8.53079" invert="0" fftid="All" lfowavetype="1" lfosynctype="1" lfoperiod="7" lfophase="0" routeid="" script="" />
+                        <RingRotationSpeed automation="none" value="25" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <RingRotationOffset automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AlternateRingRotation automation="none" value="true" fftid="All" fftinvert="1" routeid="" />
+                        <CameraYaw automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraPitch automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraRoll automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraAnchorX automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraAnchorY automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraAnchorZ automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraDistance automation="none" value="2" minvalue="1" maxvalue="50" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraPostX automation="none" value="0" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CameraPostY automation="none" value="0" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="BigTruffleBG" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/BigTruffleBG" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="2" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Image">
+                        <Filename automation="none" value="User/TheMod/bigtruffle.png" />
+                        <AspectMode automation="none" value="1" />
+                        <SampleMode automation="none" value="0" />
+                        <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="3.6181" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionX automation="none" value="0.346734" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0.376884" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollX automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollY automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AnimFrame automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <FrameBlend automation="none" value="0" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="BigTruffleCredits" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/BigTruffleCredits" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="1" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Dust">
+                        <NumParticles automation="none" value="5000" minvalue="0" maxvalue="5000" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MinScale automation="none" value="0.001" minvalue="0" maxvalue="0.5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MaxScale automation="none" value="0.02" minvalue="0" maxvalue="0.5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MinNoiseSpeed automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MaxNoiseSpeed automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MinNoiseScale automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MaxNoiseScale automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <DriftDirection automation="none" value="-90" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MinDriftSpeed automation="none" value="0.001" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <MaxDriftSpeed automation="none" value="0.1" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <TextureFilename automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Mode automation="none" value="0" />
+                        <BackgroundColour automation="none" r="0" g="0" b="0" h="0" s="0" l="0" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="MBPSBG" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/MegabitsPerSecondBG" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Image">
+                        <Filename automation="none" value="User/TheMod/megabitspersecond.png" />
+                        <AspectMode automation="none" value="1" />
+                        <SampleMode automation="none" value="0" />
+                        <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="-10.8543" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionX automation="none" value="-0.407035" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="-0.135678" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollX automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollY automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AnimFrame automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <FrameBlend automation="none" value="0" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="MBPSCredits" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/MegabitsPerSecondCredits" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+        </Layers>
+    </Channel>
+    <Channel>
+        <Layers>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="Layer" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                    <NextActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                    <AdvanceToNextModule automation="lfo" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="0" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="true" fftid="All" fftinvert="1" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+        </Layers>
+    </Channel>
+    <Channel>
+        <Layers>
+            <Layer>
+                <Modules>
+                    <Module type="Gradient">
+                        <Colour1 automation="none" r="0.140845" g="0" b="0" h="0" s="1" l="0.0704225" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0.338028" g="0.25" b="0.394366" h="0.768293" s="0.224043" l="0.322183" a="1" isRGBMode="true" />
+                        <Mode automation="none" value="0" />
+                        <OriginX automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <OriginY automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Start automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Length automation="none" value="1" minvalue="0" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <CurvePower automation="none" value="1" minvalue="0" maxvalue="10" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Dither automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="Background" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <AdvanceToNextModule automation="lfo" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="0" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module type="Channel Copy">
+                        <InputChannel automation="none" value="0" minvalue="0" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="Song Vis" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                    <NextActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                    <AdvanceToNextModule automation="lfo" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="0" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="1" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Image">
+                        <Filename automation="none" value="User/TheMod/TheMod.png" />
+                        <AspectMode automation="none" value="1" />
+                        <SampleMode automation="none" value="0" />
+                        <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="-3.6181" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionX automation="none" value="-0.437186" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0.738694" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollX automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <ScrollY automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AnimFrame automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <FrameBlend automation="none" value="0" />
+                        <EffectChain />
+                    </Module>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="Logo" routeid="" />
+                    <ActiveModule automation="none" value="1" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="1" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Logo" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+        </Layers>
+    </Channel>
+</Channels>
+<OutputLayer>
+    <MonitorSelection automation="none" value="2" minvalue="0" maxvalue="4" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+    <ToggleMonitorFullscreen automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="Function Keys/F11Trigger" />
+</OutputLayer>

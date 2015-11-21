@@ -1,0 +1,294 @@
+<!--
+
+  For our purposes, there are a few routes needed for overall control like logo/backdrop/overlays,
+  but for each song, there are 1 or more layers. they are always visible, but there are modules controlling visibility.
+  each layer will likely just have 2 modules: empty, and visible. 
+
+  There are a couple ways to switch modules:
+  1. by triggering the module using the specific Module1Trigger
+  2. by setting the active module via value.
+  3. by setting NextActiveModule via value.
+
+  Only #3 actually shows the correct transitions. So let's use that.
+
+  Names of these module-selecting routes will thus be just the layer name.
+  If more specific controls are needed, they could be named.
+
+  The convenient thing about this is it seems to simulate a binary 0/1 for enabling / disabling the layer, but with proper transitions.
+
+-->
+<Routes groupname="TheMOD">
+   <Route id="Logo" address="/TheMOD/Logo" description="Logo">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+   <Route id="AdvanceToNextModule" address="/TheMOD/AdvanceToNextModule" description="AdvanceToNextModule">
+    <Writer type="AsTrigger" />
+  </Route>
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- SONGS ------------------------------------------------------ -->
+  <!-- ------------------------------------------------------------ -->
+  <Route id="RabbitCountryCredits" address="/TheMOD/RabbitCountryCredits" description="RabbitCountryCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="RabbitCountryBG" address="/TheMOD/RabbitCountryBG" description="RabbitCountryBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="BigTruffleCredits" address="/TheMOD/BigTruffleCredits" description="BigTruffleCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="BigTruffleBG" address="/TheMOD/BigTruffleBG" description="BigTruffleBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="PeppyHareCredits" address="/TheMOD/PeppyHareCredits" description="PeppyHareCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="PeppyHareBG" address="/TheMOD/PeppyHareBG" description="PeppyHareBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="IfOnlyItWereYouCredits" address="/TheMOD/IfOnlyItWereYouCredits" description="IfOnlyItWereYouCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="IfOnlyItWereYouBG" address="/TheMOD/IfOnlyItWereYouBG" description="IfOnlyItWereYouBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="WhenNorthernLightsCredits" address="/TheMOD/WhenNorthernLightsCredits" description="WhenNorthernLightsCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="WhenNorthernLightsBG" address="/TheMOD/WhenNorthernLightsBG" description="WhenNorthernLightsBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="TheLastResortCredits" address="/TheMOD/TheLastResortCredits" description="TheLastResortCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="TheLastResortBG" address="/TheMOD/TheLastResortBG" description="TheLastResortBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="DevilsPortraitCredits" address="/TheMOD/DevilsPortraitCredits" description="DevilsPortraitCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="DevilsPortraitBG" address="/TheMOD/DevilsPortraitBG" description="DevilsPortraitBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="MariasClosetCredits" address="/TheMOD/MariasClosetCredits" description="MariasClosetCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="MariasClosetBG" address="/TheMOD/MariasClosetBG" description="MariasClosetBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="SCAType2Credits" address="/TheMOD/SCAType2Credits" description="SCAType2Credits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="SCAType2BG" address="/TheMOD/SCAType2BG" description="SCAType2BG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="BubbleBathCredits" address="/TheMOD/BubbleBathCredits" description="BubbleBathCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="BubbleBathBG" address="/TheMOD/BubbleBathBG" description="BubbleBathBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="ChineseIdentityCredits" address="/TheMOD/ChineseIdentityCredits" description="ChineseIdentityCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="ChineseIdentityBG" address="/TheMOD/ChineseIdentityBG" description="ChineseIdentityBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="OurLoveCredits" address="/TheMOD/OurLoveCredits" description="OurLoveCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="OurLoveBG" address="/TheMOD/OurLoveBG" description="OurLoveBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="MegabitsPerSecondCredits" address="/TheMOD/MegabitsPerSecondCredits" description="MegabitsPerSecondCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="MegabitsPerSecondBG" address="/TheMOD/MegabitsPerSecondBG" description="MegabitsPerSecondBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="RippleBoogieCredits" address="/TheMOD/RippleBoogieCredits" description="RippleBoogieCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="RippleBoogieBG" address="/TheMOD/RippleBoogieBG" description="RippleBoogieBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="WheresMyZPackCredits" address="/TheMOD/WheresMyZPackCredits" description="WheresMyZPackCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="WheresMyZPackBG" address="/TheMOD/WheresMyZPackBG" description="WheresMyZPackBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="SexyWalkCredits" address="/TheMOD/SexyWalkCredits" description="SexyWalkCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="SexyWalkBG" address="/TheMOD/SexyWalkBG" description="SexyWalkBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="KiabrandultanCredits" address="/TheMOD/KiabrandultanCredits" description="KiabrandultanCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="KiabrandultanBG" address="/TheMOD/KiabrandultanBG" description="KiabrandultanBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="GoAnywhereCredits" address="/TheMOD/GoAnywhereCredits" description="GoAnywhereCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="GoAnywhereBG" address="/TheMOD/GoAnywhereBG" description="GoAnywhereBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="KonbanwaCredits" address="/TheMOD/KonbanwaCredits" description="KonbanwaCredits">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+  <Route id="KonbanwaBG" address="/TheMOD/KonbanwaBG" description="KonbanwaBG">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+
+
+
+</Routes>
+<!--
+  Atebit requires XML description of OSC messages. Without it, atebit wouldn't know how to actually 
+  convert incoming messages into parameter values. These XML descriptions also allows you to narrow
+  routes down based on criteria. For example only recognize a certain range of values, which I suppose
+  was necessary for things like MIDI notes where you don't want to create separate OSC messages
+  for each note, but rather just use a single "NoteOn" message, with the note value & velocity as
+  arguments. Then you could match velocity=0 for a "Off" style route, and velocity=[1,120] for "On".
+
+  The "id" is the name used in the GUI. The GUI name is groupname/id
+  The address is the actual OSC address. Renoise needs to send to that address.
+  Description is necessary because the routes table doesn't show id or address.
+
+  Reader is what matches incoming messages. Describes the arguments, in order.
+  Type describes both the datatype and matching type of OSC arguments.
+  datatype possibilities:
+    - Int32
+    - Float
+    - String
+  matching possibilities:
+    - Any
+    - Exact
+    - Range
+
+  Other attributes are:
+    - value
+    - min
+    - max
+
+  Writer is how the OSC data is then assigned to the mapped parameter. There can only be 1 of these elements.
+  Type describes both the datatype and behavior. Datatype matches the source parameter, or could be a value.
+  datatypes:
+    - Int32
+    - Float
+    - String
+    - (none)
+
+  behavior is shown on the routes table.
+    - AsTrigger - no datatype required; no values are relevant. AsTrigger can be used on bool values to toggle value.
+    - AsPercentage - scales input value range [min,max] into the destination parameter range.
+    - AsString
+    - As[other datatype?] - AsFloat crashed atebit. Seems AsPercentage really is the only viable.
+
+
+  Other attributes:
+    - arg - which 1-based argument shall be copied to the mapped parameter?
+    - min - these always seem to match the original input values.
+    - max
+    - value? - again, who knows if this is supported. don't care.
+
+
+  The best model for this is to look at the function keys. They are described both as triggers and toggles.
+  
+  <Route id="F11Toggle" address="/AteBitVJInternal/Keyboard/FunctionKeyToggle" description="F11 function key on keyboard">
+    <Reader type="Int32Exact" value="10" />
+    <Reader type="FloatRange" min="0" max="1" />
+    <Writer type="FloatAsPercentage" arg="2" min="0" max="1" />
+  </Route>
+
+  <Route id="F11Trigger" address="/AteBitVJInternal/Keyboard/FunctionKeyTrigger" description="F11 function key on keyboard as trigger">
+    <Reader type="Int32Exact" value="10" />
+    <Reader type="Int32Exact" value="1" />
+    <Writer type="AsTrigger" />
+  </Route>
+
+  also see:
+  <Route id="Control Change 0" address="/AteBitVJ/Midi/ControlChange" description="Control change 0 (Bank select) from MIDI device on any channel">
+    <Reader type="Int32Any" />
+    <Reader type="Int32Exact" value="1" />
+    <Reader type="Int32Range" min="0" max="127" />
+    <Reader type="StringAny" />
+    <Writer type="Int32AsPercentage" arg="3" min="0" max="127" />
+  </Route>
+
+  <Route id="Midi Note A#3" address="/AteBitVJ/Midi/NoteOn" description="A#3 from MIDI device on any channel">
+    <Reader type="Int32Any" />
+    <Reader type="Int32Exact" value="58" />
+    <Reader type="Int32Range" min="1" max="127" />
+    <Reader type="StringAny" />
+    <Writer type="AsTrigger" />
+  </Route>
+
+  <Route id="Pitch Bend" address="/AteBitVJ/Midi/PitchBend" description="Pitch bend from MIDI device on any channel">
+    <Reader type="Int32Any" />
+    <Reader type="Int32Range" min="0" max="16383" />
+    <Reader type="StringAny" />
+    <Writer type="Int32AsPercentage" arg="2" min="0" max="16383" />
+  </Route>
+
+  <Route id="Artist" address="/AteBitVJInternal/Artist" description="Artist name from playlist">
+    <Reader type="StringAny" />
+    <Writer type="StringAsString" arg="1" />
+  </Route>
+
+
+  from launchpad.xml:
+  <Route id="GridButton11" address="/AteBitVJ/Midi/NoteOn" description="Grid button 11 from Launchpad on any channel">
+    <Reader type="Int32Any" />
+    <Reader type="Int32Exact" value="0" />
+    <Reader type="Int32Range" min="1" max="127" />
+    <Reader type="StringAny" />
+    <Writer type="AsTrigger" />
+  </Route>
+
+
+-->
