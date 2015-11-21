@@ -1,6 +1,12 @@
 -- http://d19ulaff0trnck.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf
 logOutput = nil
 
+local nextUniqueID = 1
+function getUniqueID()
+	nextUniqueID = nextUniqueID + 1
+	return "id#"..tostring(nextUniqueID)
+end
+
 --don't forget about 
 --renoise.app():show_message(message)
 --renoise.app():show_error(message)

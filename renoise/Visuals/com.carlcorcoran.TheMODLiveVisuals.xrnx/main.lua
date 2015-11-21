@@ -8,7 +8,7 @@ require("app")
 local app = nil
 
 local function OnTheMODLiveVisualsInit()
-	if app then app:Shutdown() end
+	if app then app:shutdown() end
 	app = TheMODLiveVisuals()
 end
 

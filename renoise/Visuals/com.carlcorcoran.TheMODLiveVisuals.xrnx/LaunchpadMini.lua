@@ -113,11 +113,13 @@ end
 class 'LaunchpadMini'
 
 function LaunchpadMini:__init(deviceName, handleButtonDownFn, handleButtonUpFn)
+	self.ID = getUniqueID()
 	self.handleButtonDownFn = handleButtonDownFn
 	self.handleButtonUpFn = handleButtonUpFn
 	self.inputDevice = renoise.Midi.create_input_device(deviceName, function(msg) self:OnMidiMessage(msg) end)
 	self.outputDevice = renoise.Midi.create_output_device(deviceName)
 	self.launchpadDisplayBuffer = 0-- just toggles 0 - 1 - 0 -1
+	self.bufferCallDepth = 0-- prevents nested calls to BeginFrame; when this reaches 0, we actually present the frame.
 	--self.launchpadUpdatedLEDs = {}
 end
 
@@ -139,7 +141,16 @@ function LaunchpadMini:OnMidiMessage(message)
 end
 
 
-function LaunchpadMini:BeginFrame()
+function LaunchpadMini:BeginFrame(why)
+	if self.bufferCallDepth > 0 then
+		self.bufferCallDepth = self.bufferCallDepth + 1
+		--log("beginFrame["..why.."] subsequent call; self.bufferCallDepth="..self.bufferCallDepth.." self="..self.ID)
+		return
+	end
+
+	self.bufferCallDepth = 1
+	--log("beginFrame["..why.."] first call; self.bufferCallDepth="..self.bufferCallDepth.." self="..self.ID)
+
 	local newUpdateBuffer = 1
 	if self.launchpadDisplayBuffer == 1 then
 		newUpdateBuffer = 0
@@ -157,7 +168,22 @@ end
 
 -- if clearUnsetButtons is true, then all buttons that were not set since LaunchpadDoubleBufferBegin will be cleared.
 --function LaunchpadDoubleBufferEnd(device, lpstate, clearUnsetButtons)
-function LaunchpadMini:PresentFrame()
+function LaunchpadMini:PresentFrame(why)
+
+	--	assert(self.bufferCallDepth > 0)
+
+	self.bufferCallDepth = self.bufferCallDepth - 1
+
+	-- it's possible that you reset your device object in the middle of a frame. in that case just be cool with it and let it go. keep presenting.
+	if self.bufferCallDepth < 0 then self.bufferCallDepth = 0 end
+
+	if self.bufferCallDepth > 0 then
+		--log("not presenting frame ["..why.."]; self.bufferCallDepth="..self.bufferCallDepth.." self="..self.ID)
+		return
+	end
+	-- bufferCallDepth reached 0.
+	--log("presenting frame ["..why.."]; self.bufferCallDepth="..self.bufferCallDepth.." self="..self.ID)
+
 	local newDisplayBuffer = 1
 	if self.launchpadDisplayBuffer == 1 then
 		newDisplayBuffer = 0

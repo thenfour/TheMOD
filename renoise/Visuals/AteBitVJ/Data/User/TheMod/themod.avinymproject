@@ -75,33 +75,21 @@
             <Layer>
                 <Modules>
                     <Module />
-                    <Module type="Discs">
-                        <TextureFilename automation="none" value="Presets/Effects/mosaic_mask_tvpixel.png" />
-                        <TextureSeed automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <RenderMode automation="none" value="0" />
-                        <RenderAxis automation="none" value="0" />
-                        <NumSides automation="none" value="30" minvalue="3" maxvalue="40" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <StripDirection automation="none" value="0" />
-                        <RingSize automation="none" value="0.3" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <RingThickness automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <RingCount automation="none" value="6" minvalue="0" maxvalue="10" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <RingSeparation automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <YawSpeed automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <YawOffset automation="lfo" value="5.67986" minvalue="-8.53079" maxvalue="8.53079" invert="0" fftid="All" lfowavetype="1" lfosynctype="1" lfoperiod="10" lfophase="0" routeid="" script="" />
-                        <PitchSpeed automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <PitchOffset automation="lfo" value="-7.07897" minvalue="-8.53079" maxvalue="8.53079" invert="0" fftid="All" lfowavetype="1" lfosynctype="1" lfoperiod="7" lfophase="0" routeid="" script="" />
-                        <RingRotationSpeed automation="none" value="25" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <RingRotationOffset automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <AlternateRingRotation automation="none" value="true" fftid="All" fftinvert="1" routeid="" />
-                        <CameraYaw automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraPitch automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraRoll automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraAnchorX automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraAnchorY automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraAnchorZ automation="none" value="0" minvalue="-100" maxvalue="100" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraDistance automation="none" value="2" minvalue="1" maxvalue="50" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraPostX automation="none" value="0" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <CameraPostY automation="none" value="0" minvalue="-3" maxvalue="3" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <Module type="Streaks">
+                        <Texture1 automation="none" value="Presets/Effects/mosaic_mask_abcd.png" />
+                        <Scale1 automation="none" value="0.0753769" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Speed1 automation="none" value="0.557789" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Strength1 automation="none" value="1" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Texture2 automation="none" value="Presets/Effects/gradienttexture_stripe.png" />
+                        <Scale2 automation="none" value="0.492462" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Speed2 automation="none" value="0.226131" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Strength2 automation="none" value="-0.175879" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Texture3 automation="none" value="Presets/Modules/landscape_heightmap.png" />
+                        <Scale3 automation="none" value="0.417085" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Speed3 automation="none" value="-0.366834" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Strength3 automation="none" value="1" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <IgnoreAlpha automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
                         <EffectChain />
                     </Module>
                     <Module />
@@ -117,7 +105,7 @@
                     <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/BigTruffleBG" script="" />
                     <AdvanceToNextModule automation="osc" lfosynctype="2" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
                     <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                    <TransitionEnd automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                     <TransitionMode automation="none" value="1" />
                     <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
                     <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
