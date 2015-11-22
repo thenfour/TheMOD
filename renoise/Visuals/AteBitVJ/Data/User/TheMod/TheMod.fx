@@ -1,7 +1,4 @@
-// see also simple plasma: https://www.shadertoy.com/view/ldBGRR
-// attribute vec2 pos; void main() { gl_Position = vec4(pos.x,pos.y,0.0,1.0); }
-
-// https://www.shadertoy.com/view/XsXXDn
+// global constants need 'static'. Maybe even #define.
 
 #define vec2 float2  
 #define vec3 float3  
@@ -10,15 +7,19 @@
 #define mod fmod // <-- these are not exactly the same between hlsl & glsl
 #define mix lerp  
 #define atan atan2  
-#define fract frac   
+#define fract frac
 #define texture2D tex2D  
 #define PI2 6.28318530718  
-#define PI 3.14159265358979  
+#define PI 3.14159265358979
+#define pi2 6.28318530718  
+#define pi 3.14159265358979
 #define halfpi (pi * 0.5)  
 #define oneoverpi (1.0 / pi)  
-#define iGlobalTime (g_fTime / 2.5)
-#define iResolution (float3(1,1,1))
-#define fragCoord (input.vecTex)
+#define iGlobalTime (g_fTime)
+
+// we don't actually have the real dimensions, so we have to just pick something "biggish"
+#define ViewportDimension 180
+#define iResolution (ViewportDimension * float3(g_fAspect, 1., 1.))
 
 //--------------------------------------------------------------------------------------
 // Constant Buffer Variables
@@ -67,55 +68,60 @@ struct PS_INPUT
 {
     float4 vecPos : SV_POSITION;
     float2 vecTex : TEXCOORD0;
+    float aspect : PSIZE;
 };
 
 
 //--------------------------------------------------------------------------------------
-PS_INPUT VS( VS_INPUT input )
+PS_INPUT VS( VS_INPUT inp)
 {
-    PS_INPUT output;
-    output.vecTex = input.vecTex;
-    output.vecPos = float4((2 * (input.vecTex - 0.5)) * float2(1, g_fAspect), 0, 1);
-    return output;
+    PS_INPUT outp;
+    float2 vecTex = (inp.vecTex-.5)*2.;
+    outp.vecPos = float4(vecTex*2., 0, 1);
+    
+    vecTex += .5; // shift origin to bottom-left
+    //vecTex *= 2.;// double viewport bounds (scale)
+    outp.vecTex = vecTex * iResolution.xy;// correct aspect and scale up to simulate pixels
+    outp.aspect = g_fAspect;
+    return outp;
 }
 
 
-// a 2D circle
-float circle(float2 p, float2 o, float r)
-{
-    return 1.0 - saturate(distance(p, o) - r);
-}
-
-float rect2D(float2 o, float r)
-{
-    return 0.0;
-}
 
 //--------------------------------------------------------------------------------------
-// Pixel Shader
-//--------------------------------------------------------------------------------------
-float4 PS(PS_INPUT input) : SV_Target
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    float4 fragColor;// output
-
-    /////------ begin GLSL --------------------------
-
-    vec2 uv = fragCoord.xy / iResolution.xy;
-
-    float2 o = float2(0.4,0.5);// origin
-    float r = 0.1;// radius
-
-    fragColor = float4(0,0,0.2,1);
-
-    fragColor.r = pow(circle(uv - 0.00, o, r), 30 * ((sin(g_fTime * 0.2)+1)/2));
-    fragColor.g = pow(circle(uv - 0.01, o, r), 30 * ((sin(g_fTime * 0.4)+1)/2));
-    fragColor.b = pow(circle(uv - 0.02, o, r), 30 * ((sin(g_fTime * 0.8)+1)/2));
+    // how to access g_fAspect in here?
+    fragColor = vec4(1,1,1,1);
+}
 
 
 
 
-    /////------ end GLSL --------------------------
 
-    return fragColor;
+
+
+//--------------------------------------------------------------------------------------
+float4 PS(PS_INPUT inp) : SV_Target
+{
+    float g_fAspect = inp.aspect;
+    float4 fragColor = vec4(0,0,0,0);// output
+
+    //------ begin GLSL --------------------------
+    mainImage(fragColor, inp.vecTex);
+
+    // vec2 uv = fragCoord / iResolution.xy - 0.5;// the -.5 is not needed because it goes up in the VS
+    // uv.x *= iResolution.x / iResolution.y;// aspect correction also done in the VS
+
+    // o = vec4(0., sin(length(uv)/PI2)/2.+.5, 1., 1.);
+
+    // if(length(uv) < 25.) o = vec4(1,0,0,1);
+    // if(length(uv) < 1.0) o = vec4(1,0,1,1);
+    // if(length(uv) < .5) o = vec4(1,1,0,1);
+    // if(uv.x < 0.) o.rgb *= .3;
+    // if(uv.y < 0.) o.rgb *= .3;
+
+    //------ end GLSL --------------------------
+    return vec4(fragColor.rgb, 1.0);
 }
 
