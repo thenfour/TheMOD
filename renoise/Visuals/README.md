@@ -7,6 +7,8 @@ otherwise you need to add it to here manually.
 
 atebit
 
+shader debugging is best seen through dbmon. CTRL+G toggles per-frame timing info logging (floods the log).
+
 transitions happen on the downbeat. so BPM and BeatsPerMeasure are both very relevant to timings. For snappy transitions, beats=1, BPM=high.
 transition time is measured in beats, not time. So the only way to make this sensible is to pick a BPM that will make it so.
 60 BPM would mean that 1 beat = 1 second. 60 is pretty slow though. How about 600, so 1 beat = .1 seconds. But it doesn't really matter that much.
