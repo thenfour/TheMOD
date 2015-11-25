@@ -18,14 +18,43 @@
 
 -->
 <Routes groupname="TheMOD">
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- GENERIC----------------------------------------------------- -->
+  <!-- ------------------------------------------------------------ -->
+  <Route id="AdvanceToNextModule" address="/TheMOD/AdvanceToNextModule" description="AdvanceToNextModule">
+    <Writer type="AsTrigger" />
+  </Route>
+
+  <Route id="Layer1Module" address="/TheMOD/Layer1Module" description="Layer1Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+  <Route id="Layer2Module" address="/TheMOD/Layer2Module" description="Layer2Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+  <Route id="Layer3Module" address="/TheMOD/Layer3Module" description="Layer3Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+  <Route id="Layer4Module" address="/TheMOD/Layer4Module" description="Layer4Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- GLOBAL------------------------------------------------------ -->
+  <!-- ------------------------------------------------------------ -->
    <Route id="Logo" address="/TheMOD/Logo" description="Logo">
     <Reader type="Int32Range" min="0" max="6" />
     <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
   </Route>
 
-   <Route id="AdvanceToNextModule" address="/TheMOD/AdvanceToNextModule" description="AdvanceToNextModule">
-    <Writer type="AsTrigger" />
-  </Route>
 
   <!-- ------------------------------------------------------------ -->
   <!-- SONGS ------------------------------------------------------ -->

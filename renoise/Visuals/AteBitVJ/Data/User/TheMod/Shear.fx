@@ -45,6 +45,7 @@ struct PS_INPUT
 {
     float4 vecPos : SV_POSITION;
     float2 uv : TEXCOORD0;
+    float2 uvn : TEXCOORD1;// not aspect-correct
 };
 
 
@@ -57,8 +58,12 @@ PS_INPUT VS( VS_INPUT inp)
     
     //vecTex += .5; // shift origin to bottom-left; shadertoy compatibility
     vecTex *= 2.;// double viewport bounds (scale)
-    vecTex *= float2(g_fAspect, 1.);// aspect-correct
+    outp.uvn = vecTex;
 
+    float fft = 100. * pow(1.-g_fFloat1, 2.1);
+    vecTex.y -= vecTex.x * 0.5;
+
+    vecTex *= float2(g_fAspect, 1.);// aspect-correct
     outp.uv = vecTex;
     return outp;
 }
@@ -72,26 +77,80 @@ float dtoa(float d, float amount)
     return a;
 }
 
-// circle
-float sdCircle(float2 uv, float2 origin, float radius)
+// i is 0-1
+// float pixellate(float i, float sz)
+// {
+//     return floor(i / sz) * sz;
+// }
+
+float tri(float i, float p)
 {
-    float d = length(uv - origin) - radius;
-    return d;
+    return abs(fmod(abs(i),(p*2.)) - p) / p;
 }
 
-// i is 0-1
-float pixellate(float i, float sz)
+float tri_gear(float i, float p, float cmin, float cmax)
 {
-    return floor(i / sz) * sz;
+    return clamp(tri(i,p), cmin, cmax);
+}
+
+void band(inout float3 o, float2 uv, float y, float3 c)
+{
+    y -= .3;
+    float fft = .5 + g_fFloat1 / 2.;
+
+    float ext = y + tri_gear(uv.x + (g_fTime * .5) - (g_fFloat1 * 1), 0.2, 1.-fft, fft);
+
+    float amt = 400-(1000*pow(g_fFloat1, 0.5));
+    amt = clamp(amt, 10, 400);
+    o.rgb = lerp(o.rgb, c, dtoa(uv.y - ext, amt));
+}
+
+void blit(inout float3 o, float2 uv, float2 pos, float2 destSize)
+{
+    float texW, texH;
+    tex1.GetDimensions(texW, texH);
+
+    uv -= pos;
+
+    if(uv.x <= 0) return;
+    if(uv.y <= 0) return;
+    if(uv.x >= destSize.x) return;
+    if(uv.y >= destSize.y) return;
+
+    uv /= destSize;
+    uv.y *= -1;
+
+    float4 s = tex1.Sample(samp1, uv);
+    o = lerp(o.rgb, s.rgb, s.a);
+}
+
+
+void slash(inout float3 o, float2 uv)
+{
 }
 
 //--------------------------------------------------------------------------------------
 float4 PS(PS_INPUT inp) : SV_Target
 {
     float2 uv = inp.uv;
-    float fft = 100. * pow(1.-g_fFloat1, 2.1);
 
-    float4 o = float4(0,0,0,1);
+    float4 o = float4(0,0,1,1);
+    band(o.rgb, uv, .7, float3(0,0,0));
+    band(o.rgb, uv, .6, float3(1,.5,0));
+    band(o.rgb, uv, .3, float3(.5,.5,.5));
+    band(o.rgb, uv, .2, float3(.5,.5,.5));
+    // KICK
+    blit(o.rgb, uv, float2(.1,-.75), float2(1.7,1.5));
+    // slash
+    slash(o.rgb, uv);
+
+    band(o.rgb, uv, -.69, float3(0,0,0));
+    band(o.rgb, uv, -.73, float3(1,.5,0));
+    band(o.rgb, uv, -.8, float3(1,1,1));
+
+    // vignette
+    float vignetteAmt = 1.-dot(inp.uvn*.8,inp.uvn*.8);
+    o.rgb *= vignetteAmt;
 
     return o;
 }

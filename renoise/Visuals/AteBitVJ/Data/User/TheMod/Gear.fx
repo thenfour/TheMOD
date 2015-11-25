@@ -45,6 +45,7 @@ struct PS_INPUT
 {
     float4 vecPos : SV_POSITION;
     float2 uv : TEXCOORD0;
+    float2 uvn : TEXCOORD1;// not aspect-correct
 };
 
 
@@ -57,6 +58,7 @@ PS_INPUT VS( VS_INPUT inp)
     
     //vecTex += .5; // shift origin to bottom-left; shadertoy compatibility
     vecTex *= 2.;// double viewport bounds (scale)
+    outp.uvn = vecTex;
     vecTex *= float2(g_fAspect, 1.);// aspect-correct
 
     outp.uv = vecTex;
@@ -68,6 +70,7 @@ PS_INPUT VS( VS_INPUT inp)
 // convert distance to alpha
 float dtoa(float d, float amount)
 {
+    //return d > 0 ? 0 : 1;
     float a = clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.,1.);
     return a;
 }
@@ -90,34 +93,50 @@ float tri(float i, float p)
     return abs(fmod(abs(i),(p*2.)) - p) / p;
 }
 
-float tri_gear(float i, float p)
-{
-    return clamp(tri(i,p), .45, .6);
-}
-
 float opAdd(float a, float b) { return min(a,b); }
 float opSub(float a, float b) { return max(a,-b); }
 
-float sdGear(float2 uv, float scale, float direction, float rotOffset)
-{
-    const float cogCount = 26.;
-    const float innerRadius = 0.8;
-    const float outerRadius = 0.9;
-    float radius = fmod(atan2(uv.y,uv.x)+pi2, pi2) / pi2;
-    radius *= direction;
-    radius += rotOffset;
-    radius += g_fTime * 0.03;
-    radius = .6 + tri_gear(radius, 1./cogCount);
-    radius *= scale;
 
-    return opSub(sdCircle(uv, radius), sdCircle(uv, 0.1));
+float sdGearCircle(float2 uv, float radius, float constRadius)
+{
+    return opAdd(
+            opSub(
+                sdCircle(uv, radius),
+                sdCircle(uv, constRadius * 0.5)),
+            opSub(
+                sdCircle(uv, constRadius * 0.5 - 0.03),
+                sdCircle(uv, radius * 0.1)
+                )
+        );
+}
+
+
+float tri_gear(float i, float p, float cmin, float cmax)
+{
+    return clamp(tri(i,p), cmin, cmax);
+}
+
+
+// cogPeriod is 0-1, and will be scaled so differently-sized gears' cogs will be compatible
+float sdGear(float2 uv, float scale, float rotation, float cogPeriod, float cmin, float cmax)
+{
+    float uvAng = fmod(atan2(uv.y,uv.x)+pi2, pi2) / pi2;
+    float radius = scale * tri_gear(rotation + uvAng, cogPeriod / scale, cmin, cmax);
+    //return opSub(sdCircle(uv, radius), sdCircle(uv, 0.1));
+    return sdGearCircle(uv, radius, scale);
 }
 
 float sdScene(float2 uv)
 {
+    float baseRotation = (g_fTime * 0.07) + pow(g_fFloat1, 3.0);
+    float bigRatio = 2.;
+    float smallSize = 1.2;
+    float rotSmall = (baseRotation * -1);
+    float rotBig = (baseRotation / bigRatio) + .028;
+
     return opAdd(
-        sdGear(uv - float2(-.7,-.3), 0.7, 1., 0.),
-        sdGear(uv - float2(0.7,0.5), 0.7, -1., 0.01)
+        sdGear(uv - float2(-.7,-.44), smallSize * bigRatio, rotBig, .05, .52, .55),
+        sdGear(uv - float2(1.04,0.5), smallSize, rotSmall, .05, .52, .585)
         );
 }
 
@@ -129,7 +148,12 @@ float4 PS(PS_INPUT inp) : SV_Target
     float2 uv = inp.uv;// -1 to 1, centered
     float4 o = float4(0,0,0,1);
 
-    o.rgb = lerp(o.rgb, float3(1,1,1), dtoa(sdScene(uv), fft));
+    o.rgb = lerp(o.rgb, float3(.7,.6,.8), dtoa(sdScene(uv), fft));
+    //o.rgb = float3(1,1,1);
+
+    // vignette
+    float vignetteAmt = 1.-dot(inp.uvn,inp.uvn);
+    o.rgb *= vignetteAmt;
 
     return o;
 }
