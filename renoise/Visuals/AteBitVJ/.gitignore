@@ -3,13 +3,14 @@
 # - folders containing "TheMod" and everything underneath
 
 *
-!.gitattributes
-!.gitignore
-!.gitkeep
 
 # allow searching into subfolders. this is required to make git continue looking into subdirs. seems hacky.
 !*/
 
+!.gitattributes
+!.gitignore
+!.gitkeep
 
-!**/*TheMod*/*
 !**/*TheMod*
+!**/*TheMod*/*
+!**/*TheMod*/**/*
