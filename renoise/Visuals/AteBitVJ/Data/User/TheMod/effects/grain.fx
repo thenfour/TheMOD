@@ -80,7 +80,7 @@ float4 PS(PS_INPUT inp) : SV_Target
 {
     float4 o = texSrc.Sample(sampSrc, inp.uv);
 
-    o.rgb*=1-(rand(inp.uv+g_fFloat1)*.25);
+    o.rgb*=1-(rand(inp.uv+g_fFloat2)*.25);
 
     o.rgb *= 1.-dot(inp.uvn*.8, inp.uvn*.8);
 
