@@ -46,6 +46,16 @@
     <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
   </Route>
 
+  <Route id="Layer5Module" address="/TheMOD/Layer5Module" description="Layer5Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
+  <Route id="Layer6Module" address="/TheMOD/Layer6Module" description="Layer6Module">
+    <Reader type="Int32Range" min="0" max="6" />
+    <Writer type="Int32AsPercentage" arg="1" min="0" max="6" />
+  </Route>
+
 
   <!-- ------------------------------------------------------------ -->
   <!-- GLOBAL------------------------------------------------------ -->

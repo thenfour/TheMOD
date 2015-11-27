@@ -181,6 +181,18 @@ vec2 hash(vec2 p)
   return fract(sin(p) * 43758.5453);
 }
 
+// float fft(float x)
+// {
+//     return texFFT.Sample(sampFFT, float2(x,0)).r;
+// }
+
+// convert distance to alpha
+float dtoa(float d, float amount)
+{
+    float a = clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.,1.);
+    return a;
+}
+
 // simulates a resonant lowpass filter
 float mechstep(float x, float f, float r)
 {
@@ -226,7 +238,7 @@ vec2 rotate(vec2 p, float a)
 
 float stepfunc(float a)
 {
-  return step(a, 0.0);
+  return dtoa(a,clamp(100.-120*g_fFloat1,1,100));//step(a, 0.0);
 }
 
 float fan(vec2 p, vec2 at, float ang)
@@ -239,8 +251,8 @@ float fan(vec2 p, vec2 at, float ang)
   
   v = le - 1.0;
   
-  if(v > 0.0)
-    return 0.0;
+  //if(v > 0.0)
+    //return 0.0;
   
   a = sin(atan(p.y, p.x) * 3.0 + ang);
   
@@ -373,22 +385,18 @@ float layerB(vec2 p, float seed)
   return v;
 }
 
-float fft(float x)
-{
-    return texFFT.Sample(sampFFT, float2(x,0)).r;
-}
-
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
   vec2 uv = fragCoord.xy / iResolution.xy;
   uv = uv * 2.0 - 1.0;
-  vec2 p = uv * lerp(1.2,.95,fft(.05));
+  //vec2 p = uv * pow(fft(.03),.05);
+  vec2 p = uv * 1.;
   p.x *= iResolution.x / iResolution.y;
   
   float t = iGlobalTime;
   
-  vec2 cam = vec2(sin(t) * 0.2, t);
+  vec2 cam = vec2(0,t*.3);//vec2(sin(t) * 0.2, t);
   
   // for future use
   /*float quake = exp(-fract(t) * 5.0) * 0.5;
@@ -398,7 +406,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     cam.y += (hash(t - 118.29) - 0.5) * quake;
   }*/
   
-  p = rotate(p, sin(t) * 0.02);
+  //p = rotate(p, sin(t) * 0.02);
   
   vec2 o = vec2(0.0, t);
   float v = 0.0, w;

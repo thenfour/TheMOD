@@ -76,7 +76,7 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Gear.fx" />
+                        <Filename automation="none" value="User/TheMod/NoiseAnimationWatery.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -85,38 +85,26 @@
                         <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
-                        <Float1 automation="fft" value="0.00133816" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
                         <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
                         <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
-                        <EffectChain>
-                            <Effect type="RGB Split">
-                                <Active automation="none" value="true" fftid="All" fftinvert="1" routeid="" />
-                                <RedOffset automation="none" value="-0.745856" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                                <GreenOffset automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                                <BlueOffset automation="none" value="0.2" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                                <OffsetScale automation="none" value="0.04" minvalue="-0.2" maxvalue="0.2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                                <Angle automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                                <MaskFilename automation="none" value="Presets/Effects/blur_mask_radial.png" />
-                                <MaskMode automation="none" value="1" />
-                                <Mix automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                            </Effect>
-                        </EffectChain>
+                        <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Shear.fx" />
+                        <Filename automation="none" value="User/TheMod/MistRing.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
-                        <Float1 automation="fft" value="0.00133816" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
                         <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
@@ -131,8 +119,8 @@
                 <EffectChain />
                 <Params>
                     <Name automation="none" value="New layer" routeid="" />
-                    <ActiveModule automation="none" value="2" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                    <NextActiveModule automation="osc" value="2" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer2Module" script="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer5Module" script="" />
                     <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
                     <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                     <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -163,6 +151,78 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/TunnelMasterI.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/TunnelMasterII.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/slowColorBlocks.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/plasma.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
                         <Filename automation="none" value="User/TheMod/Blobs.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -173,6 +233,232 @@
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/goingup.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="New layer" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer4Module" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/Gear.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain>
+                            <Effect type="RGB Split">
+                                <Active automation="none" value="true" fftid="All" fftinvert="1" routeid="" />
+                                <RedOffset automation="none" value="-0.745856" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                                <GreenOffset automation="none" value="0" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                                <BlueOffset automation="none" value="0.2" minvalue="-1" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                                <OffsetScale automation="none" value="0.04" minvalue="-0.2" maxvalue="0.2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                                <Angle automation="none" value="0" minvalue="-360" maxvalue="360" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
+                                <MaskFilename automation="none" value="Presets/Effects/blur_mask_radial.png" />
+                                <MaskMode automation="none" value="1" />
+                                <Mix automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                            </Effect>
+                        </EffectChain>
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/ApollonianFractures.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/whirlmaster.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/bubbles.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/ether.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/SnakeWave.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="none" value="0.266332" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <EffectChain />
+                    </Module>
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="New layer" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer3Module" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module type="Shader">
+                        <Filename automation="none" value="User/TheMod/Shear.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
+                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
@@ -226,7 +512,7 @@
                         <Texture1 automation="none" value="Presets/Modules/landscape_heightmap.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
-                        <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
@@ -235,7 +521,7 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/ApollonianFractures.fx" />
+                        <Filename automation="none" value="User/TheMod/LuceatLuxVestraVis.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -244,7 +530,7 @@
                         <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
-                        <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
@@ -252,30 +538,13 @@
                         <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
                         <EffectChain />
                     </Module>
-                    <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/goingup.fx" />
-                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
-                        <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
-                        <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
-                        <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Float2 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Float3 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
-                        <Colour1 automation="none" r="1" g="0.2" b="0" h="0.0333334" s="1" l="0.5" a="1" isRGBMode="true" />
-                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
-                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
-                        <EffectChain />
-                    </Module>
+                    <Module />
                 </Modules>
                 <EffectChain />
                 <Params>
                     <Name automation="none" value="Layer" routeid="" />
                     <ActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />
-                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer1Module" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer2Module" script="" />
                     <AdvanceToNextModule automation="osc" lfosynctype="2" lfoperiod="0" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
                     <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                     <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -290,6 +559,47 @@
                     <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                     <BlendMode automation="none" value="0" />
                     <Mute automation="none" value="false" fftid="All" fftinvert="1" routeid="" />
+                    <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
+                </Params>
+                <ExtendedParams>
+                    <Module index="0" alwaysUpdateThumbnail="0" />
+                    <Module index="1" alwaysUpdateThumbnail="0" />
+                    <Module index="2" alwaysUpdateThumbnail="0" />
+                    <Module index="3" alwaysUpdateThumbnail="0" />
+                    <Module index="4" alwaysUpdateThumbnail="0" />
+                    <Module index="5" alwaysUpdateThumbnail="0" />
+                    <Module index="6" alwaysUpdateThumbnail="0" />
+                </ExtendedParams>
+            </Layer>
+            <Layer>
+                <Modules>
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                    <Module />
+                </Modules>
+                <EffectChain />
+                <Params>
+                    <Name automation="none" value="New layer" routeid="" />
+                    <ActiveModule automation="none" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <NextActiveModule automation="osc" value="0" minvalue="0" maxvalue="6" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/Layer1Module" script="" />
+                    <AdvanceToNextModule automation="osc" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="TheMOD/AdvanceToNextModule" />
+                    <TransitionStart automation="none" value="0" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionEnd automation="none" value="0.25" minvalue="0" maxvalue="30" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <TransitionMode automation="none" value="1" />
+                    <Module0Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module1Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module2Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module3Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module4Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module5Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Module6Trigger automation="none" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" />
+                    <Opacity automation="none" value="1" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                    <BlendMode automation="none" value="0" />
+                    <Mute automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
                     <AlwaysUpdate automation="none" value="false" fftid="All" fftinvert="0" routeid="" />
                 </Params>
                 <ExtendedParams>
@@ -357,7 +667,10 @@
                         <Colour automation="none" r="0" g="0" b="0" h="0.5" s="1" l="0" a="1" isRGBMode="false" />
                         <EffectChain />
                     </Module>
-                    <Module />
+                    <Module type="Solid Colour">
+                        <Colour automation="none" r="1" g="1" b="1" h="0.5" s="1" l="1" a="1" isRGBMode="false" />
+                        <EffectChain />
+                    </Module>
                     <Module />
                     <Module />
                     <Module />
@@ -408,7 +721,23 @@
                     <Module />
                     <Module />
                 </Modules>
-                <EffectChain />
+                <EffectChain>
+                    <Effect type="Shader">
+                        <Active automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
+                        <Filename automation="none" value="User/TheMod/fx/grain.fx" />
+                        <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <PositionY automation="none" value="0.3" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Scale automation="none" value="1.5" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Texture automation="none" value="" />
+                        <Float1 automation="none" value="0" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float2 automation="lfo" value="0.29836" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Float3 automation="none" value="0.8" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
+                        <Colour1 automation="none" r="0.0299884" g="0.082909" b="0.479816" h="0.647059" s="0.882353" l="0.254902" a="1" isRGBMode="false" />
+                        <Colour2 automation="none" r="0" g="1" b="0.2" h="0.366667" s="1" l="0.5" a="1" isRGBMode="true" />
+                        <Colour3 automation="none" r="0.2" g="0" b="1" h="0.7" s="1" l="0.5" a="1" isRGBMode="true" />
+                    </Effect>
+                </EffectChain>
                 <Params>
                     <Name automation="none" value="Layer" routeid="" />
                     <ActiveModule automation="none" value="0" minvalue="0" maxvalue="5" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="-1" script="" />

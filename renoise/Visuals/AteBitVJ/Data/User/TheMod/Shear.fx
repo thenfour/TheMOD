@@ -77,12 +77,6 @@ float dtoa(float d, float amount)
     return a;
 }
 
-// i is 0-1
-// float pixellate(float i, float sz)
-// {
-//     return floor(i / sz) * sz;
-// }
-
 float tri(float i, float p)
 {
     return abs(fmod(abs(i),(p*2.)) - p) / p;
@@ -105,28 +99,39 @@ void band(inout float3 o, float2 uv, float y, float3 c)
     o.rgb = lerp(o.rgb, c, dtoa(uv.y - ext, amt));
 }
 
+float sdSegment1D(float uv, float a, float b)
+{
+    return max(max(a - uv, 0.), uv - b);
+}
+float sdAxisAlignedRect(float2 uv, float2 tl, float2 br)
+{
+    float dx = sdSegment1D(uv.x,tl.x,br.x);
+    float dy = sdSegment1D(uv.y,tl.y,br.y);
+    return dx + dy;// manhattan
+    //return sqrt(dx*dx+dy*dy);// euclidian version
+}
+
 void blit(inout float3 o, float2 uv, float2 pos, float2 destSize)
 {
-    float texW, texH;
-    tex1.GetDimensions(texW, texH);
-
     uv -= pos;
-
-    if(uv.x <= 0) return;
-    if(uv.y <= 0) return;
-    if(uv.x >= destSize.x) return;
-    if(uv.y >= destSize.y) return;
-
     uv /= destSize;
-    uv.y *= -1;
 
+    float d = sdAxisAlignedRect(uv, 0, 1);
+    float alpha = step(d, 0);
+    // causes artifacts. we actually need to sample and use alpha instead
+    //if(alpha < 0) return;
+
+    uv.y = 1.-uv.y;// flip y coord
     float4 s = tex1.Sample(samp1, uv);
-    o = lerp(o.rgb, s.rgb, s.a);
+    o = lerp(o.rgb, s.rgb, s.a * alpha);
 }
 
 
 void slash(inout float3 o, float2 uv)
 {
+    uv.x -= (uv.y*.7);
+    float d = sdAxisAlignedRect(uv, float2(-.8,-1), float2(-.5,1));
+    o = lerp(o, float3(.0,.3,.3), 1.-smoothstep(0,.007,d));
 }
 
 //--------------------------------------------------------------------------------------
@@ -134,23 +139,24 @@ float4 PS(PS_INPUT inp) : SV_Target
 {
     float2 uv = inp.uv;
 
+    //float4 o = float4(1,1,1,1);
+
     float4 o = float4(0,0,1,1);
     band(o.rgb, uv, .7, float3(0,0,0));
     band(o.rgb, uv, .6, float3(1,.5,0));
-    band(o.rgb, uv, .3, float3(.5,.5,.5));
-    band(o.rgb, uv, .2, float3(.5,.5,.5));
-    // KICK
-    blit(o.rgb, uv, float2(.1,-.75), float2(1.7,1.5));
+    //band(o.rgb, uv, .3, float3(.5,.5,.5));
+
     // slash
-    slash(o.rgb, uv);
+    float3 grayColor = float3(.5,.5,.5);
+    slash(grayColor, uv);
+    // KICK
+    blit(grayColor, uv, float2(-.2,-.715), float2(2.,1.55));
+
+    band(o.rgb, uv, .3, grayColor);
 
     band(o.rgb, uv, -.69, float3(0,0,0));
     band(o.rgb, uv, -.73, float3(1,.5,0));
     band(o.rgb, uv, -.8, float3(1,1,1));
-
-    // vignette
-    float vignetteAmt = 1.-dot(inp.uvn*.8,inp.uvn*.8);
-    o.rgb *= vignetteAmt;
 
     return o;
 }
