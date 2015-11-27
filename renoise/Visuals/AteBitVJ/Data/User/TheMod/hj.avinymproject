@@ -76,13 +76,13 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/NoiseAnimationWatery.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/NoiseAnimationWatery.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -94,13 +94,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/MistRing.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/MistRing.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -151,13 +151,13 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/TunnelMasterI.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/TunnelMasterI.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -169,13 +169,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/TunnelMasterII.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/TunnelMasterII.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -187,13 +187,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/slowColorBlocks.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/slowColorBlocks.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -205,13 +205,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/plasma.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/plasma.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -223,7 +223,7 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Blobs.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/Blobs.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -241,13 +241,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/goingup.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/goingup.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -294,13 +294,13 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Gear.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/Gear.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -324,13 +324,13 @@
                         </EffectChain>
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/ApollonianFractures.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/ApollonianFractures.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="none" value="0.5" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -342,13 +342,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/whirlmaster.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/whirlmaster.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -360,13 +360,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/bubbles.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/bubbles.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -378,13 +378,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/ether.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/ether.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -396,13 +396,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/SnakeWave.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/SnakeWave.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -449,13 +449,13 @@
                 <Modules>
                     <Module />
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Shear.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/Shear.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/KICK.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/KICK.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -467,7 +467,7 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/CreationBySilexars.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/CreationBySilexars.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -485,7 +485,7 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Spinner3.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/Spinner3.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -503,7 +503,7 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/Industry.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/Industry.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -521,13 +521,13 @@
                         <EffectChain />
                     </Module>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/LuceatLuxVestraVis.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/LuceatLuxVestraVis.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Scale automation="none" value="1" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <AspectCorrect automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Texture1 automation="none" value="User/TheMod/RGBnoise256.png" />
+                        <Texture1 automation="none" value="User/TheMod/textures/RGBnoise256.png" />
                         <Texture2 automation="none" value="Presets/Modules/dust_texture_ball.png" />
                         <Texture3 automation="none" value="Presets/Effects/dotpainter_texture_triangle2.png" />
                         <Float1 automation="fft" value="0.0201081" minvalue="0" maxvalue="1" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -724,7 +724,7 @@
                 <EffectChain>
                     <Effect type="Shader">
                         <Active automation="none" value="true" fftid="All" fftinvert="0" routeid="" />
-                        <Filename automation="none" value="User/TheMod/fx/grain.fx" />
+                        <Filename automation="none" value="User/TheMod/effects/grain.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0.3" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />

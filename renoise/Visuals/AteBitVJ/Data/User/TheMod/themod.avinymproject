@@ -133,7 +133,7 @@
                 <Modules>
                     <Module />
                     <Module type="Image">
-                        <Filename automation="none" value="User/TheMod/bigtruffle.png" />
+                        <Filename automation="none" value="User/TheMod/textures/bigtruffle.png" />
                         <AspectMode automation="none" value="1" />
                         <SampleMode automation="none" value="0" />
                         <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -243,7 +243,7 @@
                 <Modules>
                     <Module />
                     <Module type="Image">
-                        <Filename automation="none" value="User/TheMod/megabitspersecond.png" />
+                        <Filename automation="none" value="User/TheMod/textures/megabitspersecond.png" />
                         <AspectMode automation="none" value="1" />
                         <SampleMode automation="none" value="0" />
                         <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -345,7 +345,7 @@
             <Layer>
                 <Modules>
                     <Module type="Shader">
-                        <Filename automation="none" value="User/TheMod/TheMod.fx" />
+                        <Filename automation="none" value="User/TheMod/modules/TheMod.fx" />
                         <PositionX automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <PositionY automation="none" value="0" minvalue="-2" maxvalue="2" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
                         <Rotation automation="none" value="0" minvalue="-720" maxvalue="720" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
@@ -448,7 +448,7 @@
                 <Modules>
                     <Module />
                     <Module type="Image">
-                        <Filename automation="none" value="User/TheMod/TheMod.png" />
+                        <Filename automation="none" value="User/TheMod/textures/TheMod.png" />
                         <AspectMode automation="none" value="1" />
                         <SampleMode automation="none" value="0" />
                         <Zoom automation="none" value="0.201005" minvalue="-8" maxvalue="8" invert="0" fftid="All" lfowavetype="0" lfosynctype="1" lfoperiod="1" lfophase="0" routeid="" script="" />
