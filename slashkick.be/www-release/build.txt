@@ -1,0 +1,8 @@
+
+css/main.css
+----------------
+css/main.css
+
+scripts/main.js
+----------------
+scripts/main.js
