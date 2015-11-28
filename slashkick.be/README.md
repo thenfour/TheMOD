@@ -21,7 +21,7 @@ Output is in `./www-release`.
 
 Launch a local web server with
 
-    $ bash launchLocal.sh
+    $ bash startLocalWebServer.sh
 
 Navigate to the URL specified in the console. Probably:
 
