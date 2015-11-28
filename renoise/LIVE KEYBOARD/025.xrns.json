@@ -106,6 +106,7 @@
  				{ "Button" : "c2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "FusionPiano" }]}
  				{ "Button" : "d2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "FusionRhodes" }]}
  				{ "Button" : "e2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "gen-boese" }]}
+ 				{ "Button" : "f2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-artificium" } }]}
 
  				{ "Button" : "b3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "cic-mellowlead" }]}
  				{ "Button" : "c3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "ioiwy-vintage lead" } }]}
@@ -113,6 +114,7 @@
  				{ "Button" : "e3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-funkhonk" } }]}
  				{ "Button" : "f3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-jxmemories" } }]}
  				{ "Button" : "g3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-pwmcomp" } }]}
+ 				{ "Button" : "h3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "sca-sectionV" } }]}
 
  				{ "Button" : "b4", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-modwheelextreme" } }]}
  				{ "Button" : "c4", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-guitarrival" } }]}
@@ -127,6 +129,7 @@
  				{ "Button" : "c6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "FusionPiano" }]}
  				{ "Button" : "d6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "FusionRhodes" }]}
  				{ "Button" : "e6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "gen-boese" }]}
+ 				{ "Button" : "f6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-artificium" } }]}
 
  				{ "Button" : "b7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "cic-mellowlead" }]}
  				{ "Button" : "c7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "ioiwy-vintage lead" } }]}
@@ -134,6 +137,7 @@
  				{ "Button" : "e7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-funkhonk" } }]}
  				{ "Button" : "f7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-jxmemories" } }]}
  				{ "Button" : "g7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pwmcomp" } }]}
+ 				{ "Button" : "h7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "sca-sectionV" } }]}
 
  				{ "Button" : "b8", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-modwheelextreme" } }]}
  				{ "Button" : "c8", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-guitarrival" } }]}
