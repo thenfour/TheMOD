@@ -1,6 +1,6 @@
 // http://webglfundamentals.org/webgl/lessons/webgl-2d-matrices.html
 // http://codepen.io/anon/pen/eNVWWB
-
+// uniforms types https://github.com/mrdoob/three.js/wiki/Uniforms-types
 
 bind = function($this, fn)
 {
@@ -15,13 +15,18 @@ var SlashKickApp = function()
 
   this.scene = new THREE.Scene();
 
+
+	var texloader = new THREE.TextureLoader();
+
   var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
 
   this.uniforms = {
     iGlobalTime: { type: "f", value: 1.0 },
     iResolution: { type: "v3", value: new THREE.Vector3() },
     iDate: { type: "v4", value: new THREE.Vector4() },
-    iMouse: { type: "v4", value: new THREE.Vector4() }
+    iMouse: { type: "v4", value: new THREE.Vector4() },
+    iFFT: { type: "f", value: 0 },
+    kickTexture: { type: "t", value: texloader.load('images/KICK.png') }
   };
 
   var material = new THREE.ShaderMaterial( {
@@ -76,6 +81,8 @@ SlashKickApp.prototype.drawScene = function()
   this.uniforms.iMouse.value.y = 0;
   this.uniforms.iMouse.value.z = 0;
   this.uniforms.iMouse.value.w = 0;
+
+  this.uniforms.iFFT.value = .1*(Math.sin(this.uniforms.iGlobalTime.value) * .5+.5);
 
   this.renderer.render( this.scene, this.camera );
 };

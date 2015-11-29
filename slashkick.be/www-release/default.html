@@ -27,32 +27,116 @@
 	<script id="fragmentShader" type="x-shader/x-fragment">
 	precision mediump float;
 
+	uniform sampler2D kickTexture;
   uniform vec3 iResolution;
   uniform float iGlobalTime;
   uniform vec4 iMouse;
   uniform vec4 iDate;
+  uniform float iFFT;
 
 
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{    
-	fragCoord = fragCoord / iResolution.xy - .5;
-	fragCoord.x *= iResolution.x / iResolution.y;
-	fragColor = vec4(sin(iGlobalTime *2. + length(fragCoord)*20.)*.5+.5);
+// convert distance to alpha
+float dtoa(float d, float amount)
+{
+    float a = clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.,1.);
+    return a;
 }
+
+float tri(float i, float p)
+{
+    return abs(mod(abs(i),(p*2.)) - p) / p;
+}
+
+float tri_gear(float i, float p, float cmin, float cmax)
+{
+    return clamp(tri(i,p), cmin, cmax);
+}
+
+void band(inout vec3 o, vec2 uv, float y, vec3 c)
+{
+    y -= .3;
+    float fft = .5 + iFFT / 2.;
+
+    float ext = y + tri_gear(uv.x + (iGlobalTime * .5) - (iFFT * 1.), 0.2, 1.-fft, fft);
+
+    float amt = 400.-(1000.0*pow(iFFT, 0.5));
+    amt = clamp(amt, 10., 400.);
+    o.rgb = mix(o.rgb, c, dtoa(uv.y - ext, amt));
+}
+
+float sdSegment1D(float uv, float a, float b)
+{
+    return max(max(a - uv, 0.), uv - b);
+}
+float sdAxisAlignedRect(vec2 uv, vec2 tl, vec2 br)
+{
+    float dx = sdSegment1D(uv.x,tl.x,br.x);
+    float dy = sdSegment1D(uv.y,tl.y,br.y);
+    return dx + dy;// manhattan
+    //return sqrt(dx*dx+dy*dy);// euclidian version
+}
+
+void blit(inout vec3 o, vec2 uv, vec2 pos, vec2 destSize)
+{
+    uv -= pos;
+    uv /= destSize;
+
+    float d = sdAxisAlignedRect(uv, vec2(0.), vec2(1.));
+    float alpha = step(d, 0.);
+    // causes artifacts. we actually need to sample and use alpha instead
+    //if(alpha < 0) return;
+
+    //uv.y = 1.-uv.y;// flip y coord
+    vec4 s = texture2D(kickTexture, uv);
+    o = mix(o.rgb, s.rgb, s.a * alpha);
+}
+
+
+void slash(inout vec3 o, vec2 uv)
+{
+    uv.x -= (uv.y*.7);
+    float d = sdAxisAlignedRect(uv, vec2(-.8,-1), vec2(-.5,1));
+    o = mix(o, vec3(.0,.3,.3), 1.-smoothstep(0.,.007,d));
+}
+
 
 
 
 
 	void main() {
 
-		vec2 i = gl_FragCoord.xy;
-		vec4 o = vec4(.5);
+		vec2 uv = gl_FragCoord.xy / iResolution.xy - .5;
+		uv.x *= iResolution.x / iResolution.y;
+		uv *= 2.;
+		uv.y -= uv.x * .5;
 
-		mainImage(o, i);
+		//mainImage(o, i);
 		//i /= iResolution.xy;
 		//o = vec4(sin(length(i)*10.)*.5+.5);
+
+    //float2 uv = inp.uv;
+
+    //float4 o = float4(1,1,1,1);
+
+    vec4 o = vec4(0,0,1,1);
+    band(o.rgb, uv, .7, vec3(0,0,0));
+    band(o.rgb, uv, .6, vec3(1,.5,0));
+    //band(o.rgb, uv, .3, vec3(.5,.5,.5));
+
+    // slash
+    vec3 grayColor = vec3(.5,.5,.5);
+    slash(grayColor, uv);
+    // KICK
+    blit(grayColor, uv, vec2(-.2,-.715), vec2(2.,1.55));
+
+    band(o.rgb, uv, .3, grayColor);
+
+    band(o.rgb, uv, -.69, vec3(0,0,0));
+    band(o.rgb, uv, -.73, vec3(1,.5,0));
+    band(o.rgb, uv, -.8, vec3(1,1,1));
+
 
     gl_FragColor = vec4(o.rgb, 1.);
 	}
