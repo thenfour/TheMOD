@@ -23,34 +23,38 @@
 
 	</script>
 
-
-
 	<!-- fragment shader -->
 	<script id="fragmentShader" type="x-shader/x-fragment">
 	precision mediump float;
 
   uniform vec3 iResolution;
   uniform float iGlobalTime;
+  uniform vec4 iMouse;
+  uniform vec4 iDate;
+
+
+
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{    
+	fragCoord = fragCoord / iResolution.xy - .5;// scale coord to 0-1, offset to center
+	fragCoord.x *= iResolution.x / iResolution.y;// aspect-correct
+	fragColor = vec4(sin(iGlobalTime *2. + length(fragCoord)*20.)*.5+.5);
+}
+
+
+
 
 	void main() {
 
-		vec2 ii = gl_FragCoord.xy;
-		vec4 o = vec4(0);
+		vec2 i = gl_FragCoord.xy;
+		vec4 o = vec4(.5);
 
-    const float cf = 8.; // color factor
-    const float pf = 8.;  // pixel factor
-	   
-		vec2 i = floor(ii/pf)*pf/(iResolution.xy*3.);// pixellated
-		float t = iGlobalTime/3.;
-	 
-		float dist1 = distance(i, vec2(0.66 + sin(t), 0.25)) * 40.0;
-		float dist2 = distance(i, vec2(0.44, 0.75*cos(t))) * 20.0;
-		float dist3 = distance(i, vec2(0.5, 0.23*sin(t))) * 20.0;
-		float dist4 = distance(i, vec2(0.57*cos(t/2.), 1.5)) * 10.0;
-	 
-		float col = cos(sin(dist1) + cos(dist2) + cos(dist3) + sin(dist4));
-		o = vec4(floor(col*sin(t)*cf)/cf, floor(col*cos(t)*cf)/cf, floor((1.0-col)*cf)/cf, 1.0);
-    gl_FragColor = o;
+		mainImage(o, i);
+		//i /= iResolution.xy;
+		//o = vec4(sin(length(i)*10.)*.5+.5);
+
+    gl_FragColor = vec4(o.rgb, 1.);
 	}
 	</script>
 
