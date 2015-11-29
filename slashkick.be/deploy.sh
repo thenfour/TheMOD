@@ -4,7 +4,7 @@ pushd $DIR >/dev/null
 
 # use tridentloop shortened uname
 read -p "Username: " FTPUSER
-scp -r www-release/ "$FTPUSER@tridentloop.com:www/slashkick.be/"
+scp -r www-release/* "$FTPUSER@tridentloop.com:www/slashkick.be/"
 
 open http://slashkick.be
 
