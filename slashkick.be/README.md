@@ -12,7 +12,12 @@ In order to launch local web server:
 # Building
 To build, just open bash and do:
 
-    $ bash build.sh
+    $ bash build-debug.sh
+
+or
+
+
+    $ bash build-release.sh
 
 
 # Viewing / debugging locally

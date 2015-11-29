@@ -1,13 +1,72 @@
+<!-- Licensed under a BSD license. See license.html for license -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>My App x</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css">
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script data-main="scripts/main" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.22/require.min.js"></script>
-    </head>
-    <body>
-        <h1>My App</h1>
-    </body>
+<head>
+	<meta charset="utf-8">
+	<title>/KICK</title>
+
+	<link type="text/css" href="css/main.css" rel="stylesheet" />
+
+	<script src="scripts/webgl-utils.js"></script>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.22/require.min.js"></script>
+
+	<script src="scripts/main.js"></script>
+
+	<!-- vertex shader -->
+	<script id="2d-vertex-shader" type="x-shader/x-vertex">
+	precision mediump float;
+
+	attribute vec2 a_position;
+
+	uniform float iGlobalTime;
+	uniform vec3 iResolution;
+	uniform vec4 iDate;
+	uniform vec4 iMouse;
+
+	void main() {
+	   gl_Position = vec4(a_position * 2., 0, 1);
+	}
+	</script>
+
+
+
+	<!-- fragment shader -->
+	<script id="2d-fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+
+	uniform float iGlobalTime;
+	uniform vec3 iResolution;
+	uniform vec4 iDate;
+	uniform vec4 iMouse;
+
+	void main() {
+
+		vec2 ii = gl_FragCoord.xy;
+		vec4 o = vec4(0);
+
+    const float cf = 8.; // color factor
+    const float pf = 8.;  // pixel factor
+	   
+		vec2 i = floor(ii/pf)*pf/(iResolution.xy*3.);// pixellated
+		float t = iGlobalTime/3.;
+	 
+		float dist1 = distance(i, vec2(0.66 + sin(t), 0.25)) * 40.0;
+		float dist2 = distance(i, vec2(0.44, 0.75*cos(t))) * 20.0;
+		float dist3 = distance(i, vec2(0.5, 0.23*sin(t))) * 20.0;
+		float dist4 = distance(i, vec2(0.57*cos(t/2.), 1.5)) * 10.0;
+	 
+		float col = cos(sin(dist1) + cos(dist2) + cos(dist3) + sin(dist4));
+		o = vec4(floor(col*sin(t)*cf)/cf, floor(col*cos(t)*cf)/cf, floor((1.0-col)*cf)/cf, 1.0);
+    gl_FragColor = o;
+	}
+	</script>
+
+
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+</body>
 </html>
 
