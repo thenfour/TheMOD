@@ -88,13 +88,13 @@ float4 PS(PS_INPUT inp) : SV_Target
     }
     
     //* post-processing. comment this out for 142 char version.
-    o*=1-(rand(uv*o)*.05);//sin(uv.xyxy*o*1e5)*.05;// grain
-    o=clamp(o*1.0,0.,1.);// linear brightness
-    o.rgb=lerp((o.r+o.g+o.b)/3., o.rgb,.8);// saturation
+    //o*=1-(rand(uv*o)*.05);//sin(uv.xyxy*o*1e5)*.05;// grain
+    //o=clamp(o*1.0,0.,1.);// linear brightness
+    o.rgb=lerp((o.r+o.g+o.b)/3., o.rgb,g_fFloat2);// saturation
 
     // vignette
-    float vignetteAmt = 1.-dot(inp.uvn*.85,inp.uvn*.85);
-    o.rgb *= vignetteAmt;
+    //float vignetteAmt = 1.-dot(inp.uvn*.85,inp.uvn*.85);
+    //o.rgb *= vignetteAmt;
 
     return o;
 }

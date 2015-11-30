@@ -99,6 +99,7 @@ float opSub(float a, float b) { return max(a,-b); }
 
 float sdGearCircle(float2 uv, float radius, float constRadius)
 {
+    //return sdCircle(uv, radius);
     return opAdd(
             opSub(
                 sdCircle(uv, radius),
@@ -111,33 +112,43 @@ float sdGearCircle(float2 uv, float radius, float constRadius)
 }
 
 
+// val, period, and where to cut it off.
 float tri_gear(float i, float p, float cmin, float cmax)
 {
-    return clamp(tri(i,p), cmin, cmax);
+    return (clamp(tri(i,p), cmin, cmax)-cmin)/(cmax-cmin);
 }
 
 
 // cogPeriod is 0-1, and will be scaled so differently-sized gears' cogs will be compatible
-float sdGear(float2 uv, float scale, float rotation, float cogPeriod, float cmin, float cmax)
+float sdGear(float2 uv, float scale, float rotation, float cmin, float cmax, float cogAmt)
 {
+    const float cogPeriod = .01799;
     float uvAng = fmod(atan2(uv.y,uv.x)+pi2, pi2) / pi2;
-    float radius = scale * tri_gear(rotation + uvAng, cogPeriod / scale, cmin, cmax);
+
+    rotation /= scale;
+
+    float cogAmp = tri_gear(rotation + uvAng, cogPeriod / scale, cmin, cmax);
+    //cogAmt *= scale;
+    float radius = cogAmt + ((1. - cogAmt) * cogAmp);
+    radius *= scale;
+
     //return opSub(sdCircle(uv, radius), sdCircle(uv, 0.1));
     return sdGearCircle(uv, radius, scale);
 }
 
 float sdScene(float2 uv)
 {
-    float baseRotation = (g_fTime * 0.07) + pow(g_fFloat1, 3.0);
-    float bigRatio = 2.;
-    float smallSize = 1.2;
-    float rotSmall = (baseRotation * -1);
-    float rotBig = (baseRotation / bigRatio) + .028;
+    float baseRotation = (g_fTime * .17) + pow(g_fFloat1, 2.)*.7;
+    baseRotation *= .2;
 
     return opAdd(
-        sdGear(uv - float2(-.7,-.44), smallSize * bigRatio, rotBig, .05, .52, .55),
-        sdGear(uv - float2(1.04,0.5), smallSize, rotSmall, .05, .52, .585)
-        );
+        opAdd(
+            sdGear(uv - float2(-.9,-.9), 1.5, baseRotation,            .4, .6, .94),
+            sdGear(uv - float2(.66,0.9), .97, baseRotation*-1.+.023,  .4, .6, .88)//
+        ),opAdd(
+            sdGear(uv - float2(-1.4,1.), .53, baseRotation*-1.+.098, .5, .7, .85),
+            sdGear(uv - float2(.944,-.9), .4, baseRotation*-1.+.5, .5, .7, .85)
+        ));
 }
 
 //--------------------------------------------------------------------------------------
@@ -148,12 +159,18 @@ float4 PS(PS_INPUT inp) : SV_Target
     float2 uv = inp.uv;// -1 to 1, centered
     float4 o = float4(0,0,0,1);
 
-    o.rgb = lerp(o.rgb, float3(.7,.6,.8), dtoa(sdScene(uv), fft));
+    float4 col = g_vecColour1;
+    float d = sdScene(uv);
+    if(d > 0.)
+        col = lerp(o, g_vecColour2, dtoa(d, fft));
+
+    //o.rgb = lerp(o.rgb, g_vecColour1, dtoa(, fft));
+    o = col;
     //o.rgb = float3(1,1,1);
 
     // vignette
-    float vignetteAmt = 1.-dot(inp.uvn,inp.uvn);
-    o.rgb *= vignetteAmt;
+    //float vignetteAmt = 1.-dot(inp.uvn,inp.uvn);
+    //o.rgb *= vignetteAmt;
 
     return o;
 }

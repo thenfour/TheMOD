@@ -161,9 +161,9 @@ static float4 iDate;// uniform vec4      iDate;                 // (year, month,
 #define LIGHT_POWER     32.0
 #define SURFACE_ALBEDO  0.7
 #define EPS             3.09
-#define BALL_AMOUNT     14
+#define BALL_AMOUNT     3
 #define GLITCH          true
-#define time            iGlobalTime
+#define time            (iGlobalTime*g_fFloat3)
 
 static float iChannelTime1;
 

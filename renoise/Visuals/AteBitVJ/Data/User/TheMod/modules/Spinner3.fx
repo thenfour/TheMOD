@@ -209,6 +209,12 @@ vec2 Noise( in vec3 x )
 }
 
 
+
+float fft(float x)
+{
+    return texFFT.Sample(sampFFT, float2(x,0)).r;
+}
+
 float DistanceField( vec3 pos )
 {
 #ifdef BLOB
@@ -217,8 +223,11 @@ float DistanceField( vec3 pos )
     return .5*(length(pos)-2.0+(Noise(pos).x+Noise(pos*2.0+iGlobalTime*vec3(0,1.0,0)).x/2.0)*1.0);
 #else
     // rotational symmettry
-    const float slice = tau/12.0;
-    float a = abs(fract(atan(pos.x,pos.z)/slice+iGlobalTime*.5)-.5)*slice;
+    const float slice = tau/12.;
+    float rot = -iGlobalTime*.5;
+    rot -= pow(g_fFloat1, .2);
+    float a = abs(fract(atan(pos.x,pos.z)/slice+rot)-.5)*slice;
+    a -= pow(g_fFloat1, .2)*.2;
     pos.xz = length(pos.xz)*vec2(sin(a),cos(a));
     
     // symettry in y
@@ -254,17 +263,12 @@ vec3 Sky( vec3 ray )
 }
 
 
-float fft(float x)
-{
-    return texFFT.Sample(sampFFT, float2(x,0)).r;
-}
-
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    float2 fftCoord = abs(fragCoord / iResolution.xy - .5);
-    fftCoord.x = fftCoord.y;
-    fftCoord = pow(fftCoord, 1.8);
-    float zoom = lerp(1.5, 1.8, pow(fft(length(fftCoord)), 1.4));
+    // float2 fftCoord = abs(fragCoord / iResolution.xy - .5);
+    // fftCoord.x = fftCoord.y;
+    // fftCoord = pow(fftCoord, 1.8);
+    float zoom = 1.5;//lerp(1.5, 1.8, pow(fft(length(fftCoord)), 1.4));
 
     vec3 pos, ray;
     CamPolar( pos, ray, .04*vec3(Noise(vec3(3.0*iGlobalTime,0,0)).xy,0), vec2(.22,0)+vec2(.7,tau)*iMouse.yx/iResolution.yx, 6.0, zoom, fragCoord );

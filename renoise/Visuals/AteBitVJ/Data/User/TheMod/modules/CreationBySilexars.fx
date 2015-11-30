@@ -138,30 +138,94 @@ static float4 iDate;// uniform vec4      iDate;                 // (year, month,
 
 
 
-#define t iGlobalTime
-#define r iResolution.xy
+// #define t iGlobalTime
+// #define r iResolution.xy
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){
-    vec3 c;
-    float l,z=t;
-    for(int i=0;i<3;i++) {
-        vec2 uv,p=fragCoord.xy/r;
-        uv=p;
-        p-=.5;
-        p.x*=r.x/r.y;
-        z+=.07;
-        l=length(p);
-        uv+=p/l*(sin(z)+1.)*abs(sin(l*9.-z*2.));
-        c[i]=.01/length(abs(mod(uv,1.)-.5));
-    }
-    fragColor=vec4(c/l,t);
+// void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+//     vec3 c;
+//     float l,z=t;
+//     for(int i=0;i<3;i++) {
+//         vec2 uv,p=fragCoord.xy/r;
+//         uv=p;
+//         p-=.5;
+//         p.x*=r.x/r.y;
+//         z+=.07;
+//         l=length(p);
+//         uv+=p/l*(sin(z)+1.)*abs(sin(l*9.-z*2.));
+//         c[i]=.01/length(abs(mod(uv,1.)-.5));
+//     }
+//     fragColor=vec4(c/l,t);
+// }
+
+
+
+
+
+
+
+// From https://www.shadertoy.com/view/XsXXDn
+
+#define t (iGlobalTime*g_fFloat3)
+#define r iResolution.xy
+#define m iMouse.xy
+
+//#define PI 3.14159265359
+
+/**
+ * Interpolate (cos) between 'min' and 'max' with a defined 'period'
+ */
+float stepper(float time, float period, float min, float max)
+{
+    return cos(mod(time, period) / period * 2. * PI) * (max - min) / 2. + (max + min) / 2.;
 }
 
-
-
-
-
-
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    /* position */
+    vec2 p = fragCoord.xy/r - .5;
+    p.x*= r.x/r.y;
+    p = abs(p);
+    
+	float l = length(p);
+    
+    
+    /* cycling values */
+    // color shift
+    float dz = stepper(t, 10.9, -.1, .1);
+    // size
+    float ds = stepper(t, 15.4, -2., 2.);
+    // pattern
+    float dp = stepper(t, 20.6, 5., 10.);
+    // intensity
+    float di = stepper(t, 8.2, .008, .06);
+    // direction
+    float dd = stepper(t, 12.1, -.03, .03);
+    // attenuation
+    float dl = stepper(t, 19.3, l, 1./l);
+    
+    /* original values */
+    //dz = .07;
+	//ds = 1.;
+    //dp = 9.;
+    //di = .01;
+    //dd = 2.;
+    //dl = 1./l;
+    
+    
+    /* compute colors */
+    vec3 c;
+    float z = t;
+    
+	for (int i=0; i<3; i++)
+    {
+		z+= dz;
+        float a = (sin(z)+ds) * abs(sin(l*dp - z*dd));
+		vec2 uv = fragCoord.xy/r + p / l * a;
+		c[i] = di / length(abs(mod(uv, 1.) - .5));
+	}
+    
+	fragColor = vec4(c*dl, t);
+}
 
 
 

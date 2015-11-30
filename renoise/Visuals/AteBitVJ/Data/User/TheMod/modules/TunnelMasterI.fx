@@ -76,20 +76,22 @@ float4 PS(PS_INPUT inp) : SV_Target
     float2 uv = inp.uv;
 
     // i/=length(i-iResolution.xy*.5);o=(fract(i.x+iDate.w)/i).xyyy;
-    uv/=length(uv-float2(1,1)*.5);
+    uv /= length(uv-float2(1,1)*.5);
     float4 o=(frac(uv.x+g_fTime*.1)/uv).xyyy;
     o.a = 1;
     o = clamp(o,0,.9);
     o.rgb = pow(o.rgb, 2.);
 
 
-    o*=1-(rand(inp.uvn*o)*.25);//sin(uv.xyxy*o*1e5)*.05;// grain
-    o.rgb=lerp((o.r+o.g+o.b)/3., o.rgb,.4);// saturation
+    //o*=1-(rand(inp.uvn*o)*.25);//sin(uv.xyxy*o*1e5)*.05;// grain
+    o.rgb=lerp((o.r+o.g+o.b)/3., o.rgb,g_fFloat2);// saturation
+
+    o = pow(o, .7);
 
     // vignette
-    o=clamp(o,0,1);
-    float vignetteAmt = 1.-dot(inp.uvn*.8,inp.uvn*.8);
-    o.rgb *= vignetteAmt;
+    //o=clamp(o,0,1);
+    //float vignetteAmt = 1.-dot(inp.uvn*.8,inp.uvn*.8);
+    //o.rgb *= vignetteAmt;
 
     o=clamp(o,0,1);
     o.a = 1;

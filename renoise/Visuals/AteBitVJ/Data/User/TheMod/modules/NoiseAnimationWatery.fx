@@ -196,8 +196,8 @@ float noise( in vec2 p )
 
   vec3 n = h*h*h*h*vec3( dot(a,hash(i+0.0)), dot(b,hash(i+o)), dot(c,hash(i+1.0)));
 
-    return pow(smoothstep(-.6,.6,dot( n, vvec3(70.0) )), 1.0);
-    //return dot( n, vvec3(70.0) );
+    //return pow(smoothstep(-.6,.6,dot( n, vvec3(70.0) )), 1.0);
+    return dot( n, vvec3(70.0) );
   
 }
 
@@ -245,8 +245,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
   float rz = fbm(p*.9-time*.7);
   rz *= dot(bp*5.,bp)+.5;
   rz *= sin(p.x*.5+time*4.)*1.5;
-  vec3 col = vec3(.04,0.07,0.45)/(.1-rz);
-  fragColor = vec4(sqrt(abs(col)),1.0);
+  vec3 col = vec3(.3,.4,.4)/(.1-rz);
+  fragColor = vec4(clamp(abs(col),0,1),1.0);
 }
 
 

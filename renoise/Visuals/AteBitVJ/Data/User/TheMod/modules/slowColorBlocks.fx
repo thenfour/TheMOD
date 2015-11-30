@@ -95,6 +95,14 @@ float3 pal(float t, float t2)
     //c = pal(v, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(2.0,1.0,0.0),float3(0.5,0.20,0.25) );
 }
 
+float3 czm_saturation(float3 rgb, float adjustment)
+{
+    // Algorithm from Chapter 16 of OpenGL Shading Language
+    const float3 W = float3(0.2125, 0.7154, 0.0721);
+    float3 intensity = dot(rgb, W);
+    return lerp(intensity, rgb, adjustment);
+}
+
 //--------------------------------------------------------------------------------------
 float4 PS(PS_INPUT inp) : SV_Target
 {
@@ -122,11 +130,14 @@ float4 PS(PS_INPUT inp) : SV_Target
 
     //float4 o = float4(cx,1);
     float4 o = float4(cx * cy,1);
+
+    o.rgb= czm_saturation(o.rgb, g_fFloat2);
+    o.rgb *= lerp(1.0, g_vecColour1.rgb, g_vecColour1.a);
     //float4 o = float4(lerp(cx, cy, .5),1);
 
     // vignette
-    float vignetteAmt = 1.-dot(inp.uvn * .85,inp.uvn * .85);
-    o.rgb *= vignetteAmt;
+    //float vignetteAmt = 1.-dot(inp.uvn * .85,inp.uvn * .85);
+    //o.rgb *= vignetteAmt;
     return o;
 }
 

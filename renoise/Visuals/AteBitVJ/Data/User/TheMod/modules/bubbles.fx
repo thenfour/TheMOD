@@ -148,6 +148,14 @@ float3 a_to_color(float a, float a2)
 
 
 
+// convert distance to alpha
+float dtoa(float d, float amount)
+{
+    //return d > 0 ? 0 : 1;
+    float a = clamp(1.0 / (clamp(d, 1.0/amount, 1.0)*amount), 0.,1.);
+    return a;
+}
+
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
@@ -177,14 +185,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         
         // render
         float f = length(uv-pos)/rad;
-        f = sqrt(clamp(1.0-f*f,0.0,1.0));
-        color -= col.zyx *(1.0-smoothstep( rad*0.95, rad, dis )) * f;
+        //f = dtoa(f, 10.);
+        //f = sqrt(clamp(1.0-f*f,0.0,1.0));
+        //color -= col.zyx *(1.0-smoothstep( rad*0.95, rad, dis )) * f;
+        color -= col *(1.-dtoa(rad-dis, 100.));// * f;
     }
 
     // vigneting    
     color *= sqrt(1.5-0.5*length(uv));
 
-    fragColor = vec4(color,1.0);
+    fragColor = vec4(1.-color,1.0);
 }
 
 
@@ -218,6 +228,8 @@ float4 PS(PS_INPUT inp) : SV_Target
     float4 fragColor = vec4(0,0,0,0);// output
 
     mainImage(fragColor, inp.vecTex);
+
+    fragColor.rgb=lerp((fragColor.r+fragColor.g+fragColor.b)/3., fragColor.rgb,g_fFloat2 + pow(g_fFloat1,2.));// saturation
 
     return vec4(fragColor.rgb, 1.0);
 }

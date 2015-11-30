@@ -144,6 +144,21 @@ static float4 iDate;// uniform vec4      iDate;                 // (year, month,
 
 
 
+float3 pal2( in float t, in float3 a, in float3 b, in float3 c, in float3 d )
+{
+    return a + b*cos( pi2*(c*t+d) );
+}
+
+float3 a_to_color(float a)
+{
+    float3 c1 = pal2(a,float3(0.8,0.5,0.4),float3(0.2,0.4,0.2),float3(2.0,1.0,1.0),float3(0.0,0.25,0.25) );
+    float3 c2 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.0,0.33,0.67) );
+    float3 c3 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.0,0.10,0.20) );
+    float3 c4 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.3,0.20,0.20) );
+    return c2;
+    return pal2(a, c1, c2, c3, c4);
+}
+
 
 
 
@@ -154,9 +169,18 @@ static float4 iDate;// uniform vec4      iDate;                 // (year, month,
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord.xy / iResolution.y;
-    float dt = sin(uv.x *20. + iGlobalTime*.2);
+    uv.x += iGlobalTime * 0.03;
+    float dt = sin(uv.x *20. + iGlobalTime - 3.*pow(g_fFloat1, 0.2));
     float circle = (cos(mod(uv.x * 32.0, 3.14) - 1.58) *0.5) *(sin(mod(uv.y * 32.0, 3.14)) *0.5) * (1.-dt);
-    fragColor = vec4(12.0,4.0,2.0,1.0) * circle;
+
+    float att = 0.;
+    att += (0.0 + pow(abs(g_fFloat1), 0.3));
+    float uvFFT = circle * abs(fragCoord.x / iResolution.x - .5);
+    att += texFFT.Sample(sampFFT, vec2(uvFFT,0)).x;
+    fragColor = vec4(a_to_color(sin(iGlobalTime * .04)) * 10. * circle * att, 1.);
+    //fragColor.a = 1.;
+    //fragColor = g_vecColour1 * 12. * circle * att;
+    //fragColor = att;
 }
 
 
@@ -178,6 +202,8 @@ float4 PS(PS_INPUT inp) : SV_Target
     float4 fragColor = vec4(0,0,0,0);// output
 
     mainImage(fragColor, inp.vecTex);
+
+    fragColor.rgb=lerp((fragColor.r+fragColor.g+fragColor.b)/3., fragColor.rgb,g_fFloat2 + pow(g_fFloat1,2.));// saturation
 
     return vec4(fragColor.rgb, 1.0);
 }

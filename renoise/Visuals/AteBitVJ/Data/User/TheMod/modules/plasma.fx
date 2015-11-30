@@ -128,10 +128,11 @@ float3 pal2( in float t, in float3 a, in float3 b, in float3 c, in float3 d )
 
 float3 a_to_color(float a)
 {
-    float3 c1 = pal2(a, float3(0.8,0.5,0.4),float3(0.2,0.4,0.2),float3(2.0,1.0,1.0),float3(0.0,0.25,0.25) );
+    float3 c1 = pal2(a,float3(0.8,0.5,0.4),float3(0.2,0.4,0.2),float3(2.0,1.0,1.0),float3(0.0,0.25,0.25) );
     float3 c2 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.0,0.33,0.67) );
     float3 c3 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.0,0.10,0.20) );
     float3 c4 = pal2(a, float3(0.5,0.5,0.5),float3(0.5,0.5,0.5),float3(1.0,1.0,1.0),float3(0.3,0.20,0.20) );
+    return c3;
     return pal2(a, c1, c2, c3, c4);
 }
 
@@ -151,7 +152,7 @@ float4 PS(PS_INPUT inp) : SV_Target
     float4 o = float4(1.,1.,1.,1.);
 
     // pixellate effect
-    const float pixelSize = 0.8;
+    float pixelSize = 0.8 + (pow(g_fFloat1,.1) * .2);
     //float pixelSize = 44./iResolution.x * ubound.x;// pixels wide always.
     
     //float2 plasma_uv = uv;
@@ -167,9 +168,11 @@ float4 PS(PS_INPUT inp) : SV_Target
     pixelBorderFX = pow(pixelBorderFX, 0.15);
     o.rgb *= pixelBorderFX;
 
+    o.rgb=lerp((o.r+o.g+o.b)/3., o.rgb,g_fFloat2 + pow(g_fFloat1,2.));// saturation
+
     // vignette
-    float vignetteAmt = 1.-dot(inp.uvn*.85,inp.uvn*.85);
-    o.rgb *= vignetteAmt;
+    //float vignetteAmt = 1.-dot(inp.uvn*.85,inp.uvn*.85);
+    //o.rgb *= vignetteAmt;
 
     return o;
 }

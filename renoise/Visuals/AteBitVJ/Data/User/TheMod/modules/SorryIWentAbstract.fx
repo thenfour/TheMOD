@@ -161,116 +161,42 @@ static float4 iDate;// uniform vec4      iDate;                 // (year, month,
 
 
 
-/*--------------------------------------------------------------------------------------
-License CC0 - http://creativecommons.org/publicdomain/zero/1.0/
-To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
-----------------------------------------------------------------------------------------
-^ This means do ANYTHING YOU WANT with this code. Because we are programmers, not lawyers.
--Otavio Good
-*/
 
-// noise functions
-vec2 noise2dTex2(vec2 p)
-{
-  p *= 140.;
-  p = vec2( dot(p,vec2(127.1,311.7)),
-        dot(p,vec2(269.5,183.3)) );
-  return -1.0 + 2.0*fract(sin(p)*43758.5453123);
+
+//mat2 rotate(float a) { return mat2(cos(a),-sin(a),sin(a),cos(a)); }
+
+#define WEBN 90.
+#define bigshapespeed 0.01
+#define lineThickness .2
+
+float nsin(float x) { return sin(x)*.5+.5; }
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+  vec2 p = (2.0*fragCoord.xy-iResolution.xy)/iResolution.y;
+  float l = 1.0;
+  float mz = -1.0;
+    
+  for (float i=0.; i < WEBN; i+=1.0) {
+    float fi = i/WEBN*acos(-1.)*1.0;
+    
+    float z = 1.0-frac(iGlobalTime*bigshapespeed+i/WEBN);
+    vec2 o = p;
+    o -= vec2(sin(2.5*fi+iGlobalTime*.3)*2.0,cos(2.0*fi+iGlobalTime*.3))*z;
+    o = mul(o, float2x2(0,-1,1,0)/(z*15.));
+    l += (smoothstep(1.-lineThickness,1.0,sin(mod(length(o),0.5)*60.0)))*(.5-z);
+    //l += (nsin(sin(mod(length(o),0.5)*60.0)))*(.4-z);
+    //l += .1;//nsin(mod(length(o),0.5)*60.0)))*(.5-z);
+    mz = min(mz,z);
+  }
+  
+  vec3 col = mix(vec3(0.2,0.0,0.1),vec3(0.9,1.0,1.9),l*.1);
+
+  vec2 uvn = fragCoord / iResolution.xy - .5;
+  float amt = .8-pow(dot(uvn, uvn), .2);
+  //col = amt;
+  col += amt;
+  fragColor = vec4(col,1.0);
 }
-
-
-// float Hash2d(vec2 uv)
-// {
-//     float f = uv.x + uv.y * 37.0;
-//     return fract(sin(f)*104003.9);
-// }
-// float mixP(float f0, float f1, float a)
-// {
-//     return mix(f0, f1, a*a*(3.0-2.0*a));
-// }
-// static const vec2 zeroOne = vec2(0.0, 1.0);
-// float noise2d(vec2 uv)
-// {
-//     vec2 fr = fract(uv.xy);
-//     vec2 fl = floor(uv.xy);
-//     float h00 = Hash2d(fl);
-//     float h10 = Hash2d(fl + zeroOne.yx);
-//     float h01 = Hash2d(fl + zeroOne);
-//     float h11 = Hash2d(fl + zeroOne.yy);
-//     return mixP(mixP(h00, h10, fr.x), mixP(h01, h11, fr.x), fr.y);
-// }
-
-
-static const float speed = .17;
-float Fractal(vec2 p)
-{
-    vec2 pr = p;
-    float scale = 1.0;
-    float iter = 1.0;
-    for (int i = 0; i < 12; i++)
-    {
-        vec2 n2 = noise2dTex2(p*0.15*iter+iGlobalTime*speed)*(0.5+pow(g_fFloat1,.2));
-        float nx = n2.x - 0.5;
-        float ny = n2.y;
-        pr += vec2(nx, ny)*0.0002*iter*iter*iter;
-        pr = fract(pr*0.5+0.5)*2.0 - 1.0;
-        float len = pow(dot(pr, pr), 1.0+nx*0.5);
-        float inv = 1.1/len;
-        pr *= inv;
-        scale *= inv;
-        iter += 1.0;
-    }
-    float b = abs(pr.x)*abs(pr.y)/scale;
-    return pow(b, 0.125)*0.95;
-}
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
-{
-    //float xPerturb = pow(g_fFloat1, .4)/10.;
-    // center and scale the UV coordinates
-    vec2 uv = fragCoord.xy / iResolution.xy;
-    uv -= 0.5;
-    uv.x *= iResolution.x / iResolution.y;
-    uv *= 0.74;
-    uv.y += iGlobalTime*.07;
-
-    // do the magic
-    //uv.x += xPerturb;
-    vec2 warp = normalize(uv) * (1.0-pow(length(uv), 0.45));
-    vec3 finalColor = vec3(Fractal(uv*2.0+1.0),
-                           Fractal(uv*2.0+37.0),
-                           Fractal((warp+0.5)*2.0+15.0));
-    finalColor = 1.0 - finalColor;
-
-    // do it again.
-    // uv.x -= xPerturb * 2.;
-    // vec2 warp2 = normalize(uv) * (1.0-pow(length(uv), 0.45));
-    // vec3 finalColor2 = vec3(Fractal(uv*2.0+1.0),
-    //                        Fractal(uv*2.0+37.0),
-    //                        Fractal((warp2+0.5)*2.0+15.0));
-    // finalColor2 = 1.0 - finalColor2;
-
-    // mix.
-    //finalColor = lerp(finalColor, finalColor2, .5);
-
-
-
-    //float circle = 1.0-length(uv*2.2);
-    //float at = atan(uv.x, uv.y);
-    //float aNoise = noise2d(vec2(at * 30.0, iGlobalTime));
-    //aNoise = aNoise * 0.5 + 0.5;
-    //finalColor *= pow(max(0.0, circle), 0.1)*2.0; // comment out this line to see the whole fractal.
-    //finalColor *= 1.0 + pow(1.0 - abs(circle), 30.0); // colorful outer glow
-    //finalColor += vec3(1.0, 0.3, 0.03)*3.0 * pow(1.0 - abs(circle), 100.0);  // outer circle
-    //float outer = (1.0 - pow(max(0.0, circle), 0.1)*2.0);
-    //finalColor += vec3(1.,0.2,0.03)*0.4* max(0.0, outer*(1.0-length(uv)));
-
-    fragColor = vec4(finalColor, 1.0);
-}
-
-
-
-
 
 
 
@@ -296,8 +222,6 @@ float4 PS(PS_INPUT inp) : SV_Target
     float4 fragColor = vec4(0,0,0,0);// output
 
     mainImage(fragColor, inp.vecTex);
-
-    fragColor.rgb=lerp((fragColor.r+fragColor.g+fragColor.b)/3., fragColor.rgb,g_fFloat2 + pow(g_fFloat1,2.));// saturation
 
     return vec4(fragColor.rgb, 1.0);
 }
