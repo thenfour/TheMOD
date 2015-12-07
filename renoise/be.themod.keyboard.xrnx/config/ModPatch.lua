@@ -101,7 +101,15 @@ function ModPatchLayer:__init(config, patch, raw, nameContext)
 		assert(nameContext)
 		self.nameContext = nameContext..":PatchLayer[inst="..coalesceToString(self.instrumentName).."]"
 
-		self.gain = tonumber(config:substituteAliases(raw.Gain))
+		if type(raw.Gain) == "string" then
+			local x = config:substituteAliases(raw.Gain)
+			if StringEndsWith2(raw.Gain, "db") then
+				self.gain = tonumber(string.sub(x, 1, #x-2))
+			else
+				self.gain = tonumber(x)
+			end
+				--log("--- parsed gain: "..x.." as "..self.gain)
+		end
 		if not self.gain then self.gain = 0.0 end
 	end
 end

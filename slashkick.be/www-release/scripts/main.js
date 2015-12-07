@@ -62,7 +62,6 @@ SlashKickApp.prototype.onWindowResize = function()
 
 SlashKickApp.prototype.doAnimFrame = function()
 {
-
  	requestAnimationFrame(bind(this, function() { this.doAnimFrame(); }));
   this.drawScene();
 }
@@ -82,7 +81,7 @@ SlashKickApp.prototype.drawScene = function()
   this.uniforms.iMouse.value.z = 0;
   this.uniforms.iMouse.value.w = 0;
 
-  this.uniforms.iFFT.value = .1*(Math.sin(this.uniforms.iGlobalTime.value) * .5+.5);
+  this.uniforms.iFFT.value = 0;//.009*(Math.sin(this.uniforms.iGlobalTime.value) * .5+.5);
 
   this.renderer.render( this.scene, this.camera );
 };

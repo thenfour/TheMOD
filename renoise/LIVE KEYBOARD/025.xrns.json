@@ -39,11 +39,13 @@
 		{ "Name" : "SelectPreviousSong", "ButtonName" : "f1", "ColorScheme" : { "Normal" : "#f0f" } },
 		//{ "Name" : "SelectNoSong",       "ButtonName" : "C5", "ColorScheme" : { "Normal" : "#101" } },
 		{ "Name" : "SelectNextSong",     "ButtonName" : "g1", "ColorScheme" : { "Normal" : "#f0f" } },
-		//{ "Name" : "IncreaseBrightness", "ButtonName" : "e1", "ColorScheme" : { "Normal" : "#6ff" } },
-		//{ "Name" : "DecreaseBrightness", "ButtonName" : "f1", "ColorScheme" : { "Normal" : "#122" } },
-		//{ "Name" : "ReapplyStatus",      "ButtonName" : "i5", "ColorScheme" : { "Normal" : "#220" } },
 		{ "Name" : "Panic",              "ButtonName" : "h1", "ColorScheme" : { "Normal" : "#f00" } }
-		//{ "Name" : "DumpConfig",         "ButtonName" : "h1", "ColorScheme" : { "Normal" : "#830" } },
+		
+		{ "Name" : "DumpConfig",         "ButtonName" : "b1", "ColorScheme" : { "Normal" : "#830" } },
+		{ "Name" : "DecreaseBrightness", "ButtonName" : "c1", "ColorScheme" : { "Normal" : "#122" } },
+		{ "Name" : "IncreaseBrightness", "ButtonName" : "d1", "ColorScheme" : { "Normal" : "#6ff" } },
+
+		//{ "Name" : "ReapplyStatus",      "ButtonName" : "i5", "ColorScheme" : { "Normal" : "#220" } },
 		{ "Name" : "ReloadConfiguration","ButtonName" : "I1", "ColorScheme" : { "Normal" : "#f00" } }
 
 		{ "Name" : "GlobalVolume", "ButtonName" : "a8", "Value" : "-inf", "ColorScheme" : "GlobalVolume-Green" }
@@ -85,16 +87,16 @@
 	[
 		{ "Name" : "FusionPiano",
 			"Layers" : [
-			  { "Instrument" : "btilc-piano", "Transpose" : "0", "Gain" : "0" }
+			  { "Instrument" : "btilc-piano", "Transpose" : "12", "Gain" : "0" }
 		  ]
 		}
 		{ "Name" : "FusionRhodes",
 			"Layers" : [
-			  { "Instrument" : "scarbeerhodes", "Transpose" : "0", "Gain" : "0" }
+			  { "Instrument" : "scarbeerhodes", "Transpose" : "12", "Gain" : "0" }
 		  ]
 		}
-		{ "Name" : "gen-boese", "Instrument" : "gen-boese" }
-		{ "Name" : "cic-mellowlead", "Instrument" : "cic-mellowlead" }
+		{ "Name" : "gen-boese", "Instrument" : "gen-boese", "Transpose" : "12" }
+		{ "Name" : "cic-mellowlead", "Instrument" : "cic-mellowlead", "Transpose" : "12" }
 	],
 	"Songs" :
 	[
@@ -106,7 +108,7 @@
  				{ "Button" : "c2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "FusionPiano" }]}
  				{ "Button" : "d2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "FusionRhodes" }]}
  				{ "Button" : "e2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "gen-boese" }]}
- 				{ "Button" : "f2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-artificium" } }]}
+ 				{ "Button" : "f2", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "gen-artificium", "Transpose" : "12" } }]}
 
  				{ "Button" : "b3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : "cic-mellowlead" }]}
  				{ "Button" : "c3", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Small", "Patch" : { "Instrument" : "ioiwy-vintage lead" } }]}
@@ -129,14 +131,14 @@
  				{ "Button" : "c6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "FusionPiano" }]}
  				{ "Button" : "d6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "FusionRhodes" }]}
  				{ "Button" : "e6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "gen-boese" }]}
- 				{ "Button" : "f6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-artificium" } }]}
+ 				{ "Button" : "f6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-artificium" , "Transpose" : "12", "Gain":"-9db"} }]}
 
  				{ "Button" : "b7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "cic-mellowlead" }]}
- 				{ "Button" : "c7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "ioiwy-vintage lead" } }]}
- 				{ "Button" : "d7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "wnlgd-compleadoct" } }]}
- 				{ "Button" : "e7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-funkhonk" } }]}
- 				{ "Button" : "f7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-jxmemories" } }]}
- 				{ "Button" : "g7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pwmcomp" } }]}
+ 				{ "Button" : "c7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "ioiwy-vintage lead", "Transpose":"12" } }]}
+ 				{ "Button" : "d7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "wnlgd-compleadoct", "Transpose" : "12" } }]}
+ 				{ "Button" : "e7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-funkhonk", "Transpose" : "12" } }]}
+ 				{ "Button" : "f7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-jxmemories", "Transpose" : "12" } }]}
+ 				{ "Button" : "g7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pwmcomp", "Transpose" : "12" } }]}
  				{ "Button" : "h7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "sca-sectionV" } }]}
 
  				{ "Button" : "b8", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-modwheelextreme" } }]}

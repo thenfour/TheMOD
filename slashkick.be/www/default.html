@@ -37,6 +37,51 @@
 
 
 
+
+
+
+
+// c64 palette
+vec3 color0 = vec3(0,0,0);// black
+vec3 color1 = vec3(1,1,1);// white
+vec3 color2 = vec3(0.41,0.22,0.17);// red
+vec3 color3 = vec3(0.44,0.64,0.70);// cyan
+vec3 color4 = vec3(0.44,0.24,0.53);// violet
+vec3 color5 = vec3(0.35,0.55,0.26);// green
+vec3 color6 = vec3(0.21,0.16,0.47);// blue
+vec3 color7 = vec3(0.72,0.78,0.44);// yellow
+vec3 color8 = vec3(0.44,0.31,0.15);// orange
+vec3 color9 = vec3(0.26,0.22,0);// brown
+vec3 colorA = vec3(0.60,0.40,0.35);// light red
+vec3 colorB = vec3(0.27,0.27,0.27);// grey1
+vec3 colorC = vec3(0.42,0.42,0.42);// grey2
+vec3 colorD = vec3(0.60,0.82,0.52);// light green
+vec3 colorE = vec3(0.42,0.37,0.71);// light blue
+vec3 colorF = vec3(0.58,0.58,0.58);// grey3
+
+vec3 pal2(float t, vec3 c1, vec3 c2)
+{
+	return mix(c1, c2, t);
+}
+
+vec3 pal4(float t, vec3 c1, vec3 c2, vec3 c3, vec3 c4)
+{
+	return c1 * smoothstep(0.,.25, t);
+	//return mix(c1, c2, t);
+}
+
+vec3 rasterColorLinear(float f)
+{
+	return pal4(f, color2, color6, color0, color7);
+}
+
+
+
+float rand(vec2 co){
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+
 // convert distance to alpha
 float dtoa(float d, float amount)
 {
@@ -66,6 +111,53 @@ void band(inout vec3 o, vec2 uv, float y, vec3 c)
     o.rgb = mix(o.rgb, c, dtoa(uv.y - ext, amt));
 }
 
+float pixellate(float i, float sz)
+{
+    return floor(i / sz) * sz;
+}
+
+vec3 colorRasterBar(vec2 uvPix)
+{
+    float rasterRow = pixellate(uvPix.y , 2.);
+    float rowSeed = rand(vec2(rasterRow));
+    float rasterColumn = pixellate(uvPix.x + (rowSeed-.5) * iGlobalTime * 2000., 300.*rowSeed);
+    vec3 c = rasterColorLinear(
+    	rand(vec2(rasterColumn, rasterRow))
+    	);
+    //c *= vec3(0.2,.3,0.2);
+    return c;
+}
+
+// o = output color
+// uv = uv coords
+// y = where you want this band
+// uvPix = screen pixel coords
+void raster_band(inout vec3 o, vec2 uv, float y, vec2 uvPix)
+{
+    y -= .3;
+    float fft = .5 + iFFT / 2.;
+
+    float ext = y + tri_gear(uv.x + (iGlobalTime * .5) - (iFFT * 1.), 0.2, 1.-fft, fft);
+
+    float amt = 400.-(1000.0*pow(iFFT, 0.5));
+    amt = clamp(amt, 10., 400.);
+
+    // figure out color.
+    vec3 c = colorRasterBar(uvPix);
+    // float rasterRow = pixellate(uvPix.y , 4.);
+    // float rowSeed = rand(vec2(rasterRow));
+    // float rasterColumn = pixellate(uvPix.x + (rowSeed-.5) * iGlobalTime * 2000., 300.*rowSeed);
+    // vec3 c = vec3(
+    // 	rand(vec2(rasterColumn + .00, rasterRow)),
+    // 	rand(vec2(rasterColumn + .33, rasterRow)),
+    // 	rand(vec2(rasterColumn + .66, rasterRow))
+    // 	);
+
+    o.rgb = mix(o.rgb, c, dtoa(uv.y - ext, amt));
+}
+
+
+
 float sdSegment1D(float uv, float a, float b)
 {
     return max(max(a - uv, 0.), uv - b);
@@ -94,15 +186,21 @@ void blit(inout vec3 o, vec2 uv, vec2 pos, vec2 destSize)
 }
 
 
-void slash(inout vec3 o, vec2 uv)
+void slash_raster(inout vec3 o, vec2 uv, float left, float right, vec2 uvPix)
 {
+	vec3 col = colorRasterBar(uvPix);
+
     uv.x -= (uv.y*.7);
-    float d = sdAxisAlignedRect(uv, vec2(-.8,-1), vec2(-.5,1));
-    o = mix(o, vec3(.0,.3,.3), 1.-smoothstep(0.,.007,d));
+    float d = sdAxisAlignedRect(uv, vec2(left,-1), vec2(right,1));
+    o = mix(o, col, 1.-smoothstep(0.,.007,d));
 }
 
-
-
+void slash_color(inout vec3 o, vec2 uv, float left, float right, vec3 col)
+{
+    uv.x -= (uv.y*.7);
+    float d = sdAxisAlignedRect(uv, vec2(left,-1), vec2(right,1));
+    o = mix(o, col, 1.-smoothstep(0.,.007,d));
+}
 
 
 	void main() {
@@ -110,7 +208,10 @@ void slash(inout vec3 o, vec2 uv)
 		vec2 uv = gl_FragCoord.xy / iResolution.xy - .5;
 		uv.x *= iResolution.x / iResolution.y;
 		uv *= 2.;
-		uv.y -= uv.x * .5;
+		
+		uv.y -= uv.x * .5;// shear
+		vec2 uvPix = gl_FragCoord.xy;
+		uvPix.y -= uvPix.x * .5;
 
 		//mainImage(o, i);
 		//i /= iResolution.xy;
@@ -122,21 +223,47 @@ void slash(inout vec3 o, vec2 uv)
 
     vec4 o = vec4(0,0,1,1);
     band(o.rgb, uv, .7, vec3(0,0,0));
-    band(o.rgb, uv, .6, vec3(1,.5,0));
+
+    //raster_band(o.rgb, uv, .6, uvPix);
+   	band(o.rgb, uv, .6, vec3(1,.5,0));
+
     //band(o.rgb, uv, .3, vec3(.5,.5,.5));
 
     // slash
     vec3 grayColor = vec3(.5,.5,.5);
-    slash(grayColor, uv);
+
+    slash_color(grayColor, uv, -.8, -.54, vec3(.0,.2,.0));
+    slash_raster(grayColor, uv, -.75, -.59, uvPix);
+
+    //slash_color(grayColor, uv, -.8, -.54, vec3(.0,.4,.0));
+    //slash_raster(grayColor, uv, -.8, -.54, uvPix);
+    //slash_color(grayColor, uv, -.55, -.5, vec3(.0,.0,.0));
+    //slash_raster(grayColor, uv, -.55, -.5, uvPix);
+
     // KICK
     blit(grayColor, uv, vec2(-.2,-.715), vec2(2.,1.55));
 
     band(o.rgb, uv, .3, grayColor);
 
     band(o.rgb, uv, -.69, vec3(0,0,0));
+    
     band(o.rgb, uv, -.73, vec3(1,.5,0));
+    //raster_band(o.rgb, uv, -.73, uvPix);
+    
     band(o.rgb, uv, -.8, vec3(1,1,1));
 
+
+    // POST PROCESSING
+		vec2 uvn = gl_FragCoord.xy / iResolution.xy - .5;
+		uvn *= 2.;
+
+    o.rgb *=1.-(rand(uvPix+iGlobalTime)*.25);// noise
+    o.rgb = pow(o.rgb, vec3(.9));// gamma
+    o.rgb *= 1.-dot(uvn*.8, uvn*.8);// vignette
+    //o.rgb = pow(o.rgb, vec3(1./2.2));// gamma
+
+    // fade-in
+    o.rgb *= smoothstep(0., 1.3, iGlobalTime - .1);
 
     gl_FragColor = vec4(o.rgb, 1.);
 	}

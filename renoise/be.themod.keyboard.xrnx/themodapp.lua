@@ -435,6 +435,9 @@ function TheMODApp:applyCurrentState(why)
 						self.devicePatchMap[patchAssignment.deviceName] = { patch }
 						log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
 						--didPatchChange = true
+
+						--patch:dump(1)
+
 					end
 				end
 			end
@@ -458,6 +461,7 @@ function TheMODApp:applyCurrentState(why)
 						end
 						if not found then table.insert(map, patch) end
 						log("Selecting patch: "..patchAssignment.patchName.." for device "..patchAssignment.deviceName)
+						--patch:dump(1)
 					end
 				end
 			end
