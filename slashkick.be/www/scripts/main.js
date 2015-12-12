@@ -39,7 +39,8 @@ var SlashKickApp = function()
   this.scene.add( mesh );
 
   this.renderer = new THREE.WebGLRenderer();
-  document.body.appendChild( this.renderer.domElement );
+  var cont = document.getElementById("glBody");
+  cont.appendChild( this.renderer.domElement );
 
   this.onWindowResize();
 
@@ -48,15 +49,83 @@ var SlashKickApp = function()
 	this.doAnimFrame();
 }
 
+
+SlashKickApp.prototype.uvToWindowCoords = function(uv, iResolution)
+{
+	var ret = { x : uv.x, y : uv.y };
+
+	ret.y += ret.x * .3333;
+
+	// add padding to correct aspect.
+	if(iResolution.x > iResolution.y)
+		ret.x /= iResolution.x / iResolution.y;
+	else
+		ret.y *= iResolution.x / iResolution.y;
+
+	ret.y -= -.3;
+	ret.x -= .3;
+
+	ret.x /= 2.1;
+	ret.y /= 2.1;
+
+	ret.x += .5;
+	ret.x *= iResolution.x;
+	ret.y += .5;
+	ret.y *= iResolution.y;
+
+	ret.y = iResolution.y - ret.y;
+	return ret;
+};
+
 SlashKickApp.prototype.onWindowResize = function()
 {
 	var x = window.innerWidth;
 	var y = window.innerHeight;
 	this.uniforms.iResolution.value.x = x;
 	this.uniforms.iResolution.value.y = y;
-	//console.log("Resizing ("+x+","+y+")");
 	this.uniforms.iResolution.value.z = 0;
 	this.renderer.setSize(x, y);
+
+
+	// position text block.
+	var iResolution = {x:x,y:y};
+
+	var tl = this.uvToWindowCoords({ x: -.13, y: -.6}, iResolution);
+	var br = this.uvToWindowCoords({x:1.5,y:1.5}, iResolution);
+
+	tl.x = Math.min(Math.max(0,tl.x), iResolution.x);
+	tl.y = Math.min(Math.max(0,tl.y), iResolution.y);
+	br.x = Math.min(Math.max(0,br.x), iResolution.x);
+	br.y = Math.min(Math.max(0,br.y), iResolution.y);
+
+	var noskew = "0";
+	var skew = "skew(0,-" + Math.atan(0.33333) + "rad)";
+	$("#desc")
+		.css({
+			top: tl.y + "px",
+			left: tl.x + "px",
+			width: Math.abs(br.x-tl.x)+"px",
+			height: Math.abs(br.y-tl.y)+"px",
+			"-webkit-transform-origin": "0",
+			"-webkit-transform": noskew,
+			"-ms-transform-origin": "0",
+			"-ms-transform": noskew,
+			"transform-origin": "0",
+			"transform": noskew
+		});
+
+	// tl = this.uvToWindowCoords({ x: -.15, y: -.6}, iResolution);
+	// $("#social")
+	// 	.css({
+	// 		top: tl.y + "px",
+	// 		left: tl.x + "px",
+	// 		"-webkit-transform-origin": "0",
+	// 		"-webkit-transform": noskew,
+	// 		"-ms-transform-origin": "0",
+	// 		"-ms-transform": noskew,
+	// 		"transform-origin": "0",
+	// 		"transform": noskew
+	// 	});
 };
 
 
