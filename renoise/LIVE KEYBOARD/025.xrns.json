@@ -41,7 +41,7 @@
 		{ "Name" : "SelectNextSong",     "ButtonName" : "g1", "ColorScheme" : { "Normal" : "#f0f" } },
 		{ "Name" : "Panic",              "ButtonName" : "h1", "ColorScheme" : { "Normal" : "#f00" } }
 		
-		{ "Name" : "DumpConfig",         "ButtonName" : "b1", "ColorScheme" : { "Normal" : "#830" } },
+		//{ "Name" : "DumpConfig",         "ButtonName" : "b1", "ColorScheme" : { "Normal" : "#830" } },
 		{ "Name" : "DecreaseBrightness", "ButtonName" : "c1", "ColorScheme" : { "Normal" : "#122" } },
 		{ "Name" : "IncreaseBrightness", "ButtonName" : "d1", "ColorScheme" : { "Normal" : "#6ff" } },
 
@@ -134,12 +134,13 @@
  				{ "Button" : "f6", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-artificium" , "Transpose" : "12", "Gain":"-9db"} }]}
 
  				{ "Button" : "b7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : "cic-mellowlead" }]}
- 				{ "Button" : "c7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "ioiwy-vintage lead", "Transpose":"12" } }]}
- 				{ "Button" : "d7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "wnlgd-compleadoct", "Transpose" : "12" } }]}
- 				{ "Button" : "e7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-funkhonk", "Transpose" : "12" } }]}
- 				{ "Button" : "f7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-jxmemories", "Transpose" : "12" } }]}
- 				{ "Button" : "g7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pwmcomp", "Transpose" : "12" } }]}
- 				{ "Button" : "h7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "sca-sectionV" } }]}
+ 				{ "Button" : "c7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "cic-mellowcomp" } }]}
+ 				{ "Button" : "d7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "ioiwy-vintage lead", "Transpose":"12" } }]}
+ 				{ "Button" : "e7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "wnlgd-compleadoct", "Transpose" : "12" } }]}
+ 				{ "Button" : "f7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-funkhonk", "Transpose" : "12" } }]}
+ 				{ "Button" : "g7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-jxmemories", "Transpose" : "12" } }]}
+ 				{ "Button" : "h7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pwmcomp", "Transpose" : "12" } }]}
+ 				{ "Button" : "i7", "ColorScheme" : "Comp", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "sca-sectionV" } }]}
 
  				{ "Button" : "b8", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-modwheelextreme" } }]}
  				{ "Button" : "c8", "ColorScheme" : "Mono", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-guitarrival" } }]}
@@ -148,6 +149,16 @@
  				{ "Button" : "e8", "ColorScheme" : "Bell", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-piabell" } }]}
  				{ "Button" : "f8", "ColorScheme" : "Bell", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-Airconditioned" } }]}
  				{ "Button" : "g8", "ColorScheme" : "Bell", "PatchAssignments" : [{ "Device" : "Main", "Patch" : { "Instrument" : "gen-pinginmotion" } }]}
+ 				{ "Button" : "h8", "ColorScheme" : "Keys", "PatchAssignments" : [{ "Device" : "Main", "Patch" :
+	 				{
+						"Layers" : [
+				  		{ "Instrument" : "cic-mellowcomp", "Transpose" : "0", "Gain" : "0", "KeyRange" : "C5-C8" }
+				  		{ "Instrument" : "courthousefunk", "Transpose" : "12", "Gain" : "0", "KeyRange" : "C0-C5" }
+				  		{ "Instrument" : "fullbass", "Transpose" : "12", "Gain" : "0", "KeyRange" : "C0-C5" }
+			  		] 				
+			  	}
+				}]}
+
 			]
 		},
 		{ "Name" : "BigTruffle",
@@ -178,6 +189,8 @@
 			"Image" : "images/MariasCloset.png",
 			"Inherits" : "Base"
 		}
+
+
 	]
 }
 
