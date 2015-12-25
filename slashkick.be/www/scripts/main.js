@@ -2,6 +2,11 @@
 // http://codepen.io/anon/pen/eNVWWB
 // uniforms types https://github.com/mrdoob/three.js/wiki/Uniforms-types
 
+var SK = {};
+
+
+
+
 bind = function($this, fn)
 {
 	return fn.bind($this);
@@ -9,16 +14,44 @@ bind = function($this, fn)
 
 var SlashKickApp = function()
 {
+	var manager = new THREE.LoadingManager(bind(this, function(){ this.beginGlsl(); }));
+
+	(new THREE.TextureLoader(manager)).load('images/KICK.png', bind(this, function(tex){ this.kickTexture = tex; }));
+	(new THREE.TextureLoader(manager)).load('images/tenfourgradient.png', bind(this, function(tex){ this.tenfourGradientTexture = tex; }));
+	(new THREE.TextureLoader(manager)).load('images/dumbgradient.png', bind(this, function(tex){ this.dumbGradientTexture = tex; }));
+	(new THREE.TextureLoader(manager)).load('images/noise.png', bind(this, function(tex){ this.noiseTexture = tex; }));
+	(new THREE.XHRLoader(manager)).load('shaders/main.glsl', bind(this, function(contents){ this.ps = contents; }));
+};
+
+
+SlashKickApp.prototype.beginGlsl = function()
+{
   this.startTime = Date.now();
   this.camera = new THREE.Camera();
   this.camera.position.z = 0;
 
   this.scene = new THREE.Scene();
 
-
-	var texloader = new THREE.TextureLoader();
-
   var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
+
+  // configure textures
+  //this.kickTexture
+  
+  this.tenfourGradientTexture.wrapS = THREE.RepeatWrapping;
+  this.tenfourGradientTexture.wrapT = THREE.RepeatWrapping;
+  this.tenfourGradientTexture.magFilter = THREE.NearestFilter;
+  this.tenfourGradientTexture.minFilter = THREE.NearestFilter;
+  this.tenfourGradientTexture.needsUpdate = true;
+
+  this.dumbGradientTexture.wrapS = THREE.RepeatWrapping;
+  this.dumbGradientTexture.wrapT = THREE.RepeatWrapping;
+  this.dumbGradientTexture.magFilter = THREE.NearestFilter;
+  this.dumbGradientTexture.minFilter = THREE.NearestFilter;
+  this.dumbGradientTexture.needsUpdate = true;
+
+  // this.noiseTexture.wrapS = THREE.RepeatWrapping;
+  // this.noiseTexture.wrapT = THREE.RepeatWrapping;
+  // this.noiseTexture.needsUpdate = true;
 
   this.uniforms = {
     iGlobalTime: { type: "f", value: 1.0 },
@@ -26,13 +59,24 @@ var SlashKickApp = function()
     iDate: { type: "v4", value: new THREE.Vector4() },
     iMouse: { type: "v4", value: new THREE.Vector4() },
     iFFT: { type: "f", value: 0 },
-    kickTexture: { type: "t", value: texloader.load('images/KICK.png') }
+
+    kickTexture: { type: "t", value: this.kickTexture },
+    kickTextureSize: {type:"v2", value: new THREE.Vector2(this.kickTexture.image.width, this.kickTexture.image.height) },
+
+    tenfourGradientTexture: { type: "t", value: this.tenfourGradientTexture },
+    tenfourGradientTextureSize: {type:"v2", value: new THREE.Vector2(this.tenfourGradientTexture.image.width, this.tenfourGradientTexture.image.height) },
+
+    dumbGradientTexture: { type: "t", value: this.dumbGradientTexture },
+    dumbGradientTextureSize: {type:"v2", value: new THREE.Vector2(this.dumbGradientTexture.image.width, this.dumbGradientTexture.image.height) },
+
+    //noiseTexture: { type: "t", value: this.noiseTexture },
+    //noiseTextureSize: {type:"v2", value: new THREE.Vector2(this.noiseTexture.image.width, this.noiseTexture.image.height) },
   };
 
   var material = new THREE.ShaderMaterial( {
     uniforms: this.uniforms,
     vertexShader: document.getElementById( 'vertexShader' ).textContent,
-    fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+    fragmentShader: this.ps
   } );
 
   var mesh = new THREE.Mesh( geometry, material );
@@ -47,7 +91,7 @@ var SlashKickApp = function()
   window.addEventListener( 'resize', bind(this, function() { this.onWindowResize(); }), false );
 
 	this.doAnimFrame();
-}
+};
 
 
 SlashKickApp.prototype.uvToWindowCoords = function(uv, iResolution)
