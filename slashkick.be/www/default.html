@@ -11,6 +11,10 @@
 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
 
+	<script type="text/javascript" src="scripts/SKUtil.js"></script>
+	<script type="text/javascript" src="scripts/SKCMS.js"></script>
+	<script type="text/javascript" src="scripts/SKAudio.js"></script>
+	<script type="text/javascript" src="scripts/SKFakeStorage.js"></script>
 	<script src="scripts/main.js"></script>
 
 	<!-- vertex shader -->
@@ -24,6 +28,18 @@
 <body>
 	<div id="glBody"></div>
 	<div id="notglBody">
+		<div id="mediaContainer">
+			<div id="playButton">[ play ]</div>
+			<div id="pauseButton">[ pause ]</div>
+			<div id="previousSongButton">[ &lt;&lt; ]</div>
+			<div id="nextSongButton">[ &gt;&gt; ]</div>
+			<div id="songName">[ song name ]</div>
+		</div>
+			<div>
+			<a data-navlinkforlanguage="en-US">EN</a> |
+			<a data-navlinkforlanguage="fr-BE">FR</a> |
+			<a data-navlinkforlanguage="nl-BE">NL</a>
+			</div>
 		<div id="desc">
 			<p>
 			A mix of analog and digital, /KICK is 

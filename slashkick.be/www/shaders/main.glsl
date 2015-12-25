@@ -5,8 +5,8 @@ uniform sampler2D tenfourGradientTexture;
 uniform vec2 tenfourGradientTextureSize;
 uniform sampler2D dumbGradientTexture;
 uniform vec2 dumbGradientTextureSize;
-uniform sampler2D noiseTexture;
-uniform vec2 noiseTextureSize;
+// uniform sampler2D noiseTexture;
+// uniform vec2 noiseTextureSize;
 
 
 uniform vec3 iResolution;
@@ -39,15 +39,6 @@ float dtoa(float d, float amount)
     return a;
 }
 
-float pixellate(float i, float sz)
-{
-    return floor(i / sz) * sz;
-}
-
-
-float quantize(float x, float s) { return floor(x/s)*s; }
-vec2 quantize(vec2 x, float s) { return floor(x/s)*s; }
-
 
 const float pixelSize = 2.5;
 const float idealColorChangeWidth = .82;// % of scan width
@@ -55,27 +46,6 @@ const float animatedPerturbanceAmt = 0.04;// % of scan width
 const float fixedPerturbanceAmt = 0.04;// % of scan width
 
 const float animationSpeed = 32.0;
-
-
-//----------------------------------------------------------------------
-// c64 palette
-// vec3 color0 = vec3(0,0,0);// black
-// vec3 color1 = vec3(1,1,1);// white
-// vec3 color2 = vec3(0.41,0.22,0.17);// red
-// vec3 color3 = vec3(0.44,0.64,0.70);// cyan
-// vec3 color4 = vec3(0.44,0.24,0.53);// violet
-// vec3 color5 = vec3(0.35,0.55,0.26);// green
-// vec3 color6 = vec3(0.21,0.16,0.47);// blue
-// vec3 color7 = vec3(0.72,0.78,0.44);// yellow
-// vec3 color8 = vec3(0.44,0.31,0.15);// orange
-// vec3 color9 = vec3(0.26,0.22,0);// brown
-// vec3 colorA = vec3(0.60,0.40,0.35);// light red
-// vec3 colorB = vec3(0.27,0.27,0.27);// grey1
-// vec3 colorC = vec3(0.42,0.42,0.42);// grey2
-// vec3 colorD = vec3(0.60,0.82,0.52);// light green
-// vec3 colorE = vec3(0.42,0.37,0.71);// light blue
-// vec3 colorF = vec3(0.58,0.58,0.58);// grey3
-
 
 //----------------------------------------------------------------------
 
@@ -101,42 +71,22 @@ vec4 getRasterColor(vec2 i)
 }
 
 
-
-
-
-
-
-
-
-
-
 void band(inout vec3 o, vec2 uv, float y, vec3 c)
 {
-    //y -= .3;
-    //float fft = .5 + iFFT / 2.;
-
-    //float ext = y + tri_gear(uv.x + (iGlobalTime * .5) - (iFFT * 1.), 0.2, 1.-fft, fft);
-    //float ext = y - .3 + .5;
-    //y += .2;
-
-    //float amt = 400.-(1000.0*pow(iFFT, 0.5));
-    //amt = clamp(amt, 10., 400.);
-    //amt = 900.;
     o.rgb = mix(o.rgb, c, dtoa(uv.y - y, 400.));
 }
 
-
 float sdSegment1D(float uv, float a, float b)
 {
-    return max(max(a - uv, 0.), uv - b);
+    return max(a - uv, uv - b);
 }
+
 float sdAxisAlignedRect(vec2 uv, vec2 tl, vec2 br)
 {
-    float dx = sdSegment1D(uv.x,tl.x,br.x);
-    float dy = sdSegment1D(uv.y,tl.y,br.y);
-    return dx + dy;// manhattan
-    //return sqrt(dx*dx+dy*dy);// euclidian version
+  	vec2 d = max(tl - uv, uv - br);
+    return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
+
 
 void blit(inout vec3 o, vec2 uv, vec2 pos, vec2 destSize, vec2 uvPix)
 {
@@ -185,42 +135,42 @@ void main()
 
 
 	vec4 o = vec4(vec3(0.3,0.3,0.7),1);// BLUE
-  band(o.rgb, uv, 1., vec3(0,0,0));// BLACK
- 	band(o.rgb, uv, .95, vec3(1,.5,0));// ORANGE
-
-	if(uv.y < .8 && uv.y > .54)// RASTER
-	{
-		o = getRasterColor(uvPix);
-	}
-
- 	band(o.rgb, uv, .54, vec3(0));// BLACK
+  band(o.rgb, uv, .90, vec3(0,0,0));// BLACK
+ 	band(o.rgb, uv, .83, vec3(1,.5,0));// ORANGE
+ 	band(o.rgb, uv, .60, vec3(0));// BLACK
 
   // slash
   vec3 grayColor = vec3(.5,.5,.5);
-  //grayColor = rasterColor.rgb;
-
   slash_color(grayColor, uv, -.8, -.54, vec3(.2,.2,.2));
   slash_color(grayColor, uv, -.55, -.5, vec3(.0,.0,.0));
-
   blit(grayColor, uv, vec2(-.2,-.715), vec2(2.,1.55), uvPix);// KICK
 
   band(o.rgb, uv, .5, grayColor);// GRAY BACKGROUND
-
   band(o.rgb, uv, -.5, vec3(0,0,0));// BLACK
-  
-  if(uv.y < -.52 && uv.y > -.58)
-  {
-  	o = getRasterColor(uvPix);
-  }
-  
   band(o.rgb, uv, -.6, vec3(1,1,1));
+
+	float d = sdSegment1D(uv.y, .54, .77);// RASTER 1 (out of order)
+	if(d <= 0.)
+	{
+		o = mix(o, getRasterColor(uvPix), 1.-smoothstep(-0.02, 0., d));
+	}
+
+	d = sdSegment1D(uv.y, -.58, -.52);// RASTER 2
+	if(d <= 0.)
+	{
+		o = mix(o, getRasterColor(uvPix), 1.-smoothstep(-0.02, 0., d));
+	}
 
   // POST PROCESSING
 	vec2 uvn = gl_FragCoord.xy / iResolution.xy - .5;
 	uvn *= 2.;
 
-  o.rgb *=1.-(rand(uvPix+iGlobalTime))*.15;
-  o.rgb *= 1.-pow(dot(uvn*.7, uvn*.7), 1.1);// vignette
+  o.rgb *= 1.-rand(uvPix+iGlobalTime)*.12;
+  //o.rgb = vec3(1);
+  float v = 1.-dot(uvn*.9, uvn*.9)*.4;// vignette attenuation
+  v = pow(v, 1./2.2);
+  v = clamp(v, 0., 1.);
+  o.rgb *= v;// vignette
 
   // fade-in
   o.rgb *= smoothstep(0., 2.5, iGlobalTime);

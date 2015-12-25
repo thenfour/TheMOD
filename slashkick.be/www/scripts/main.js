@@ -1,19 +1,38 @@
 // http://webglfundamentals.org/webgl/lessons/webgl-2d-matrices.html
 // http://codepen.io/anon/pen/eNVWWB
 // uniforms types https://github.com/mrdoob/three.js/wiki/Uniforms-types
-
-var SK = {};
-
+var SK = SK || {};
 
 
-
-bind = function($this, fn)
+SK.App = function()
 {
-	return fn.bind($this);
-}
+	this.storageEngine = new SK.FakeStorage();
+	this.cms = new SK.CMS({
+		storageEngine: this.storageEngine,
+		languages: [
+			{ lang: "en-US", anchorID: "taalEN" },
+			{ lang: "nl-BE", anchorID: "taalNL" },
+			{ lang: "fr-BE", anchorID: "taalFR" }
+		]
+	});
+	
+	if(isAudioSupported())
+	{
+		var autoPlay = false;
+		this.audioEngine = new SK.Audio(this.storageEngine, {
+			playElementID: 'playButton',
+			pauseElementID: 'pauseButton',
+			previousSongElementID: 'previousSongButton',
+			nextSongElementID: 'nextSongButton',
+			songNameElementID: 'songName'
+		}, autoPlay, 2000);
+	}
+	else
+	{
+		$('#mediaContainer')
+			.css('display', 'none');
+	}
 
-var SlashKickApp = function()
-{
 	var manager = new THREE.LoadingManager(bind(this, function(){ this.beginGlsl(); }));
 
 	(new THREE.TextureLoader(manager)).load('images/KICK.png', bind(this, function(tex){ this.kickTexture = tex; }));
@@ -24,7 +43,8 @@ var SlashKickApp = function()
 };
 
 
-SlashKickApp.prototype.beginGlsl = function()
+// called when all glsl assets are loaded.
+SK.App.prototype.beginGlsl = function()
 {
   this.startTime = Date.now();
   this.camera = new THREE.Camera();
@@ -94,7 +114,7 @@ SlashKickApp.prototype.beginGlsl = function()
 };
 
 
-SlashKickApp.prototype.uvToWindowCoords = function(uv, iResolution)
+SK.App.prototype.uvToWindowCoords = function(uv, iResolution)
 {
 	var ret = { x : uv.x, y : uv.y };
 
@@ -121,7 +141,7 @@ SlashKickApp.prototype.uvToWindowCoords = function(uv, iResolution)
 	return ret;
 };
 
-SlashKickApp.prototype.onWindowResize = function()
+SK.App.prototype.onWindowResize = function()
 {
 	var x = window.innerWidth;
 	var y = window.innerHeight;
@@ -173,13 +193,13 @@ SlashKickApp.prototype.onWindowResize = function()
 };
 
 
-SlashKickApp.prototype.doAnimFrame = function()
+SK.App.prototype.doAnimFrame = function()
 {
  	requestAnimationFrame(bind(this, function() { this.doAnimFrame(); }));
   this.drawScene();
 }
 
-SlashKickApp.prototype.drawScene = function()
+SK.App.prototype.drawScene = function()
 {
   var currentTime = Date.now();
   this.uniforms.iGlobalTime.value = (currentTime - this.startTime) * 0.001;
@@ -202,7 +222,7 @@ SlashKickApp.prototype.drawScene = function()
 
 window.onload = function()
 {
-	window.slashKickApp = new SlashKickApp();
+	window.slashKickApp = new SK.App();
 };
 
 
