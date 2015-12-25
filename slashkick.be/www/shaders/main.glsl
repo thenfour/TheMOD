@@ -59,50 +59,45 @@ const float animationSpeed = 32.0;
 
 //----------------------------------------------------------------------
 // c64 palette
-vec3 color0 = vec3(0,0,0);// black
-vec3 color1 = vec3(1,1,1);// white
-vec3 color2 = vec3(0.41,0.22,0.17);// red
-vec3 color3 = vec3(0.44,0.64,0.70);// cyan
-vec3 color4 = vec3(0.44,0.24,0.53);// violet
-vec3 color5 = vec3(0.35,0.55,0.26);// green
-vec3 color6 = vec3(0.21,0.16,0.47);// blue
-vec3 color7 = vec3(0.72,0.78,0.44);// yellow
-vec3 color8 = vec3(0.44,0.31,0.15);// orange
-vec3 color9 = vec3(0.26,0.22,0);// brown
-vec3 colorA = vec3(0.60,0.40,0.35);// light red
-vec3 colorB = vec3(0.27,0.27,0.27);// grey1
-vec3 colorC = vec3(0.42,0.42,0.42);// grey2
-vec3 colorD = vec3(0.60,0.82,0.52);// light green
-vec3 colorE = vec3(0.42,0.37,0.71);// light blue
-vec3 colorF = vec3(0.58,0.58,0.58);// grey3
+// vec3 color0 = vec3(0,0,0);// black
+// vec3 color1 = vec3(1,1,1);// white
+// vec3 color2 = vec3(0.41,0.22,0.17);// red
+// vec3 color3 = vec3(0.44,0.64,0.70);// cyan
+// vec3 color4 = vec3(0.44,0.24,0.53);// violet
+// vec3 color5 = vec3(0.35,0.55,0.26);// green
+// vec3 color6 = vec3(0.21,0.16,0.47);// blue
+// vec3 color7 = vec3(0.72,0.78,0.44);// yellow
+// vec3 color8 = vec3(0.44,0.31,0.15);// orange
+// vec3 color9 = vec3(0.26,0.22,0);// brown
+// vec3 colorA = vec3(0.60,0.40,0.35);// light red
+// vec3 colorB = vec3(0.27,0.27,0.27);// grey1
+// vec3 colorC = vec3(0.42,0.42,0.42);// grey2
+// vec3 colorD = vec3(0.60,0.82,0.52);// light green
+// vec3 colorE = vec3(0.42,0.37,0.71);// light blue
+// vec3 colorF = vec3(0.58,0.58,0.58);// grey3
 
 
 //----------------------------------------------------------------------
 
-void getRasterColor( out vec4 o, vec2 i)
+vec4 getRasterColor(vec2 i)
 {
-		i.y -= iGlobalTime*animationSpeed;
+	i.y -= iGlobalTime*animationSpeed;
 
-    vec2 pVirt = floor(i / pixelSize);// pixel coords in simulated screen space.
-    vec2 virtRes = floor(iResolution.xy / pixelSize);
-    vec2 uv = pVirt / virtRes;
+  vec2 pVirt = floor(i / pixelSize);// pixel coords in simulated screen space.
+  vec2 virtRes = floor(iResolution.xy / pixelSize);
+  vec2 uv = pVirt / virtRes;
 
-    float linPixel = pVirt.x + (pVirt.y * virtRes.x);
-    float bandWidth = virtRes.x * idealColorChangeWidth;// with no glitches, color bands span X% of the screen.
-    linPixel -= (hash(pVirt.y)*2.-1.)*virtRes.x*fixedPerturbanceAmt;// perturb by Y up to X% of screen width
-    linPixel -= (hash(iGlobalTime)*2.-1.)*virtRes.x*animatedPerturbanceAmt;// perturb by time up to X% of screen width
-    //linPixel += virtRes.x *floor(iGlobalTime*animationSpeed);// animate by shifting whole scan lines
-    float band = linPixel / bandWidth;
-    
-    // select which gradient to show
-    if(mod(iGlobalTime, 3.) < 2.)
-    {
-    	o = texture2D(tenfourGradientTexture, vec2(0, band/16.));
-    }
-    else
-    {
-    	o = texture2D(dumbGradientTexture, vec2(0, band/16.));
-    }
+  float linPixel = pVirt.x + (pVirt.y * virtRes.x);
+  float bandWidth = virtRes.x * idealColorChangeWidth;// with no glitches, color bands span X% of the screen.
+  linPixel -= (hash(pVirt.y)*2.-1.)*virtRes.x*fixedPerturbanceAmt;// perturb by Y up to X% of screen width
+  linPixel -= (hash(iGlobalTime)*2.-1.)*virtRes.x*animatedPerturbanceAmt;// perturb by time up to X% of screen width
+  float band = linPixel / bandWidth;
+  
+  // select which gradient to show
+  if(mod(iGlobalTime, 3.) < 2.)
+  	return texture2D(tenfourGradientTexture, vec2(0, band/16.));
+  else
+  	return texture2D(dumbGradientTexture, vec2(0, band/16.));
 }
 
 
@@ -117,17 +112,19 @@ void getRasterColor( out vec4 o, vec2 i)
 
 void band(inout vec3 o, vec2 uv, float y, vec3 c)
 {
-    y -= .3;
-    float fft = .5 + iFFT / 2.;
+    //y -= .3;
+    //float fft = .5 + iFFT / 2.;
 
     //float ext = y + tri_gear(uv.x + (iGlobalTime * .5) - (iFFT * 1.), 0.2, 1.-fft, fft);
-    float ext = y + .5;
+    //float ext = y - .3 + .5;
+    //y += .2;
 
-    float amt = 400.-(1000.0*pow(iFFT, 0.5));
-    amt = clamp(amt, 10., 400.);
-    amt = 900.;
-    o.rgb = mix(o.rgb, c, dtoa(uv.y - ext, amt));
+    //float amt = 400.-(1000.0*pow(iFFT, 0.5));
+    //amt = clamp(amt, 10., 400.);
+    //amt = 900.;
+    o.rgb = mix(o.rgb, c, dtoa(uv.y - y, 400.));
 }
+
 
 float sdSegment1D(float uv, float a, float b)
 {
@@ -187,8 +184,16 @@ void main()
 	uvPix.y -= uvPix.x * .3333;
 
 
+	vec4 o = vec4(vec3(0.3,0.3,0.7),1);// BLUE
+  band(o.rgb, uv, 1., vec3(0,0,0));// BLACK
+ 	band(o.rgb, uv, .95, vec3(1,.5,0));// ORANGE
 
+	if(uv.y < .8 && uv.y > .54)// RASTER
+	{
+		o = getRasterColor(uvPix);
+	}
 
+ 	band(o.rgb, uv, .54, vec3(0));// BLACK
 
   // slash
   vec3 grayColor = vec3(.5,.5,.5);
@@ -199,28 +204,26 @@ void main()
 
   blit(grayColor, uv, vec2(-.2,-.715), vec2(2.,1.55), uvPix);// KICK
 
+  band(o.rgb, uv, .5, grayColor);// GRAY BACKGROUND
 
-  band(o.rgb, uv, -.69, vec3(0,0,0));
+  band(o.rgb, uv, -.5, vec3(0,0,0));// BLACK
   
-  //band(o.rgb, uv, -.73, colorC);
+  if(uv.y < -.52 && uv.y > -.58)
+  {
+  	o = getRasterColor(uvPix);
+  }
   
-  band(o.rgb, uv, -.8, vec3(1,1,1));
+  band(o.rgb, uv, -.6, vec3(1,1,1));
 
   // POST PROCESSING
 	vec2 uvn = gl_FragCoord.xy / iResolution.xy - .5;
 	uvn *= 2.;
 
-  // if(uvn.x < -0.95 || uvn.x > 0.95)
-  // 	o = rasterColor;
-  // if(uvn.y < -0.95 || uvn.y > 0.95)
-  // 	o = rasterColor;
-
   o.rgb *=1.-(rand(uvPix+iGlobalTime))*.15;
-  //o.rgb = pow(o.rgb, vec3(1./1.9));// gamma
-  //o.rgb *= 1.-dot(uvn*.5, uvn*.5);// vignette
+  o.rgb *= 1.-pow(dot(uvn*.7, uvn*.7), 1.1);// vignette
 
   // fade-in
-  o.rgb *= smoothstep(0., 3.0, iGlobalTime);
+  o.rgb *= smoothstep(0., 2.5, iGlobalTime);
 
   gl_FragColor = vec4(o.rgb, 1.);
 }
