@@ -188,21 +188,7 @@ void main()
 
 
 
-	vec4 o = vec4(color6,1);
-  band(o.rgb, uv, .8, vec3(0,0,0));
 
- 	band(o.rgb, uv, .75, color8);// vec3(1,.5,0)
- 	
- 	if(uv.y < .8 && uv.y > .34)
- 	{
-	  vec4 rasterColor = vec4(1);
-  	getRasterColor(rasterColor, uvPix);
-  	o = rasterColor;
-	 	//band(o.rgb, uv, .62, rasterColor.rgb);
- 	}
- 	//band(o.rgb, uv, .62, color5);
-
- 	band(o.rgb, uv, .34, vec3(0));
 
   // slash
   vec3 grayColor = vec3(.5,.5,.5);
@@ -213,16 +199,9 @@ void main()
 
   blit(grayColor, uv, vec2(-.2,-.715), vec2(2.,1.55), uvPix);// KICK
 
-  band(o.rgb, uv, .3, grayColor);
 
   band(o.rgb, uv, -.69, vec3(0,0,0));
   
-  // if(uv.y < -.69 && uv.y > -.73)
-  // {
-	 //  vec4 rasterColor = vec4(1);
-  // 	getRasterColor(rasterColor, uvPix);
-	 //  band(o.rgb, uv, -.73, rasterColor.rgb);
-  // }
   //band(o.rgb, uv, -.73, colorC);
   
   band(o.rgb, uv, -.8, vec3(1,1,1));
