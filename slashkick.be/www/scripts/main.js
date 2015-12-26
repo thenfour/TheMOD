@@ -33,12 +33,21 @@ SK.App = function()
 			.css('display', 'none');
 	}
 
-	var manager = new THREE.LoadingManager(bind(this, function(){ this.beginGlsl(); }));
+	var manager = new THREE.LoadingManager(bind(this,function(){
+		$("#loading").hide();
+		this.beginGlsl();
+	}));
+
+	manager.onProgress = function ( item, loaded, total ){
+		$("#loading").text("loading: " + loaded + "/" + total);
+		//console.log( item, loaded, total );
+	};
+
 
 	(new THREE.TextureLoader(manager)).load('images/KICK.png', bind(this, function(tex){ this.kickTexture = tex; }));
 	(new THREE.TextureLoader(manager)).load('images/tenfourgradient.png', bind(this, function(tex){ this.tenfourGradientTexture = tex; }));
 	(new THREE.TextureLoader(manager)).load('images/dumbgradient.png', bind(this, function(tex){ this.dumbGradientTexture = tex; }));
-	(new THREE.TextureLoader(manager)).load('images/noise.png', bind(this, function(tex){ this.noiseTexture = tex; }));
+	//(new THREE.TextureLoader(manager)).load('images/noise.png', bind(this, function(tex){ this.noiseTexture = tex; }));
 	(new THREE.XHRLoader(manager)).load('shaders/main.glsl', bind(this, function(contents){ this.ps = contents; }));
 };
 
