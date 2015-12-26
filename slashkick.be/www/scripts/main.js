@@ -155,12 +155,13 @@ SK.App.prototype.onWindowResize = function()
 	var iResolution = {x:x,y:y};
 
 	var tl = this.uvToWindowCoords({ x: -.13, y: -.6}, iResolution);
-	var br = this.uvToWindowCoords({x:1.5,y:1.5}, iResolution);
+	var br = this.uvToWindowCoords({x:1.5,y:1.5}, iResolution);// ideal
 
 	tl.x = Math.min(Math.max(0,tl.x), iResolution.x);
 	tl.y = Math.min(Math.max(0,tl.y), iResolution.y);
-	br.x = Math.min(Math.max(0,br.x), iResolution.x);
-	br.y = Math.min(Math.max(0,br.y), iResolution.y);
+
+	br.x = Math.min(Math.max(tl.x + 400,br.x), iResolution.x);// minimum 400 px but maximum window bounds
+	br.y = iResolution.y;
 
 	var noskew = "0";
 	var skew = "skew(0,-" + Math.atan(0.33333) + "rad)";

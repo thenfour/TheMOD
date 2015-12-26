@@ -15,6 +15,7 @@ isCanvasSupported = function(){
 }
 
 isAudioSupported = function() {
+	return false;
 	var elem = document.createElement('audio');
 	return !!(elem.pause);
 }

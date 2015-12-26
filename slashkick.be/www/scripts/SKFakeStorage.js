@@ -20,9 +20,9 @@ SK.FakeStorage = function()
 			isDefault: true,
 			pageTitle:
 			[
-				{ lang: "en-US", value: "The MOD: About" },
-				{ lang: "nl-BE", value: "The MOD: Over ons" },
-				{ lang: "fr-BE", value: "The MOD: Sur nous" }
+				{ lang: "en-US", value: "/KICK: About" },
+				{ lang: "nl-BE", value: "/KICK: Over ons" },
+				{ lang: "fr-BE", value: "/KICK: Sur nous" }
 			]
 		},
 
@@ -34,9 +34,9 @@ SK.FakeStorage = function()
 			},
 			pageTitle:
 			[
-				{ lang: "en-US", value: "The MOD: Listen" },
-				{ lang: "nl-BE", value: "The MOD: Audio" },
-				{ lang: "fr-BE", value: "The MOD: Écoutez" }
+				{ lang: "en-US", value: "Listen" },
+				{ lang: "nl-BE", value: "Audio" },
+				{ lang: "fr-BE", value: "Écoutez" }
 			]
 		}
 	];
