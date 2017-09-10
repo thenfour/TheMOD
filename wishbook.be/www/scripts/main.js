@@ -42,7 +42,7 @@ SK.App = function()
 	};
 
 
-	(new THREE.TextureLoader(manager)).load('images/ash_uvgrid01.jpg', bind(this, function(tex){
+	(new THREE.TextureLoader(manager)).load('images/floristest.png', bind(this, function(tex){
 		this.bgTexture = tex;
 	}));
 
@@ -163,8 +163,8 @@ SK.App.prototype.drawScene = function()
   this.uniforms.iDate.value.z = currentTime.day;
   this.uniforms.iDate.value.w = currentTime.second + currentTime.milliseconds;
 
-	console.log("cursor: (" + this.uniforms.iMouse.value.x + ", " + this.uniforms.iMouse.value.y + ") iRes.y=" + this.uniforms.iResolution.value.y + ", mc.y=" + 
-		(this.uniforms.iMouse.value.y / this.uniforms.iResolution.value.y));
+	//console.log("cursor: (" + this.uniforms.iMouse.value.x + ", " + this.uniforms.iMouse.value.y + ") iRes.y=" + this.uniforms.iResolution.value.y + ", mc.y=" + 
+	//	(this.uniforms.iMouse.value.y / this.uniforms.iResolution.value.y));
 
   this.renderer.render( this.scene, this.camera );
 };
