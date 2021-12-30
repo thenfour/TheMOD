@@ -1,4 +1,163 @@
 <!DOCTYPE html>
+
+<head>
+    <title>/KICK</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;900&display=swap" rel="stylesheet">
+
+
+    <style>
+        body {
+            background-color: #d7d5ff;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            border: 0;
+
+            font-family: 'Overpass', sans-serif;
+            font-weight: 600;
+            color: #726aff;
+        }
+
+        a,
+        a:visited,
+        a:link,
+        a:hover {
+            color: #726aff;
+            text-decoration: none;
+            display: block;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        a:hover {
+            background-color: #ffb355;
+        }
+
+        #root {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-content: stretch;
+            justify-content: stretch;
+            height: 100%;
+            background-image: url(header.jpg);
+            background-repeat: no-repeat;
+            background-position: 50% 40%;
+            background-size: cover;
+            overflow: auto;
+        }
+
+        #headerContainer {
+            display: flex;
+            justify-content: center;
+            height: 40vh;
+            align-items: center;
+        }
+
+        #title {
+            font-weight: 900;
+            font-size: 40vh;
+            color: #5e55ff;
+            filter: drop-shadow(-5px -5px 5px #00000080) drop-shadow(5px 5px 5px #ffffff80);
+            user-select: none;
+        }
+
+        #bodyContainer {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            font-size: 24px;
+            flex-grow: 1;
+            /* justify-content: space-between; */
+        }
+
+        #bodyContainer>*>div {
+            border-radius: 20px;
+            padding: 20px;
+            padding-left: 40px;
+            padding-right: 40px;
+            background-color: #000000c0;
+            margin: 10px;
+            border: 2px solid #5e55ff;
+            filter: drop-shadow(-5px -5px 5px #00000080) drop-shadow(5px 5px 5px #ffffff80);
+        }
+
+        #bodyColumn {
+            max-width: 1200px;
+
+        }
+
+        #about {
+            display: flex;
+        }
+
+        #aboutText {
+            margin-left: 40px;
+        }
+
+        #links {
+            display: flex;
+        }
+
+        #links ul {
+            list-style: none;
+            margin: 0;
+            margin-block: 0;
+            margin-inline: 0;
+            padding: 0;
+            padding-inline: 0;
+            padding-block: 0;
+            flex-grow: 1;
+        }
+    </style>
+</head>
 <html>
-<body>hi</body>
+
+<body>
+    <div id="root">
+        <div id="headerContainer">
+            <div id="title">/KICK</div>
+        </div>
+        <div id="bodyContainer">
+            <div id="bodyColumn">
+                <div id="about">
+                    <div id="aboutText">
+                        <iframe style="float:left;margin:10px;" width="480" height="270" src="https://www.youtube.com/embed/A6-MmB3v7io"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                        Screeching lo-fi guitars, dreamy vocals, and danceable fusion inspires curiosity and never
+                        misses a
+                        beat.
+                        Video game inspired electro-pop, jazz, and rock songs beckon nostalgia from 80's new wave and
+                        90's
+                        Mega
+                        Drive racing games.
+                    </div>
+                </div>
+
+                <div id="links">
+                    <img src="263679418_489222339116855_2366821074636684891_n_02_360.jpg" />
+
+                    <ul>
+                        <li><a target="_blank" href="mailto:info@slashkick.be">info@slashkick.be</a></li>
+                        <li><a target="_blank" href="https://soundcloud.com/slash-kick">soundcloud/slash-kick</a></li>
+                        <li><a target="_blank" href="https://vi.be/platform/slashkick">vi.be/slashkick</a></li>
+                        <li><a target="_blank" href="https://www.facebook.com/slashKICK/">facebook/slashKICK</a></li>
+                        <li><a target="_blank" href="https://www.youtube.com/channel/UC27-1-NRgGozr8xnSyWPPZQ">youtube</a></li>
+                    </ul>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
